@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../styles/style.css">
+    <title>Blog - Weight Loss</title>
+</head>
+<body>
+    <!-- Enhanced Navigation -->
+    <nav class="navbar-enhanced">
+        <div class="nav-container">
+            <a href="/" class="logo-modern">
+                <i class="bi bi-lightning-charge-fill"></i> Weight Loss
+            </a>
+            <ul class="nav-links">
+                <li><a href="/" class="nav-link-animated">Home</a></li>
+                <li><a href="/#features" class="nav-link-animated">Features</a></li>
+                <li><a href="Blog.html" class="nav-link-animated active">Blog</a></li>
+                <li><a href="#Contact" class="nav-link-animated">Contact</a></li>
+            </ul>
+            <ul class="auth-links">
+                <li><a href="signup.html" class="btn-modern">Sign Up</a></li>
+                <li><a href="login.html" class="btn-modern-outline">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Blog Hero Section -->
+        <section class="blog-hero">
+            <div class="hero-background">
+                <div class="blob blob-1"></div>
+                <div class="blob blob-2"></div>
+            </div>
+            <div class="blog-hero-content">
+                <h1>Expert Nutrition Insights</h1>
+                <p>Discover evidence-based tips, delicious recipes, and success stories to fuel your transformation</p>
+                <div class="search-box">
+                    <input type="text" placeholder="Search articles..." class="search-input">
+                    <button class="search-btn"><i class="bi bi-search"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Section -->
+        <section class="blog-section">
+            <div class="container-custom">
+                <!-- Filter Section -->
+                <div class="blog-header">
+                    <h2>Latest Articles</h2>
+                    <div class="blog-filters">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="nutrition">Nutrition</button>
+                        <button class="filter-btn" data-filter="recipes">Recipes</button>
+                        <button class="filter-btn" data-filter="fitness">Fitness</button>
+                        <button class="filter-btn" data-filter="wellness">Wellness</button>
+                    </div>
+                </div>
+
+                <!-- Blog Grid -->
+                <div class="blog-grid">
+                    <!-- Blog Card 1 -->
+                    <article class="blog-card-modern" data-category="nutrition">
+                        <div class="blog-image-wrapper">
+                            <img src="/images/blog-nutrition.jpg" alt="Balanced Nutrition" class="blog-image">
+                            <span class="blog-category">Nutrition</span>
+                            <div class="overlay-content">
+                                <a href="#" class="read-full">Read Full Article</a>
+                            </div>
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta-top">
+                                <span class="blog-date"><i class="bi bi-calendar"></i> March 15, 2026</span>
+                                <span class="read-time"><i class="bi bi-clock"></i> 5 min</span>
+                            </div>
+                            <h3>5 Essential Nutrients for Weight Loss Success</h3>
+                            <p>Learn about the key nutrients your body needs during your weight loss journey. From protein to fiber, understand how each plays a crucial role in your transformation.</p>
+                            <div class="blog-author">
+                                <div class="author-avatar"></div>
+                                <div class="author-info">
+                                    <span class="author-name">Dr. Sarah Johnson</span>
+                                    <span class="author-title">Nutrition Expert</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Blog Card 2 -->
+                    <article class="blog-card-modern" data-category="recipes">
+                        <div class="blog-image-wrapper">
+                            <img src="/images/blog-recipe.jpg" alt="Healthy Recipe" class="blog-image">
+                            <span class="blog-category">Recipes</span>
+                            <div class="overlay-content">
+                                <a href="#" class="read-full">Read Full Article</a>
+                            </div>
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta-top">
+                                <span class="blog-date"><i class="bi bi-calendar"></i> March 12, 2026</span>
+                                <span class="read-time"><i class="bi bi-clock"></i> 4 min</span>
+                            </div>
+                            <h3>Quick & Easy High-Protein Breakfast Ideas</h3>
+                            <p>Start your day right with these delicious and nutritious breakfast recipes that are high in protein and low in calories. Perfect for busy mornings!</p>
+                            <div class="blog-author">
+                                <div class="author-avatar"></div>
+                                <div class="author-info">
+                                    <span class="author-name">Chef Maria</span>
+                                    <span class="author-title">Recipe Creator</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Blog Card 3 -->
+                    <article class="blog-card-modern" data-category="fitness">
+                        <div class="blog-image-wrapper">
+                            <img src="/images/blog-fitness.jpg" alt="Fitness Guide" class="blog-image">
+                            <span class="blog-category">Fitness</span>
+                            <div class="overlay-content">
+                                <a href="#" class="read-full">Read Full Article</a>
+                            </div>
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta-top">
+                                <span class="blog-date"><i class="bi bi-calendar"></i> March 10, 2026</span>
+                                <span class="read-time"><i class="bi bi-clock"></i> 6 min</span>
+                            </div>
+                            <h3>Home Workouts That Burn Maximum Calories</h3>
+                            <p>No gym? No problem! Discover effective home workout routines that boost your metabolism and accelerate your weight loss without expensive equipment.</p>
+                            <div class="blog-author">
+                                <div class="author-avatar"></div>
+                                <div class="author-info">
+                                    <span class="author-name">Coach Alex</span>
+                                    <span class="author-title">Fitness Coach</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Blog Card 4 -->
+                    <article class="blog-card-modern" data-category="wellness">
+                        <div class="blog-image-wrapper">
+                            <img src="/images/blog-wellness.jpg" alt="Wellness Tips" class="blog-image">
+                            <span class="blog-category">Wellness</span>
+                            <div class="overlay-content">
+                                <a href="#" class="read-full">Read Full Article</a>
+                            </div>
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta-top">
+                                <span class="blog-date"><i class="bi bi-calendar"></i> March 8, 2026</span>
+                                <span class="read-time"><i class="bi bi-clock"></i> 5 min</span>
+                            </div>
+                            <h3>Managing Stress for Better Weight Management</h3>
+                            <p>Discover the powerful connection between stress management and weight loss. Learn practical techniques to reduce stress and support your health goals.</p>
+                            <div class="blog-author">
+                                <div class="author-avatar"></div>
+                                <div class="author-info">
+                                    <span class="author-name">Dr. Emily Green</span>
+                                    <span class="author-title">Wellness Coach</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Blog Card 5 -->
+                    <article class="blog-card-modern" data-category="nutrition">
+                        <div class="blog-image-wrapper">
+                            <img src="/images/blog-hydration.jpg" alt="Hydration Guide" class="blog-image">
+                            <span class="blog-category">Nutrition</span>
+                            <div class="overlay-content">
+                                <a href="#" class="read-full">Read Full Article</a>
+                            </div>
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta-top">
+                                <span class="blog-date"><i class="bi bi-calendar"></i> March 5, 2026</span>
+                                <span class="read-time"><i class="bi bi-clock"></i> 4 min</span>
+                            </div>
+                            <h3>The Science Behind Water & Weight Loss</h3>
+                            <p>Hydration plays a vital role in your weight loss journey. Learn how proper water intake boosts metabolism and supports your body's natural fat-burning process.</p>
+                            <div class="blog-author">
+                                <div class="author-avatar"></div>
+                                <div class="author-info">
+                                    <span class="author-name">Dr. Michael Lee</span>
+                                    <span class="author-title">Medical Expert</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Blog Card 6 -->
+                    <article class="blog-card-modern" data-category="recipes">
+                        <div class="blog-image-wrapper">
+                            <img src="/images/blog-snacks.jpg" alt="Healthy Snacks" class="blog-image">
+                            <span class="blog-category">Recipes</span>
+                            <div class="overlay-content">
+                                <a href="#" class="read-full">Read Full Article</a>
+                            </div>
+                        </div>
+                        <div class="blog-content">
+                            <div class="blog-meta-top">
+                                <span class="blog-date"><i class="bi bi-calendar"></i> March 1, 2026</span>
+                                <span class="read-time"><i class="bi bi-clock"></i> 3 min</span>
+                            </div>
+                            <h3>Guilt-Free Snacks for Sustained Energy</h3>
+                            <p>Never feel deprived again! Explore delicious snack options that satisfy cravings while keeping you on track with your weight loss goals.</p>
+                            <div class="blog-author">
+                                <div class="author-avatar"></div>
+                                <div class="author-info">
+                                    <span class="author-name">Nutritionist Lisa</span>
+                                    <span class="author-title">Nutrition Expert</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- Load More -->
+                <div class="load-more-container">
+                    <button class="btn-load-more">Load More Articles</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="newsletter-section">
+            <div class="newsletter-content">
+                <h2>Get Expert Tips Delivered</h2>
+                <p>Subscribe to receive weekly nutrition insights and recipes directly in your inbox</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="your@email.com" required>
+                    <button type="submit" class="btn-subscribe">Subscribe</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="footer-modern">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3 class="footer-logo"><i class="bi bi-lightning-charge-fill"></i> Weight Loss</h3>
+                    <p>Transforming lives through AI-powered nutrition and personalized health solutions.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-twitter"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="Blog.html">Blog</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p><i class="bi bi-envelope"></i> info@weightloss.com</p>
+                    <p><i class="bi bi-telephone"></i> +1 (123) 456-7890</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Weight Loss. All rights reserved. | Designed with ❤️ for your health</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Filter functionality
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const blogCards = document.querySelectorAll('.blog-card-modern');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.getAttribute('data-filter');
+
+                blogCards.forEach(card => {
+                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                        card.style.display = 'block';
+                        setTimeout(() => card.classList.add('show'), 10);
+                    } else {
+                        card.classList.remove('show');
+                        setTimeout(() => card.style.display = 'none', 300);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
