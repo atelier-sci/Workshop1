@@ -6,7 +6,6 @@
   <title>Book Consultation - NutriAI</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #4A7337;
@@ -651,6 +650,87 @@
     .nutri-card:nth-child(5) { animation-delay: 0.25s; }
     .nutri-card:nth-child(6) { animation-delay: 0.3s; }
 
+    /* ── Plans Section ── */
+    .plans-section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+      margin-bottom: 30px;
+    }
+    .plan-card {
+      background: white;
+      border-radius: 12px;
+      border: 2px solid #e0e0e0;
+      padding: 18px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .plan-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 8px 20px rgba(74, 115, 55, 0.12);
+      transform: translateY(-2px);
+    }
+    .plan-card.selected {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      box-shadow: 0 8px 20px rgba(74, 115, 55, 0.2);
+    }
+    .plan-card-check {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: white;
+      border: 2px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: transparent;
+      transition: all 0.2s;
+    }
+    .plan-card.selected .plan-card-check {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+    .plan-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .plan-details {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.5;
+    }
+    .plan-duration {
+      font-size: 12px;
+      color: #999;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid #f0f0f0;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
     /* ── Responsive ── */
     @media (max-width: 768px) {
       .stats-row { grid-template-columns: 1fr 1fr; }
@@ -683,6 +763,40 @@
 
   <!-- Content -->
   <div class="content-area">
+
+    <!-- Plans Section -->
+    <h3 class="plans-section-title"><i class="bi bi-book"></i> Step 1: Choose a Diet Plan</h3>
+    <div class="plans-grid" id="plansGrid">
+      <div class="plan-card" onclick="selectPlan(this, 'Balanced Nutrition Plan')">
+        <div class="plan-card-check"><i class="bi bi-check-lg"></i></div>
+        <div class="plan-name"><i class="bi bi-leaf"></i> Balanced Nutrition Plan</div>
+        <div class="plan-details">General wellness plan with balanced macros suited for everyday health.</div>
+        <div class="plan-duration"><i class="bi bi-calendar"></i> 30 days</div>
+      </div>
+      
+      <div class="plan-card" onclick="selectPlan(this, 'Weight Loss Plan')">
+        <div class="plan-card-check"><i class="bi bi-check-lg"></i></div>
+        <div class="plan-name"><i class="bi bi-fire"></i> Weight Loss Plan</div>
+        <div class="plan-details">Calorie-controlled plan designed to help you shed weight safely.</div>
+        <div class="plan-duration"><i class="bi bi-calendar"></i> 60 days</div>
+      </div>
+      
+      <div class="plan-card" onclick="selectPlan(this, 'Muscle Gain Plan')">
+        <div class="plan-card-check"><i class="bi bi-check-lg"></i></div>
+        <div class="plan-name"><i class="bi bi-lightning"></i> Muscle Gain Plan</div>
+        <div class="plan-details">High-protein plan optimized for muscle building and strength gains.</div>
+        <div class="plan-duration"><i class="bi bi-calendar"></i> 90 days</div>
+      </div>
+      
+      <div class="plan-card" onclick="selectPlan(this, 'Diabetes Management Plan')">
+        <div class="plan-card-check"><i class="bi bi-check-lg"></i></div>
+        <div class="plan-name"><i class="bi bi-heart-pulse"></i> Diabetes Management Plan</div>
+        <div class="plan-details">Specialized plan for blood sugar control and metabolic health.</div>
+        <div class="plan-duration"><i class="bi bi-calendar"></i> 90 days</div>
+      </div>
+    </div>
+
+    <h3 class="plans-section-title"><i class="bi bi-person-check"></i> Step 2: Choose a Nutritionist</h3>
 
     <!-- Stats Row -->
     <div class="stats-row">
