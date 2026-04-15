@@ -647,13 +647,13 @@
           </div>
 
           <!-- Add Plan Form -->
-          <div class="add-plan-form" id="addPlanForm">
+          <div class="add-plan-form" id="addPlanForm" style="display: none;">
             <input type="text" id="newPlanInput" placeholder="e.g. Keto Plan, Vegan Plan…" maxlength="50">
             <button class="btn-sm-green" onclick="confirmAddPlan()"><i class="bi bi-check-lg"></i> Add</button>
             <button class="btn-sm-cancel" onclick="cancelAddPlan()">Cancel</button>
           </div>
 
-          <button class="btn-green mt-2" id="addPlanBtn" onclick="showAddPlanForm()">
+          <button class="btn-green mt-2" id="addPlanBtn" onclick="showAddPlanForm()" style="display: none;">
             <i class="bi bi-plus-circle"></i> Get New Plan
           </button>
         </div>
@@ -1045,6 +1045,46 @@
         `✅ Appointment booked for ${formattedDate} at ${time}`;
       result.classList.add('show');
       showToast('Consultation booked!');
+
+      // Automatically add a personalized diet plan
+      setTimeout(() => {
+        addAutomaticDietPlan(formattedDate);
+      }, 500);
+    }
+
+    // ══════════════════════════════════════
+    //  ADD AUTOMATIC DIET PLAN
+    // ══════════════════════════════════════
+    function addAutomaticDietPlan(consultationDate) {
+      const planNames = [
+        'Personalized Nutrition Plan',
+        'Custom Meal Plan',
+        'Tailored Diet Program',
+        'Expert Designed Plan'
+      ];
+      
+      const randomPlan = planNames[Math.floor(Math.random() * planNames.length)];
+      const planName = `${randomPlan} (from ${consultationDate})`;
+
+      const li = document.createElement('li');
+      li.className = 'list-group-item plan-new';
+      li.innerHTML = `
+        <div class="plan-left">
+          <span class="plan-name">${escapeHTML(planName)}</span>
+        </div>
+        <div class="plan-actions">
+          <button class="btn-icon" title="Edit" onclick="editPlan(this)"><i class="bi bi-pencil"></i></button>
+          <button class="btn-icon delete" title="Delete" onclick="deletePlan(this)"><i class="bi bi-trash3"></i></button>
+        </div>
+      `;
+
+      document.getElementById('planList').appendChild(li);
+      li.querySelector('.plan-name').addEventListener('click', function () {
+        editPlanBySpan(this);
+      });
+
+      updatePlanCount();
+      showToast('Diet plan created from your consultation!');
     }
 
     // Initial plan count
