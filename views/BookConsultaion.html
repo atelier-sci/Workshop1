@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Consultation - NutriAI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4A7337;
+      --primary-dark: #2d4a23;
+      --primary-light: #e8f1e4;
+      --dark: #1a1a2e;
+      --gray: #6c757d;
+      --light-bg: #f8faf9;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #f5f7fa; color: #333; }
+
+    /* ── Navbar ── */
+    .navbar-custom {
+      background: white;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .nav-btns { display: flex; gap: 8px; }
+    .btn-nav {
+      font-size: 13px;
+      padding: 7px 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: white;
+      color: #333;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-nav:hover { background: #f0f0f0; }
+    .btn-nav.danger { border-color: #dc3545; color: #dc3545; }
+    .btn-nav.danger:hover { background: #fff5f5; }
+
+    /* ── Page Header ── */
+    .page-header {
+      background: linear-gradient(135deg, #4A7337, #2d4a23);
+      color: white;
+      padding: 36px 24px;
+      text-align: center;
+      margin: 20px 24px 0;
+      border-radius: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 250px; height: 250px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+    }
+    .page-header::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -60px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .page-header h2 {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      position: relative;
+      z-index: 1;
+    }
+    .page-header p {
+      font-size: 14px;
+      opacity: 0.9;
+      margin: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Content ── */
+    .content-area { padding: 24px; }
+
+    /* ── Filter Bar ── */
+    .filter-bar {
+      background: white;
+      border-radius: 14px;
+      border: 1px solid #e0e0e0;
+      padding: 18px 22px;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .filter-bar .filter-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #555;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .filter-bar .filter-label i { color: var(--primary); }
+    .filter-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+    .filter-chip {
+      padding: 7px 16px;
+      border-radius: 50px;
+      border: 1px solid #e0e0e0;
+      background: white;
+      font-size: 12px;
+      font-weight: 500;
+      color: #555;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .filter-chip:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+    .filter-chip.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    .search-input {
+      padding: 8px 14px 8px 36px;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+      font-size: 13px;
+      outline: none;
+      width: 220px;
+      transition: all 0.2s;
+      background: #f9f9f9;
+    }
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(40,167,69,0.1);
+      background: white;
+    }
+    .search-wrapper {
+      position: relative;
+    }
+    .search-wrapper i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* ── Stats Row ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid #e0e0e0;
+      padding: 18px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
+    .stat-card .stat-icon {
+      width: 42px; height: 42px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      font-size: 20px;
+    }
+    .stat-card .stat-icon.green { background: var(--primary-light); color: var(--primary); }
+    .stat-card .stat-icon.blue { background: #e3f2fd; color: #1976d2; }
+    .stat-card .stat-icon.orange { background: #fff3e0; color: #ef6c00; }
+    .stat-card .stat-icon.purple { background: #f3e5f5; color: #7b1fa2; }
+    .stat-card h4 { font-size: 22px; font-weight: 800; color: var(--dark); margin-bottom: 2px; }
+    .stat-card p { font-size: 12px; color: var(--gray); margin: 0; }
+
+    /* ── Nutritionist Cards Grid ── */
+    .nutritionists-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 18px;
+    }
+
+    /* ── Nutritionist Card ── */
+    .nutri-card {
+      background: white;
+      border-radius: 16px;
+      border: 1px solid #e0e0e0;
+      padding: 0;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .nutri-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+      border-color: #d4e4cc;
+    }
+
+    /* Card Top Accent */
+    .nutri-card-accent {
+      height: 4px;
+      background: linear-gradient(90deg, #4A7337, #6b9d4f);
+    }
+
+    .nutri-card-body { padding: 22px; }
+
+    /* Doctor Info Row */
+    .nutri-info-row {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .nutri-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .nutri-avatar .online-dot {
+      position: absolute;
+      bottom: 2px; right: 2px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      border: 2px solid white;
+    }
+    .online-dot.online { background: #4A7337; }
+    .online-dot.offline { background: #ccc; }
+    .online-dot.busy { background: #ffc107; }
+
+    .nutri-details { flex: 1; }
+    .nutri-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nutri-name .verified {
+      color: #1976d2;
+      font-size: 14px;
+    }
+    .nutri-title {
+      font-size: 12px;
+      color: var(--gray);
+      margin-bottom: 6px;
+    }
+
+    /* Rating */
+    .nutri-rating {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      background: #fffde7;
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid #fff9c4;
+    }
+    .nutri-rating .stars { color: #ffc107; font-size: 11px; }
+    .nutri-rating .rate-value { font-weight: 700; color: #333; }
+    .nutri-rating .rate-count { color: #999; }
+
+    /* Specialties */
+    .nutri-specialties {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 14px 0;
+    }
+    .specialty-tag {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+    .specialty-tag.green { background: var(--primary-light); color: var(--primary-dark); }
+    .specialty-tag.blue { background: #e3f2fd; color: #1565c0; }
+    .specialty-tag.orange { background: #fff3e0; color: #e65100; }
+    .specialty-tag.purple { background: #f3e5f5; color: #6a1b9a; }
+    .specialty-tag.red { background: #fce4ec; color: #c62828; }
+    .specialty-tag.teal { background: #e0f2f1; color: #00695c; }
+
+    /* Info Grid */
+    .nutri-info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 14px 0;
+      padding: 12px;
+      background: #f9faf9;
+      border-radius: 10px;
+    }
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #555;
+    }
+    .info-item i { color: var(--primary); font-size: 14px; }
+    .info-item strong { color: #333; }
+
+    /* Availability */
+    .nutri-availability {
+      margin: 14px 0;
+    }
+    .avail-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .avail-label i { color: var(--primary); }
+    .avail-slots {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .avail-slot {
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 500;
+      border: 1px solid #e0e0e0;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .avail-slot i { font-size: 12px; }
+    .avail-slot:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
+    .avail-slot.selected {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    .avail-slot.unavailable {
+      opacity: 0.4;
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+
+    /* Day Selector */
+    .day-selector {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .day-btn {
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid #e0e0e0;
+      background: white;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .day-btn:hover { border-color: var(--primary); background: var(--primary-light); }
+    .day-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    .day-btn .day-name { display: block; font-size: 10px; color: inherit; opacity: 0.8; }
+    .day-btn .day-num { display: block; font-size: 14px; font-weight: 700; }
+
+    /* Card Footer */
+    .nutri-card-footer {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .btn-book {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.3s;
+    }
+    .btn-book.primary {
+      background: var(--primary);
+      color: white;
+    }
+    .btn-book.primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(40,167,69,0.3);
+    }
+    .btn-book.secondary {
+      background: #f5f5f5;
+      color: #555;
+      border: 1px solid #e0e0e0;
+    }
+    .btn-book.secondary:hover { background: #eee; color: #333; }
+
+    /* Price Tag */
+    .price-tag {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .price-tag span {
+      font-size: 12px;
+      font-weight: 400;
+      color: #999;
+    }
+
+    /* ── Toast ── */
+    .save-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--primary);
+      color: white;
+      padding: 14px 22px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 25px rgba(40,167,69,0.3);
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 9999;
+    }
+    .save-toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── Booking Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: white;
+      border-radius: 18px;
+      padding: 0;
+      width: 90%;
+      max-width: 480px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      animation: modalIn 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .modal-header-custom {
+      background: linear-gradient(135deg, var(--primary), #1a6b2f);
+      color: white;
+      padding: 22px 24px;
+      position: relative;
+    }
+    .modal-header-custom h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .modal-header-custom p { font-size: 13px; opacity: 0.85; margin: 4px 0 0; }
+    .modal-body-custom { padding: 24px; }
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      color: white;
+      transition: all 0.2s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.3); }
+
+    .booking-summary {
+      background: #f9faf9;
+      border-radius: 10px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+    .booking-summary .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      font-size: 13px;
+      color: #555;
+    }
+    .booking-summary .summary-row strong { color: #222; }
+    .booking-summary .summary-row.total {
+      border-top: 1px solid #e0e0e0;
+      margin-top: 6px;
+      padding-top: 10px;
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 15px;
+    }
+
+    .modal-body-custom .form-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+    .modal-body-custom .form-control {
+      font-size: 13px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+    }
+    .modal-body-custom .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(40,167,69,0.1);
+    }
+
+    .btn-confirm-book {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      background: var(--primary);
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.3s;
+    }
+    .btn-confirm-book:hover {
+      background: var(--primary-dark);
+      box-shadow: 0 4px 15px rgba(40,167,69,0.3);
+    }
+
+    /* ── Success Animation ── */
+    .success-check {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+      font-size: 28px;
+      color: var(--primary);
+      animation: popIn 0.4s ease;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0); }
+      70% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+
+    /* ── Animations ── */
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .nutri-card { animation: fadeInUp 0.4s ease both; }
+    .nutri-card:nth-child(1) { animation-delay: 0.05s; }
+    .nutri-card:nth-child(2) { animation-delay: 0.1s; }
+    .nutri-card:nth-child(3) { animation-delay: 0.15s; }
+    .nutri-card:nth-child(4) { animation-delay: 0.2s; }
+    .nutri-card:nth-child(5) { animation-delay: 0.25s; }
+    .nutri-card:nth-child(6) { animation-delay: 0.3s; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .nutritionists-grid { grid-template-columns: 1fr; }
+      .filter-bar { flex-direction: column; align-items: flex-start; }
+      .search-input { width: 100%; }
+      .day-selector { overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar-custom">
+    <a href="HomePage.html" class="logo">
+      <i class="bi bi-heart-pulse-fill"></i> NutriAI
+    </a>
+    <div class="nav-btns">
+      <a href="dashboard.html" class="btn-nav"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      <a href="HomePage.html" class="btn-nav"><i class="bi bi-house"></i> Home</a>
+      <a href="login.html" class="btn-nav danger"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <h2><i class="bi bi-calendar-check"></i> Book a Consultation</h2>
+    <p>Find the perfect nutritionist and schedule your personalized session</p>
+  </div>
+
+  <!-- Content -->
+  <div class="content-area">
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon green"><i class="bi bi-people"></i></div>
+        <h4>12</h4>
+        <p>Available Nutritionists</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon blue"><i class="bi bi-star"></i></div>
+        <h4>4.8</h4>
+        <p>Average Rating</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon orange"><i class="bi bi-calendar2-check"></i></div>
+        <h4>1.2K+</h4>
+        <p>Consultations Done</p>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon purple"><i class="bi bi-clock-history"></i></div>
+        <h4>24h</h4>
+        <p>Avg Response Time</p>
+      </div>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="filter-label"><i class="bi bi-funnel"></i> Filter:</div>
+      <div class="filter-group">
+        <div class="filter-chip active" onclick="filterBy(this, 'all')">All</div>
+        <div class="filter-chip" onclick="filterBy(this, 'weight_loss')">🔥 Weight Loss</div>
+        <div class="filter-chip" onclick="filterBy(this, 'muscle_gain')">💪 Muscle Gain</div>
+        <div class="filter-chip" onclick="filterBy(this, 'diabetes')">🩸 Diabetes</div>
+        <div class="filter-chip" onclick="filterBy(this, 'sports')">🏃 Sports Nutrition</div>
+        <div class="filter-chip" onclick="filterBy(this, 'vegan')">🥗 Vegan/Vegetarian</div>
+      </div>
+      <div class="search-wrapper">
+        <i class="bi bi-search"></i>
+        <input type="text" class="search-input" placeholder="Search nutritionist..." id="searchInput" oninput="searchNutritionist()">
+      </div>
+    </div>
+
+    <!-- Nutritionists Grid -->
+    <div class="nutritionists-grid" id="nutriGrid">
+
+      <!-- ═══ Card 1 ═══ -->
+      <div class="nutri-card" data-specialties="weight_loss,diabetes" data-name="Dr. Sarah Mitchell">
+        <div class="nutri-card-accent"></div>
+        <div class="nutri-card-body">
+          <div class="nutri-info-row">
+            <div class="nutri-avatar" style="background: linear-gradient(135deg, #28a745, #20c997);">
+              SM
+              <div class="online-dot online"></div>
+            </div>
+            <div class="nutri-details">
+              <div class="nutri-name">Dr. Sarah Mitchell <i class="bi bi-patch-check-fill verified"></i></div>
+              <div class="nutri-title">Clinical Nutritionist · 8 yrs exp</div>
+              <div class="nutri-rating">
+                <span class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </span>
+                <span class="rate-value">4.9</span>
+                <span class="rate-count">(127)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="nutri-specialties">
+            <span class="specialty-tag green">🔥 Weight Loss</span>
+            <span class="specialty-tag blue">🩸 Diabetes Care</span>
+            <span class="specialty-tag purple">💊 Clinical Nutrition</span>
+          </div>
+
+          <div class="nutri-info-grid">
+            <div class="info-item"><i class="bi bi-geo-alt"></i> <strong>New York, USA</strong></div>
+            <div class="info-item"><i class="bi bi-translate"></i> <strong>EN, FR</strong></div>
+            <div class="info-item"><i class="bi bi-camera-video"></i> <strong>Online</strong></div>
+            <div class="info-item"><i class="bi bi-cash-coin"></i> <span class="price-tag">\$45 <span>/session</span></span></div>
+          </div>
+
+          <div class="nutri-availability">
+            <div class="avail-label"><i class="bi bi-clock"></i> Available Slots — Today</div>
+            <div class="day-selector">
+              <div class="day-btn active"><span class="day-name">Today</span><span class="day-num">15</span></div>
+              <div class="day-btn"><span class="day-name">Mon</span><span class="day-num">16</span></div>
+              <div class="day-btn"><span class="day-name">Tue</span><span class="day-num">17</span></div>
+              <div class="day-btn"><span class="day-name">Wed</span><span class="day-num">18</span></div>
+              <div class="day-btn"><span class="day-name">Thu</span><span class="day-num">19</span></div>
+            </div>
+            <div class="avail-slots">
+              <div class="avail-slot" onclick="selectSlot(this)"><i class="bi bi-clock"></i> 09:00</div>
+              <div class="avail-slot" onclick="selectSlot(this)"><i class="bi bi-clock"></i> 10:30</div>
+              <div class="avail-slot unavailable"><i class="bi bi-clock"></i> 12:00</div>
+              <div class="avail-slot" onclick="selectSlot(this)"><i class="bi bi-clock"></i> 14:00</div>
+              <div class="avail-slot" onclick="selectSlot(this)"><i class="bi bi-clock"></i> 16:30</div>
+            </div>
+          </div>
+
+          <div class="nutri-card-footer">
+            <button class="btn-book secondary"><i class="bi bi-person-lines-fill"></i> View Profile</button>
+            <button class="btn-book primary" onclick="openBookingModal('Dr. Sarah Mitchell', '\$45', this)"><i class="bi bi-calendar-plus"></i> Book Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Card 2 ═══ -->
+      <div class="nutri-card" data-specialties="muscle_gain,sports" data-name="Dr. Ahmed Hassan">
+        <div class="nutri-card-accent"></div>
+        <div class="nutri-card-body">
+          <div class="nutri-info-row">
+            <div class="nutri-avatar" style="background: linear-gradient(135deg, #1976d2, #42a5f5);">
+              AH
+              <div class="online-dot online"></div>
+            </div>
+            <div class="nutri-details">
+              <div class="nutri-name">Dr. Ahmed Hassan <i class="bi bi-patch-check-fill verified"></i></div>
+              <div class="nutri-title">Sports Nutritionist · 12 yrs exp</div>
+              <div class="nutri-rating">
+                <span class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </span>
+                <span class="rate-value">4.9</span>
+                <span class="rate-count">(203)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="nutri-specialties">
+            <span class="specialty-tag orange">💪 Muscle Gain</span>
+            <span class="specialty-tag teal">🏃 Sports Nutrition</span>
+            <span class="specialty-tag green">⚡ Performance</span>
+          </div>
+
+          <div class="nutri-info-grid">
+            <div class="info-item"><i class="bi bi-geo-alt"></i> <strong>Dubai, UAE</strong></div>
+            <div class="info-item"><i class="bi bi-translate"></i> <strong>EN, AR</strong></div>
+            <div class="info-item"><i class="bi bi-camera-video"></i> <strong>Online + In-person</strong></div>
+            <div class="info-item"><i class="bi bi-cash-coin"></i> <span class="price-tag">\$55 <span>/session</span></span></div>
+          </div>
+
+          <div class="nutri-availability">
+            <div class="avail-label"><i class="bi bi-clock"></i> Available Slots — Today</div>
+            <div class="day-selector">
+              <div class="day-btn active"><span class="day-name">Today</span><span class="day-num">15</span></div>
+              <div class="day-btn"><span class="day-name">Mon</span><span class="day-num">16</span></div>
+              <div class="day-btn"><span class="day-name">Tue</span><span class="day-num">17</span></div>
+              <div class="day-btn"><span class="day-name">Wed</span><span class="day-num">18</span></div>
+            </div>
+            <div class="avail-slots">
+              <div class="avail-slot" onclick="selectSlot(this)"><i class="bi bi-clock"></i> 08:00</div>
+              <div class="avail-slot unavailable"><i class="bi bi-clock"></i> 10:00</div>
+              <div class="avail-slot" onclick="selectSlot(this)"><i class="bi bi-clock"></i> 13:00</div>
+              <div class="avail-slot" onclick="selectSlot(this)"><i class="bi bi-clock"></i> 15:30</div>
+              <div class="avail-slot" onclick="selectSlot(this)"><i class="bi bi-clock"></i> 17:00</div>
+            </div>
+          </div>
+
+          <div class="nutri-card-footer">
+            <button class="btn-book secondary"><i class="bi bi-person-lines-fill"></i> View Profile</button>
+            <button class="btn-book primary" onclick="openBookingModal('Dr. Ahmed Hassan', '\$55', this)"><i class="bi bi-calendar-plus"></i> Book Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Card 3 ═══ -->
+      <div class="nutri-card" data-specialties="vegan,weight_loss" data-name="Dr. Lina Rosetti">
+        <div class="nutri-card-accent"></div>
+        <div class="nutri-card-body">
+          <div class="nutri-info-row">
+            <div class="nutri-avatar" style="background: linear-gradient(135deg, #ef6c00, #ffa726);">
+              LR
+              <div class="online-dot busy"></div>
+            </div>
+            <div class="nutri-details">
+              <div class="nutri-name">Dr. Lina Rosetti <i class="bi bi-patch-check-fill verified"></i></div>
+              <div class="nutri-title">Plant-Based Specialist · 6 yrs exp</div>
+              <div class="nutri-rating">
+                <span class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i>
+                </span>
+                <span class="rate-value">4.7</span>
+                <span class="rate-count">(89)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="nutri-specialties">
+            <span class="specialty-tag teal">🥗 Vegan Nutrition</span>
+            <span class="specialty-tag green">🔥 Weight Loss</span>
+            <span class="specialty-tag purple">🧘 Holistic Health</span>
+          </div>
+
+          <div class="nutri-info-grid">
+            <div class="info-item"><i class="bi bi-geo-alt"></i> <strong>Rome, Italy</strong></div>
+            <div class="info-item"><i class="bi bi-translate"></i> <strong>EN, IT</strong></div>
+            <div class="info-item"><i class="bi bi-camera-video"></i> <strong>Online</strong></div>
+            <div class="info-item"><i class="bi bi-cash-coin"></i> <span class="price-tag">\$40 <span>/session</span></span></div>
+          </div>
+
+          <div class="nutri-availability">
+            <div class="avail-label"><i class="bi bi-clock"></i> Available Slots — Tomorrow</div>
+            <div class="day-selector">
+              <div class="day-btn" style="opacity:0.4; cursor:not-allowed;"><span class="day-name">Today</span><span class="day-num">15</span></div>
+              <div class="day-btn active"><span class="day-name">Mon</span><span class="day-num">16</span></div>
+              <div class="day-btn"><span class="day-name">Tue</span><span class="day-num">17</span></div>
+              <div class="day-btn"><span class="day-name">Wed</span><span class="day-num">18</span></div>
+            </div>
+            <div class="avail-slots">
+              <div class="avail-slot" onclick="selectSlot(this)"><i class="bi bi-clock"></i> 09:30</div>
+              <div class="avail-slot" onclick="selectSlot(this)"><i class="bi bi-clock"></i> 11:00</div>
+              <div class="avail-slot" onclick="selectSlot(this)"><i class="bi bi-clock"></i> 14:30</div>
+              <div class="avail-slot unavailable"><i class="bi bi-clock"></i> 16:00</div>
+            </div>
+          </div>
+
+          <div class="nutri-card-footer">
+            <button class="btn-book secondary"><i class="bi bi-person-lines-fill"></i> View Profile</button>
+            <button class="btn-book primary" onclick="openBookingModal('Dr. Lina Rosetti', '\$40', this)"><i class="bi bi-calendar-plus"></i> Book Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ Card 4 ═══ -->
+      <div class="nutri-card" data-specialties="diabetes,weight_loss" data-name="Dr. Fatima Al-Zahra">
+        <div class="nutri-card-accent"></div>
+        <div class="nutri-card-body">
+          <div class="nutri-info-row">
+            <div class="nutri-avatar" style="background: linear-gradient(135deg, #7b1fa2, #ba68c8);">
+              FA
+              <div class="online-dot online"></div>
+            </div>
+            <div class="nutri-details">
+              <div class="nutri-name">Dr. Fatima Al-Zahra <i class="bi bi-patch-check-fill verified"></i></div>
+              <div class="nutri-title">Diabetes & Metabolic Specialist · 10 yrs exp</div>
+              <div class="nutri-rating">
+                <span class="stars">
+                  <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                </span>
+                <span class="rate-value">5.0</span>
+                <span class="rate-count">(156)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="nutri-specialties">
+            <span class="specialty-tag red">🩸 Diabetes</span>
+            <span class="specialty-tag green">🔥 Weight Loss</span>
+            <span class="
