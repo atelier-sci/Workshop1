@@ -1,152 +1,1055 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NutriAI Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>NutriAI User Dashboard</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background-color: #f5f7fa; font-family: 'Segoe UI', sans-serif; }
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    /* ── Navbar ── */
+    .navbar-custom {
+      background: white;
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: #4A7337;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .nav-btns { display: flex; gap: 8px; }
+    .btn-nav {
+      font-size: 13px;
+      padding: 7px 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background: white;
+      color: #333;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-nav:hover { background: #f0f0f0; }
+    .btn-nav.danger { border-color: #dc3545; color: #dc3545; }
+    .btn-nav.danger:hover { background: #fff5f5; }
 
-<style>
-body { background:#f5f7fa; font-family:sans-serif; }
+    /* ── Header Banner ── */
+    .header-banner {
+      background: linear-gradient(135deg, #4A7337, #2d4a23);
+      color: white;
+      padding: 28px 24px;
+      text-align: center;
+      margin: 20px 24px 0;
+      border-radius: 12px;
+    }
+    .header-banner h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .header-banner p { font-size: 14px; opacity: 0.85; margin: 0; }
 
-.navbar-custom {
-  background:white;
-  display:flex;
-  justify-content:space-between;
-  padding:14px 24px;
-  border-bottom:1px solid #ddd;
-}
+    /* ── Content Area ── */
+    .content-area { padding: 20px 24px; }
 
-.logo {
-  color:#28a745;
-  font-weight:600;
-  text-decoration:none;
-}
+    /* ── Dashboard Cards ── */
+    .dashboard-card {
+      background: white;
+      border-radius: 14px;
+      border: 1px solid #e0e0e0;
+      padding: 24px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      height: 100%;
+    }
+    .dashboard-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .dashboard-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      color: #222;
+    }
+    .dashboard-card h3 i { color: #4A7337; font-size: 20px; }
+    .dashboard-card > p {
+      font-size: 14px;
+      color: #666;
+    }
 
-.content-area { padding:20px; }
+    /* ── Profile Card ── */
+    .profile-avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4A7337, #2d4a23);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .profile-avatar i { font-size: 30px; color: white; }
 
-.dashboard-card {
-  background:white;
-  padding:20px;
-  border-radius:12px;
-  border:1px solid #ddd;
-  margin-bottom:20px;
-  transition:0.3s;
-}
-.dashboard-card:hover {
-  transform:translateY(-3px);
-  box-shadow:0 8px 20px rgba(0,0,0,0.08);
-}
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin: 14px 0;
+    }
+    .profile-field {
+      background: #f5f7fa;
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+    .profile-field label {
+      font-size: 11px;
+      color: #888;
+      display: block;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: 600;
+    }
+    .profile-field span.editable-value {
+      font-size: 14px;
+      color: #222;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .profile-field span.editable-value:hover { background: #e8f1e4; }
+    .profile-field span.editable-value::after {
+      content: '\F4C9';
+      font-family: 'bootstrap-icons';
+      font-size: 11px;
+      color: #4A7337;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .profile-field span.editable-value:hover::after { opacity: 1; }
+    .profile-field .edit-input {
+      font-size: 14px;
+      font-weight: 500;
+      color: #222;
+      border: 2px solid #4A7337;
+      border-radius: 6px;
+      padding: 4px 8px;
+      outline: none;
+      width: 100%;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(74, 115, 55, 0.15);
+    }
+    .profile-field .edit-input:focus {
+      box-shadow: 0 0 0 4px rgba(74, 115, 55, 0.25);
+    }
 
-.btn-green {
-  background:#28a745;
-  color:white;
-  border:none;
-  padding:10px;
-  border-radius:8px;
-  text-decoration:none;
-  display:inline-block;
-}
-.btn-green:hover { background:#1e7e34; }
+    /* ── Health Stats Row ── */
+    .health-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin: 14px 0;
+    }
+    .stat-box {
+      background: #f5f7fa;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+    }
+    .stat-box .stat-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: #4A7337;
+    }
+    .stat-box .stat-label {
+      font-size: 10px;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+    }
 
-.profile-field {
-  background:#f5f7fa;
-  padding:10px;
-  border-radius:8px;
-  margin-bottom:10px;
-}
+    /* ── Buttons ── */
+    .btn-green {
+      background: #4A7337;
+      color: white;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-green:hover { background: #2d4a23; color: white; }
 
-.list-group-item {
-  font-size:14px;
-}
-</style>
+    /* ── Diet Plans List ── */
+    .list-group { border-radius: 8px; overflow: hidden; margin: 14px 0; }
+    .list-group-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border: 1px solid #e0e0e0;
+      background: white;
+      transition: background 0.2s;
+    }
+    .list-group-item:hover { background: #f9fdf9; }
+    .list-group-item .plan-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .list-group-item .plan-left::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4A7337;
+      flex-shrink: 0;
+    }
+    .plan-name {
+      cursor: pointer;
+      padding: 2px 4px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .plan-name:hover { background: #e8f1e4; }
+    .plan-actions {
+      display: flex;
+      gap: 4px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .list-group-item:hover .plan-actions { opacity: 1; }
+    .btn-icon {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 4px 6px;
+      border-radius: 6px;
+      transition: background 0.2s, color 0.2s;
+      color: #888;
+    }
+    .btn-icon:hover { background: #f0f0f0; color: #333; }
+    .btn-icon.delete:hover { background: #fff0f0; color: #dc3545; }
+
+    .plan-count {
+      background: #e8f1e4;
+      color: #4A7337;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: auto;
+    }
+
+    /* ── Add Plan Form ── */
+    .add-plan-form {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      animation: slideDown 0.25s ease;
+    }
+    .add-plan-form.active { display: flex; }
+    .add-plan-form input {
+      flex: 1;
+      font-size: 13px;
+      padding: 8px 12px;
+      border: 2px solid #4A7337;
+      border-radius: 8px;
+      outline: none;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(74, 115, 55, 0.12);
+    }
+    .add-plan-form input:focus {
+      box-shadow: 0 0 0 4px rgba(74, 115, 55, 0.22);
+    }
+    .btn-sm-green {
+      background: #4A7337;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-sm-green:hover { background: #2d4a23; }
+    .btn-sm-cancel {
+      background: #f0f0f0;
+      color: #666;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .btn-sm-cancel:hover { background: #e0e0e0; }
+
+    .plan-edit-input {
+      font-size: 14px;
+      border: 2px solid #4A7337;
+      border-radius: 6px;
+      padding: 3px 8px;
+      outline: none;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(74, 115, 55, 0.15);
+      width: 200px;
+    }
+
+    .empty-plans {
+      text-align: center;
+      padding: 20px;
+      color: #aaa;
+      font-size: 13px;
+    }
+    .empty-plans i { font-size: 28px; display: block; margin-bottom: 6px; }
+
+    /* ── Action Buttons Row ── */
+    .action-buttons-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 20px;
+    }
+    .action-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafb 100%);
+      border-radius: 14px;
+      border: 1px solid rgba(74, 115, 55, 0.1);
+      padding: 28px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+    }
+    .action-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(74, 115, 55, 0.15);
+      border-color: #4A7337;
+    }
+    .action-card .action-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+      font-size: 26px;
+      transition: transform 0.3s ease;
+    }
+    .action-card:hover .action-icon { transform: scale(1.1); }
+
+    .action-card.ai-card .action-icon {
+      background: linear-gradient(135deg, #4A7337, #6b9d4f);
+      color: white;
+    }
+    .action-card.consult-card .action-icon {
+      background: linear-gradient(135deg, #4A7337, #6b9d4f);
+      color: white;
+    }
+    .action-card h4 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #222;
+    }
+    .action-card p {
+      font-size: 13px;
+      color: #888;
+      margin: 0;
+    }
+    .action-card .action-arrow {
+      margin-top: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #4A7337;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: all 0.3s ease;
+    }
+    .action-card:hover .action-arrow {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .action-card.consult-card .action-arrow { color: #1976d2; }
+
+    /* ── Toast ── */
+    .save-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #4A7337;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 6px 20px rgba(74, 115, 55, 0.3);
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 9999;
+    }
+    .save-toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: white;
+      border-radius: 16px;
+      padding: 28px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      animation: modalIn 0.3s ease;
+      position: relative;
+    }
+    .modal-box h3 {
+      font-size: 18px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      color: #222;
+    }
+    .modal-box h3 i { color: #4A7337; }
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: #f0f0f0;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      color: #666;
+      transition: all 0.2s;
+    }
+    .modal-close:hover { background: #e0e0e0; color: #333; }
+
+    .modal-box .form-control {
+      font-size: 13px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+    }
+    .modal-box .form-control:focus {
+      border-color: #4A7337;
+      box-shadow: 0 0 0 3px rgba(74, 115, 55, 0.12);
+    }
+    .modal-box .form-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #555;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .modal-result {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      display: none;
+    }
+    .modal-result.show { display: block; }
+    .modal-result.info {
+      background: #e8f5e9;
+      color: #1e7e34;
+      border: 1px solid #c8e6c9;
+    }
+    .modal-result.success {
+      background: #e3f2fd;
+      color: #1565c0;
+      border: 1px solid #bbdefb;
+    }
+
+    .date-time-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .plan-new { animation: fadeIn 0.3s ease; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .action-buttons-row { grid-template-columns: 1fr; }
+      .health-stats { grid-template-columns: 1fr 1fr 1fr; }
+    }
+  </style>
 </head>
-
 <body>
 
-<!-- Navbar -->
-<nav class="navbar-custom">
-  <a href="#" class="logo">
-    <i class="bi bi-heart-pulse-fill"></i> NutriAI
-  </a>
-  <div>
-    <a href="#" class="btn-green">Home</a>
-  </div>
-</nav>
-
-<div class="content-area">
-
-  <!-- ROW 1 -->
-  <div class="row">
-
-    <!-- PROFILE LEFT -->
-    <div class="col-md-6">
-      <div class="dashboard-card">
-        <h4><i class="bi bi-person"></i> Profile</h4>
-
-        <div class="profile-field">
-          <strong>Name:</strong> User
-        </div>
-
-        <div class="profile-field">
-          <strong>Email:</strong> user@email.com
-        </div>
-
-        <div class="profile-field">
-          <strong>Health:</strong> Good
-        </div>
-
-        <button class="btn-green">Edit Profile</button>
-      </div>
+  <!-- Navbar -->
+  <nav class="navbar-custom">
+    <a href="HomePage.html" class="logo">
+      <i class="bi bi-heart-pulse-fill"></i> NutriAI
+    </a>
+    <div class="nav-btns">
+      <a href="HomePage.html" class="btn-nav"><i class="bi bi-house"></i> Home</a>
+      <a href="login.html" class="btn-nav danger"><i class="bi bi-box-arrow-right"></i> Logout</a>
     </div>
+  </nav>
 
-    <!-- DIET RIGHT -->
-    <div class="col-md-6">
-      <div class="dashboard-card">
-        <h4><i class="bi bi-journal-text"></i> Diet Plans</h4>
-
-        <ul class="list-group">
-          <li class="list-group-item">Weight Loss Plan</li>
-          <li class="list-group-item">Muscle Gain Plan</li>
-          <li class="list-group-item">Balanced Diet Plan</li>
-        </ul>
-
-        <button class="btn-green mt-3">Add Plan</button>
-      </div>
-    </div>
-
+  <!-- Header Banner -->
+  <div class="header-banner">
+    <h2><i class="bi bi-person-circle"></i> Welcome <span id="banner-name">User</span></h2>
+    <p>Your personal nutrition assistant</p>
   </div>
 
-  <!-- ROW 2 (BUTTONS) -->
-  <div class="row">
+  <!-- Main Content -->
+  <div class="content-area">
+    <div class="row">
 
-    <!-- FOOD AI -->
-    <div class="col-md-6">
-      <div class="dashboard-card text-center">
-        <h4><i class="bi bi-camera"></i> Food Recognition</h4>
-        <p>Analyze your meals using AI</p>
-        <button class="btn-green w-100">
-          <i class="bi bi-cpu"></i> Go to AI
-        </button>
+      <!-- LEFT: Profile Card -->
+      <div class="col-md-5 mb-3">
+        <div id="profile" class="dashboard-card">
+          <div class="profile-avatar">
+            <i class="bi bi-person-fill"></i>
+          </div>
+          <h3 style="justify-content: center;"><i class="bi bi-person"></i> My Profile</h3>
+          <p style="font-size:12px; color:#999; text-align:center; margin-bottom: 4px;">
+            <i class="bi bi-info-circle"></i> Click any field to edit
+          </p>
+
+          <div class="profile-grid">
+            <div class="profile-field">
+              <label><i class="bi bi-person-badge"></i> Name</label>
+              <span class="editable-value" data-field="name">—</span>
+            </div>
+            <div class="profile-field">
+              <label><i class="bi bi-envelope"></i> Email</label>
+              <span class="editable-value" data-field="email">—</span>
+            </div>
+            <div class="profile-field">
+              <label><i class="bi bi-clipboard2-pulse"></i> Health Status</label>
+              <span class="editable-value" data-field="health">—</span>
+            </div>
+            <div class="profile-field">
+              <label><i class="bi bi-bullseye"></i> Goal</label>
+              <span class="editable-value" data-field="goal">—</span>
+            </div>
+          </div>
+
+          <!-- Health Stats -->
+          <div class="health-stats">
+            <div class="stat-box">
+              <div class="stat-value" id="stat-weight">—</div>
+              <div class="stat-label">Weight (kg)</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="stat-height">—</div>
+              <div class="stat-label">Height (cm)</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="stat-age">—</div>
+              <div class="stat-label">Age</div>
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-top: 10px;">
+            <button class="btn-green" id="editAllBtn"><i class="bi bi-pencil"></i> Edit Profile</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Diet Plans Card -->
+      <div class="col-md-7 mb-3">
+        <div id="diet" class="dashboard-card">
+          <h3>
+            <i class="bi bi-journal-text"></i> Diet Plans
+            <span class="plan-count" id="planCount">0 plans</span>
+          </h3>
+          <p>Your personalized meal plans <span style="font-size:12px; color:#999;">— hover to edit or delete</span></p>
+
+          <ul class="list-group" id="planList">
+            <!-- Plans loaded dynamically -->
+          </ul>
+
+          <!-- Empty State -->
+          <div class="empty-plans" id="emptyPlans">
+            <i class="bi bi-journal-x"></i> No plans yet. Add your first plan!
+          </div>
+
+          <!-- Add Plan Form -->
+          <div class="add-plan-form" id="addPlanForm">
+            <input type="text" id="newPlanInput" placeholder="e.g. Keto Plan, Vegan Plan…" maxlength="50">
+            <button class="btn-sm-green" onclick="confirmAddPlan()"><i class="bi bi-check-lg"></i> Add</button>
+            <button class="btn-sm-cancel" onclick="cancelAddPlan()">Cancel</button>
+          </div>
+
+          <button class="btn-green mt-2" id="addPlanBtn" onclick="showAddPlanForm()">
+            <i class="bi bi-plus-circle"></i> Get New Plan
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- CONSULTATION -->
-    <div class="col-md-6">
-      <div class="dashboard-card text-center">
-        <h4><i class="bi bi-calendar-check"></i> Book Consultation</h4>
-        <p>Schedule with nutritionist</p>
-        <button class="btn-green w-100">
-          <i class="bi bi-check-circle"></i> Book Now
-        </button>
-      </div>
-    </div>
+    <!-- ACTION BUTTONS ROW -->
+    <div class="action-buttons-row">
 
+      <!-- Food Recognition Button -->
+      <div class="action-card ai-card" onclick="openAIModal()">
+        <div class="action-icon">
+          <i class="bi bi-camera"></i>
+        </div>
+        <h4>Food Recognition (AI)</h4>
+        <p>Upload a meal photo to detect calories & nutrients</p>
+        <div class="action-arrow">
+          Get Started <i class="bi bi-arrow-right"></i>
+        </div>
+      </div>
+
+      <!-- Book Consultation Button -->
+      <div class="action-card consult-card" onclick="openConsultModal()">
+        <div class="action-icon">
+          <i class="bi bi-calendar-check"></i>
+        </div>
+        <h4>Book Consultation</h4>
+        <p>Schedule a session with a certified nutritionist</p>
+        <div class="action-arrow">
+          Book Now <i class="bi bi-arrow-right"></i>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-</div>
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- MODAL: Food Recognition -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="modal-overlay" id="aiModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeAIModal()"><i class="bi bi-x"></i></button>
+      <h3><i class="bi bi-camera"></i> Food Recognition (AI)</h3>
+      <p style="font-size:13px; color:#888; margin-bottom:16px;">Upload your meal image to detect calories and nutrients.</p>
+
+      <label class="form-label">Upload Image</label>
+      <input type="file" class="form-control" accept="image/*" id="foodImageInput">
+
+      <div style="margin-top:16px;">
+        <button class="btn-green" onclick="analyzeFood()"><i class="bi bi-cpu"></i> Analyze Food</button>
+      </div>
+
+      <div class="modal-result info" id="aiResult">
+        <i class="bi bi-info-circle"></i> <span id="aiResultText">Calories will appear here...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- MODAL: Book Consultation -->
+  <!-- ═══════════════════════════════════════════ -->
+  <div class="modal-overlay" id="consultModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeConsultModal()"><i class="bi bi-x"></i></button>
+      <h3><i class="bi bi-calendar-check"></i> Book Consultation</h3>
+      <p style="font-size:13px; color:#888; margin-bottom:16px;">Schedule a session with a nutritionist.</p>
+
+      <label class="form-label">Select Date</label>
+      <input type="date" class="form-control" id="consultDate">
+
+      <label class="form-label">Select Time</label>
+      <input type="time" class="form-control" id="consultTime">
+
+      <div style="margin-top:16px;">
+        <button class="btn-green" onclick="bookConsultation()"><i class="bi bi-check-circle"></i> Book Now</button>
+      </div>
+
+      <div class="modal-result success" id="consultResult">
+        <i class="bi bi-check-circle-fill"></i> <span id="consultResultText">Your appointment is confirmed!</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Save Toast -->
+  <div class="save-toast" id="saveToast">
+    <i class="bi bi-check-circle-fill"></i> <span id="toastMsg">Saved!</span>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // ══════════════════════════════════════
+    //  TOAST
+    // ══════════════════════════════════════
+    function showToast(msg) {
+      const toast = document.getElementById('saveToast');
+      document.getElementById('toastMsg').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    // ══════════════════════════════════════
+    //  LOAD USER DATA FROM LOCAL STORAGE
+    // ══════════════════════════════════════
+    function loadUserData() {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user) {
+        document.querySelector('[data-field="name"]').textContent = user.fullName || '—';
+        document.querySelector('[data-field="email"]').textContent = user.email || '—';
+        document.querySelector('[data-field="health"]').textContent = user.healthStatus || '—';
+        document.querySelector('[data-field="goal"]').textContent = formatGoal(user.goal) || '—';
+        document.getElementById('stat-weight').textContent = user.weight || '—';
+        document.getElementById('stat-height').textContent = user.height || '—';
+        document.getElementById('stat-age').textContent = user.age || '—';
+        updateBannerName(user.fullName);
+      }
+    }
+
+    function formatGoal(goal) {
+      if (!goal) return '—';
+      const goals = {
+        'lose_weight': '🔥 Lose Weight',
+        'gain_weight': '💪 Gain Weight',
+        'maintain_weight': '⚖️ Maintain Weight',
+        'build_muscle': '🏋️ Build Muscle',
+        'improve_fitness': '🏃 Improve Fitness',
+        'eat_healthier': '🥗 Eat Healthier'
+      };
+      return goals[goal] || goal;
+    }
+
+    // Load data on page load
+    loadUserData();
+
+    // ══════════════════════════════════════
+    //  PROFILE INLINE EDITING
+    // ══════════════════════════════════════
+    const fieldLabels = { name: 'Name', email: 'Email', health: 'Health Status', goal: 'Goal' };
+
+    function updateBannerName(value) {
+      document.getElementById('banner-name').textContent = (!value || value === '—') ? 'User' : value;
+    }
+
+    function makeEditable(spanEl) {
+      if (spanEl.querySelector('input')) return;
+
+      const currentValue = spanEl.textContent.trim() === '—' ? '' : spanEl.textContent.trim();
+      const field = spanEl.dataset.field;
+      const inputType = field === 'email' ? 'email' : 'text';
+
+      const input = document.createElement('input');
+      input.type = inputType;
+      input.className = 'edit-input';
+      input.value = currentValue;
+      input.placeholder = `Enter your ${fieldLabels[field].toLowerCase()}…`;
+
+      spanEl.textContent = '';
+      spanEl.appendChild(input);
+      input.focus();
+      input.select();
+
+      function saveValue() {
+        const newValue = input.value.trim();
+        spanEl.textContent = newValue || '—';
+        if (field === 'name') updateBannerName(newValue);
+        if (newValue && newValue !== currentValue) showToast(`${fieldLabels[field]} updated!`);
+      }
+
+      input.addEventListener('blur', saveValue);
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+        if (e.key === 'Escape') { spanEl.textContent = currentValue || '—'; }
+      });
+    }
+
+    document.querySelectorAll('.editable-value').forEach(span => {
+      span.addEventListener('click', function () { makeEditable(this); });
+    });
+
+    document.getElementById('editAllBtn').addEventListener('click', function () {
+      makeEditable(document.querySelector('.editable-value[data-field="name"]'));
+    });
+
+    // ══════════════════════════════════════
+    //  PLAN COUNTER
+    // ══════════════════════════════════════
+    function updatePlanCount() {
+      const count = document.querySelectorAll('#planList .list-group-item').length;
+      const badge = document.getElementById('planCount');
+      badge.textContent = count === 1 ? '1 plan' : `${count} plans`;
+
+      const emptyState = document.getElementById('emptyPlans');
+      if (count === 0) {
+        emptyState.style.display = 'block';
+      } else {
+        emptyState.style.display = 'none';
+      }
+    }
+
+    // ══════════════════════════════════════
+    //  ADD PLAN
+    // ══════════════════════════════════════
+    function showAddPlanForm() {
+      document.getElementById('addPlanForm').classList.add('active');
+      document.getElementById('addPlanBtn').style.display = 'none';
+      const input = document.getElementById('newPlanInput');
+      input.value = '';
+      input.focus();
+    }
+
+    function cancelAddPlan() {
+      document.getElementById('addPlanForm').classList.remove('active');
+      document.getElementById('addPlanBtn').style.display = 'inline-flex';
+    }
+
+    function confirmAddPlan() {
+      const input = document.getElementById('newPlanInput');
+      const name = input.value.trim();
+      if (!name) {
+        input.style.borderColor = '#dc3545';
+        input.style.boxShadow = '0 0 0 3px rgba(220,53,69,0.15)';
+        input.focus();
+        setTimeout(() => {
+          input.style.borderColor = '#28a745';
+          input.style.boxShadow = '0 0 0 3px rgba(40,167,69,0.12)';
+        }, 1000);
+        return;
+      }
+
+      const li = document.createElement('li');
+      li.className = 'list-group-item plan-new';
+      li.innerHTML = `
+        <div class="plan-left">
+          <span class="plan-name">${escapeHTML(name)}</span>
+        </div>
+        <div class="plan-actions">
+          <button class="btn-icon" title="Edit" onclick="editPlan(this)"><i class="bi bi-pencil"></i></button>
+          <button class="btn-icon delete" title="Delete" onclick="deletePlan(this)"><i class="bi bi-trash3"></i></button>
+        </div>
+      `;
+
+      document.getElementById('planList').appendChild(li);
+      li.querySelector('.plan-name').addEventListener('click', function () {
+        editPlanBySpan(this);
+      });
+
+      cancelAddPlan();
+      updatePlanCount();
+      showToast(`"${name}" plan added!`);
+    }
+
+    document.getElementById('newPlanInput').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); confirmAddPlan(); }
+      if (e.key === 'Escape') { cancelAddPlan(); }
+    });
+
+    // ══════════════════════════════════════
+    //  DELETE PLAN
+    // ══════════════════════════════════════
+    function deletePlan(btn) {
+      const li = btn.closest('.list-group-item');
+      const name = li.querySelector('.plan-name').textContent;
+      li.style.transition = 'all 0.3s ease';
+      li.style.opacity = '0';
+      li.style.transform = 'translateX(30px)';
+      setTimeout(() => {
+        li.remove();
+        updatePlanCount();
+        showToast(`"${name}" removed`);
+      }, 300);
+    }
+
+    // ══════════════════════════════════════
+    //  EDIT PLAN
+    // ══════════════════════════════════════
+    function editPlan(btn) {
+      const li = btn.closest('.list-group-item');
+      const span = li.querySelector('.plan-name');
+      editPlanBySpan(span);
+    }
+
+    function editPlanBySpan(span) {
+      if (span.querySelector('input')) return;
+      const currentName = span.textContent.trim();
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'plan-edit-input';
+      input.value = currentName;
+      input.maxLength = 50;
+      span.textContent = '';
+      span.appendChild(input);
+      input.focus();
+      input.select();
+
+      function save() {
+        const newName = input.value.trim();
+        span.textContent = newName || currentName;
+        if (newName && newName !== currentName) showToast(`Renamed to "${newName}"`);
+      }
+      input.addEventListener('blur', save);
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+        if (e.key === 'Escape') { span.textContent = currentName; }
+      });
+    }
+
+    document.querySelectorAll('.plan-name').forEach(span => {
+      span.addEventListener('click', function () { editPlanBySpan(this); });
+    });
+
+    function escapeHTML(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    // ══════════════════════════════════════
+    //  MODALS
+    // ══════════════════════════════════════
+    function openAIModal() {
+      document.getElementById('aiModal').classList.add('active');
+      document.getElementById('aiResult').classList.remove('show');
+    }
+    function closeAIModal() {
+      document.getElementById('aiModal').classList.remove('active');
+    }
+
+    function openConsultModal() {
+      document.getElementById('consultModal').classList.add('active');
+      document.getElementById('consultResult').classList.remove('show');
+    }
+    function closeConsultModal() {
+      document.getElementById('consultModal').classList.remove('active');
+    }
+
+    // Close modals when clicking overlay
+    document.querySelectorAll('.modal-overlay').forEach(modal => {
+      modal.addEventListener('click', function (e) {
+        if (e.target === this) {
+          this.classList.remove('active');
+        }
+      });
+    });
+
+    // Close modals with Escape key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+      }
+    });
+
+    // ══════════════════════════════════════
+    //  AI FOOD ANALYSIS
+    // ══════════════════════════════════════
+    function analyzeFood() {
+      const fileInput = document.getElementById('foodImageInput');
+      if (!fileInput.files.length) {
+        showToast('Please upload an image first!');
+        return;
+      }
+      const result = document.getElementById('aiResult');
+      document.getElementById('aiResultText').textContent = '⏳ Analyzing your meal...';
+      result.classList.add('show');
+
+      // Simulate AI analysis
+      setTimeout(() => {
+        document.getElementById('aiResultText').textContent = '🍕 Detected: Pizza — ~285 calories per slice | Carbs: 36g | Protein: 12g | Fat: 10g';
+        showToast('Food analyzed successfully!');
+      }, 2000);
+    }
+
+    // ══════════════════════════════════════
+    //  BOOK CONSULTATION
+    // ══════════════════════════════════════
+    function bookConsultation() {
+      const date = document.getElementById('consultDate').value;
+      const time = document.getElementById('consultTime').value;
+
+      if (!date || !time) {
+        showToast('Please select date and time!');
+        return;
+      }
+
+      const result = document.getElementById('consultResult');
+      const formattedDate = new Date(date).toLocaleDateString('en-US', {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+
+      document.getElementById('consultResultText').textContent =
+        `✅ Appointment booked for ${formattedDate} at ${time}`;
+      result.classList.add('show');
+      showToast('Consultation booked!');
+    }
+
+    // Initial plan count
+    updatePlanCount();
+  </script>
 
 </body>
 </html>
