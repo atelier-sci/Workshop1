@@ -3,433 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Consultation - NutriAI</title>
-
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <!-- External Stylesheet -->
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../styles/style.css">
-
+    <title>Book Consultation - NutriAI</title>
     <style>
         :root {
             --primary: #4A7337;
             --primary-dark: #2d4a23;
             --primary-light: #6b9d4f;
-            --accent: #ff6b6b;
-            --text-dark: #1a1a1a;
-            --text-light: #666;
-            --bg-light: #f8fafb;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: #f5f7fa;
-            margin: 0;
-            padding: 0;
-            color: var(--text-dark);
-        }
-
-        /* ── Navbar ── */
-        .navbar-custom {
-            background: white;
-            border-bottom: 1px solid #e0e0e0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 24px;
+        .navbar-enhanced {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 15px 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
             position: sticky;
             top: 0;
             z-index: 100;
+            border-bottom: 1px solid rgba(74, 115, 55, 0.1);
         }
-        .logo {
-            font-size: 18px;
-            font-weight: 700;
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-modern {
+            font-size: 24px;
+            font-weight: 800;
             color: var(--primary);
+            text-decoration: none;
             display: flex;
             align-items: center;
             gap: 8px;
-            text-decoration: none;
         }
-        .nav-btns { display: flex; gap: 8px; }
-        .btn-nav {
-            font-size: 13px;
-            padding: 7px 16px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            background: white;
-            color: #333;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-        .btn-nav:hover { background: #f0f0f0; }
-        .btn-nav.danger { border-color: #dc3545; color: #dc3545; }
-        .btn-nav.danger:hover { background: #fff5f5; }
 
-        .page-container {
-            max-width: 1400px;
+        .consultation-section {
+            padding: 80px 5%;
+            background: linear-gradient(135deg, rgba(74, 115, 55, 0.05) 0%, rgba(255, 107, 107, 0.05) 100%);
+        }
+
+        .container-custom {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 60px 5% 80px 5%;
         }
 
-        .page-header {
+        .section-header {
             text-align: center;
-            margin-bottom: 80px;
+            margin-bottom: 60px;
         }
 
-        .page-header h1 {
-            font-size: 48px;
+        .section-header h2 {
+            font-size: 44px;
             font-weight: 800;
             margin-bottom: 15px;
-            color: var(--primary);
             line-height: 1.2;
+            color: #1a1a1a;
         }
 
-        .page-header p {
+        .section-header p {
             font-size: 18px;
-            color: var(--text-light);
+            color: #666;
             max-width: 600px;
             margin: 0 auto;
         }
 
-        .cards-grid {
+        .options-grid {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 40px;
-            margin-top: 60px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .option-card {
-            background: white;
-            border-radius: 20px;
-            padding: 50px 40px;
-            border: 2px solid rgba(74, 115, 55, 0.1);
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafb 100%);
+            padding: 50px;
+            border: 1px solid rgba(74, 115, 55, 0.1);
+            border-radius: 16px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            text-align: center;
         }
 
         .option-card:hover {
-            transform: translateY(-12px);
-            border-color: var(--primary);
+            transform: translateY(-8px);
             box-shadow: 0 20px 50px rgba(74, 115, 55, 0.15);
+            border-color: var(--primary);
         }
 
         .option-icon {
-            font-size: 60px;
-            color: var(--primary);
-            margin-bottom: 20px;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 100px;
-            height: 100px;
-            background: linear-gradient(135deg, rgba(74, 115, 55, 0.1), rgba(107, 157, 79, 0.1));
-            border-radius: 20px;
+            font-size: 40px;
+            margin-bottom: 25px;
         }
 
         .option-card h3 {
             font-size: 24px;
             font-weight: 700;
-            margin: 20px 0;
-            color: var(--text-dark);
+            margin-bottom: 12px;
+            color: #1a1a1a;
         }
 
         .option-card p {
             font-size: 15px;
-            color: var(--text-light);
+            color: #666;
             margin-bottom: 30px;
             line-height: 1.6;
         }
 
-        /* Diet Plans List */
-        .diet-plans-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 25px;
-            max-height: 400px;
-            overflow-y: auto;
-            padding-right: 8px;
-        }
-
-        .diet-plan-item {
-            background: white;
-            border: 2px solid rgba(74, 115, 55, 0.15);
-            border-radius: 12px;
-            padding: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .diet-plan-item:hover {
-            border-color: var(--primary);
-            background: rgba(74, 115, 55, 0.05);
-            transform: translateX(4px);
-        }
-
-        .diet-plan-item.selected {
-            border-color: var(--primary);
-            background: rgba(74, 115, 55, 0.1);
-            box-shadow: 0 4px 12px rgba(74, 115, 55, 0.15);
-        }
-
-        .diet-plan-item .plan-icon {
-            font-size: 28px;
-            min-width: 40px;
-            text-align: center;
-        }
-
-        .diet-plan-item .plan-info {
-            flex: 1;
-        }
-
-        .diet-plan-item .plan-name {
-            font-weight: 600;
-            color: var(--text-dark);
-            margin-bottom: 4px;
-            font-size: 15px;
-        }
-
-        .diet-plan-item .plan-description {
-            font-size: 12px;
-            color: var(--text-light);
-        }
-
-        .diet-plan-item .plan-checkbox {
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(74, 115, 55, 0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .diet-plan-item.selected .plan-checkbox {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 15px;
+        select {
             width: 100%;
-            margin-top: auto;
-        }
-
-        button {
-            flex: 1;
-            padding: 14px 28px;
-            border: none;
-            border-radius: 12px;
-            background: var(--primary);
-            color: white;
+            padding: 12px 16px;
+            margin: 20px 0 30px 0;
+            border-radius: 10px;
+            border: 1px solid rgba(74, 115, 55, 0.2);
             font-size: 15px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
             font-family: 'Montserrat', sans-serif;
+            background: white;
         }
 
-        button:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(74, 115, 55, 0.3);
-        }
-
-        .btn-secondary {
+        .btn-primary-large {
+            padding: 14px 40px;
             background: var(--primary);
-            width: 100%;
-            margin-top: 10px;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            display: inline-block;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-decoration: none;
         }
 
-        .btn-secondary:hover {
+        .btn-primary-large:hover {
             background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(74, 115, 55, 0.3);
-        }
-
-        .center {
-            text-align: center;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(74, 115, 55, 0.3);
         }
     </style>
 </head>
+
 <body>
 
-<!-- Navbar -->
-<nav class="navbar-custom">
-    <a href="HomePage.html" class="logo">
-        <i class="bi bi-heart-pulse-fill"></i> NutriAI
-    </a>
-    <div class="nav-btns">
-        <a href="UserDashboard.html" class="btn-nav"><i class="bi bi-speedometer2"></i> Dashboard</a>
-        <a href="HomePage.html" class="btn-nav"><i class="bi bi-house"></i> Home</a>
-        <a href="login.html" class="btn-nav danger"><i class="bi bi-box-arrow-right"></i> Logout</a>
-    </div>
-</nav>
+    <!-- Navigation -->
+    <nav class="navbar-enhanced">
+        <div class="nav-container">
+            <a href="HomePage.html" class="logo-modern">
+                <i class="bi bi-heart-pulse-fill"></i> NutriAI
+            </a>
+        </div>
+    </nav>
 
-<div class="page-container">
-    <!-- Page Header -->
-    <div class="page-header">
-        <h1><i class="bi bi-calendar-heart"></i> Book Your Consultation</h1>
-        <p>Choose your perfect path to personalized nutrition guidance and professional support</p>
-    </div>
-
-    <!-- Options Grid -->
-    <div class="cards-grid">
-        <!-- Option 1 -->
-        <div class="option-card">
-            <div class="option-icon">
-                <i class="bi bi-bookmark-check-fill"></i>
-            </div>
-            <h3>Choose a Diet Plan</h3>
-            <p>Select from our carefully designed nutrition plans tailored for different health goals</p>
-
-            <div id="selectedPlanBanner" style="display: none; background: rgba(74, 115, 55, 0.1); border: 2px solid var(--primary); border-radius: 12px; padding: 15px; margin-bottom: 20px; text-align: left;">
-                <div style="font-size: 12px; color: var(--text-light); text-transform: uppercase; font-weight: 600; margin-bottom: 5px;">Your Selection from Sign Up:</div>
-                <div style="font-size: 15px; font-weight: 700; color: var(--primary);"><span id="signupPlanName"></span></div>
+    <!-- Consultation Options Section -->
+    <section class="consultation-section">
+        <div class="container-custom">
+            <div class="section-header">
+                <h2>Choose Your Path</h2>
+                <p>Select how you want to start your nutrition journey with us</p>
             </div>
 
-            <div class="diet-plans-list" id="dietPlansList">
-                <div class="diet-plan-item" onclick="selectDietPlan(this, 'weight-loss')">
-                    <div class="plan-icon">🔥</div>
-                    <div class="plan-info">
-                        <div class="plan-name">Weight Loss Plan</div>
-                        <div class="plan-description">Calorie-controlled for healthy weight management</div>
+            <div class="options-grid">
+                <!-- OPTION 1 -->
+                <div class="option-card">
+                    <div class="option-icon">
+                        <i class="bi bi-list-check"></i>
                     </div>
-                    <div class="plan-checkbox"><i class="bi bi-check-lg"></i></div>
+                    <h3>Use Existing Diet Plan</h3>
+                    <p>Select from pre-designed plans tailored to your health goals and lifestyle</p>
+
+                    <select>
+                        <option disabled selected>Select a plan</option>
+                        <option>Weight Loss Plan</option>
+                        <option>Muscle Gain Plan</option>
+                        <option>Keto Plan</option>
+                    </select>
+
+                    <button class="btn-primary-large" onclick="confirmPlan()">Confirm Plan</button>
                 </div>
 
-                <div class="diet-plan-item" onclick="selectDietPlan(this, 'muscle-gain')">
-                    <div class="plan-icon">💪</div>
-                    <div class="plan-info">
-                        <div class="plan-name">Muscle Gain Plan</div>
-                        <div class="plan-description">High-protein for strength and muscle building</div>
+                <!-- OPTION 2 -->
+                <div class="option-card">
+                    <div class="option-icon">
+                        <i class="bi bi-person-heart"></i>
                     </div>
-                    <div class="plan-checkbox"><i class="bi bi-check-lg"></i></div>
-                </div>
+                    <h3>Consult a Nutritionist</h3>
+                    <p>Get personalized guidance from certified nutritionists matching your specific needs</p>
 
-                <div class="diet-plan-item" onclick="selectDietPlan(this, 'balanced')">
-                    <div class="plan-icon">⚖️</div>
-                    <div class="plan-info">
-                        <div class="plan-name">Balanced Diet Plan</div>
-                        <div class="plan-description">Nutritionally balanced for overall wellness</div>
-                    </div>
-                    <div class="plan-checkbox"><i class="bi bi-check-lg"></i></div>
+                    <button class="btn-primary-large" onclick="goToNutritionist()">Choose Nutritionist</button>
                 </div>
-
-                <div class="diet-plan-item" onclick="selectDietPlan(this, 'diabetes')">
-                    <div class="plan-icon">🩸</div>
-                    <div class="plan-info">
-                        <div class="plan-name">Diabetes Management Plan</div>
-                        <div class="plan-description">Blood sugar control and metabolic health</div>
-                    </div>
-                    <div class="plan-checkbox"><i class="bi bi-check-lg"></i></div>
-                </div>
-
-                <div class="diet-plan-item" onclick="selectDietPlan(this, 'vegan')">
-                    <div class="plan-icon">🥗</div>
-                    <div class="plan-info">
-                        <div class="plan-name">Vegan/Vegetarian Plan</div>
-                        <div class="plan-description">Plant-based nutrition for sustainable health</div>
-                    </div>
-                    <div class="plan-checkbox"><i class="bi bi-check-lg"></i></div>
-                </div>
-            </div>
-
-            <div class="button-group">
-                <button onclick="goToPayment()">Proceed to Payment</button>
             </div>
         </div>
+    </section>
 
-        <!-- Option 2 -->
-        <div class="option-card">
-            <div class="option-icon">
-                <i class="bi bi-person-heart"></i>
-            </div>
-            <h3>Consult a Nutritionist</h3>
-            <p>Connect with certified nutritionists for personalized guidance and professional support</p>
-
-            <button class="btn-secondary" onclick="goToNutritionist()">
-                <i class="bi bi-arrow-right-circle"></i> Choose Nutritionist
-            </button>
-        </div>
-    </div>
-</div>
 
 <script>
-    let selectedPlan = null;
+function confirmPlan() {
+    alert("Diet plan selected successfully!");
+}
 
-    // Map of plan IDs to display names
-    const planNames = {
-        'weight-loss': 'Weight Loss Plan',
-        'muscle-gain': 'Muscle Gain Plan',
-        'balanced': 'Balanced Diet Plan',
-        'diabetes': 'Diabetes Management Plan',
-        'vegan': 'Vegan/Vegetarian Plan'
-    };
-
-    function selectDietPlan(element, planId) {
-        // Remove selected class from all items
-        const allItems = document.querySelectorAll('.diet-plan-item');
-        allItems.forEach(item => item.classList.remove('selected'));
-        
-        // Add selected class to clicked item
-        element.classList.add('selected');
-        selectedPlan = planId;
-    }
-
-    function goToPayment() {
-        if (!selectedPlan) {
-            alert('Please select a diet plan first');
-            return;
-        }
-        window.location.href = "pay.html?plan=" + selectedPlan;
-    }
-
-    function goToNutritionist() {
-        window.location.href = "ChooseNutritionist.html";
-    }
-
-    // Load and display user's signup preference
-    function loadSignupPlanPreference() {
-        // Try to get the plan from localStorage
-        const signupPlan = localStorage.getItem('selectedDietPlan') || sessionStorage.getItem('selectedDietPlan');
-        
-        if (signupPlan && planNames[signupPlan]) {
-            // Show the banner
-            document.getElementById('selectedPlanBanner').style.display = 'block';
-            document.getElementById('signupPlanName').textContent = planNames[signupPlan];
-            
-            // Auto-select the plan
-            const planElement = document.querySelector(`[onclick="selectDietPlan(this, '${signupPlan}')`);
-            if (planElement) {
-                selectDietPlan(planElement, signupPlan);
-            }
-        }
-    }
-
-    // Load preference when page loads
-    document.addEventListener('DOMContentLoaded', loadSignupPlanPreference);
+function goToNutritionist() {
+    window.location.href = "ChooseNutritionist.html";
+}
 </script>
 
 </body>
