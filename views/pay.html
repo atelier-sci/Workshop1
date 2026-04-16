@@ -310,13 +310,6 @@
       <a href="/" class="logo-modern">
         <i class="bi bi-heart-pulse-fill"></i> NutriAI
       </a>
-      <ul class="nav-links">
-        <li><a href="HomePage.html" class="nav-link-animated">Home</a></li>
-        <li><a href="HomePage.html#Services" class="nav-link-animated">Services</a></li>
-        <li><a href="HomePage.html#ai-feature" class="nav-link-animated">AI Analyzer</a></li>
-        <li><a href="Blog.html" class="nav-link-animated">Blog</a></li>
-        <li><a href="HomePage.html#Contact" class="nav-link-animated">Contact</a></li>
-      </ul>
       <ul class="auth-links">
         <li><a href="ChooseNutritionist.html" class="btn-modern">Back to Nutritionists</a></li>
       </ul>
@@ -439,6 +432,7 @@
         <h2>Payment Successful!</h2>
         <p>Thank you for your payment. Your consultation booking is confirmed.</p>
         <button class="btn btn-primary" onclick="makeAnotherPayment()">Make Another Payment</button>
+        <button class="btn btn-secondary" onclick="goDashboard()">Go to Dashboard</button>
       </div>
 
     </div>
@@ -485,6 +479,9 @@
     function makeAnotherPayment() {
       location.reload();
     }
+    function goDashboard() {
+  window.location.href = "UserDashboard.html";
+}
   </script>
 </body>
 </html>
