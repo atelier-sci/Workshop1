@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Laboratory Appointment</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #2563EB;
+    --blue-light: #EFF6FF;
+    --blue-mid: #DBEAFE;
+    --gray-50: #F8FAFC;
+    --gray-100: #F1F5F9;
+    --gray-200: #E2E8F0;
+    --gray-300: #CBD5E1;
+    --gray-400: #94A3B8;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-900: #0F172A;
+    --radius: 10px;
+    --shadow: 0 4px 24px rgba(15,23,42,0.10);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: linear-gradient(135deg, #EFF6FF 0%, #F8FAFC 60%, #E0E7FF 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    color: var(--gray-900);
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 520px;
+    padding: 36px 36px 32px;
+    animation: fadeUp .4s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .header-icon {
+    width: 34px; height: 34px;
+    background: var(--blue-light);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .header-icon svg { color: var(--blue); }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.18rem;
+    font-weight: 600;
+    color: var(--gray-900);
+    letter-spacing: -.01em;
+  }
+
+  /* Stepper */
+  .stepper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 32px;
+  }
+  .step-circle {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .82rem;
+    font-weight: 600;
+    transition: background .3s, color .3s;
+    z-index: 1;
+  }
+  .step-circle.active   { background: var(--blue); color: #fff; }
+  .step-circle.inactive { background: var(--gray-200); color: var(--gray-400); }
+  .step-line {
+    flex: 1; max-width: 80px; height: 2px;
+    background: var(--gray-200);
+    transition: background .3s;
+  }
+  .step-line.done { background: var(--blue); }
+
+  /* Form Step 1 */
+  .step { display: none; animation: fadeStep .35s ease both; }
+  .step.active { display: block; }
+  @keyframes fadeStep {
+    from { opacity: 0; transform: translateX(10px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; }
+  .row.full { grid-template-columns: 1fr; }
+
+  .field label {
+    display: block;
+    font-size: .78rem;
+    font-weight: 500;
+    color: var(--gray-600);
+    margin-bottom: 5px;
+    letter-spacing: .02em;
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 9px 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .88rem;
+    color: var(--gray-900);
+    background: var(--gray-50);
+    transition: border-color .2s, box-shadow .2s;
+    outline: none;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px var(--blue-mid);
+    background: #fff;
+  }
+  .field textarea { resize: vertical; min-height: 78px; }
+  .field select { cursor: pointer; }
+
+  .checkbox-row {
+    display: flex; align-items: center; gap: 8px;
+    font-size: .87rem; color: var(--gray-700);
+    cursor: pointer;
+    margin-top: 4px;
+  }
+  .checkbox-row input[type=checkbox] {
+    width: 16px; height: 16px;
+    accent-color: var(--blue);
+    cursor: pointer;
+  }
+
+  /* Buttons */
+  .btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: var(--radius);
+    font-family: 'DM Sans', sans-serif;
+    font-size: .92rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background .2s, transform .15s, box-shadow .2s;
+    margin-top: 22px;
+  }
+  .btn-primary {
+    background: var(--blue);
+    color: #fff;
+    box-shadow: 0 2px 12px rgba(37,99,235,.22);
+  }
+  .btn-primary:hover { background: #1D4ED8; transform: translateY(-1px); box-shadow: 0 4px 18px rgba(37,99,235,.28); }
+  .btn-primary:active { transform: translateY(0); }
+  .btn-secondary {
+    background: var(--gray-100);
+    color: var(--gray-700);
+    border: 1.5px solid var(--gray-200);
+    margin-top: 0;
+  }
+  .btn-secondary:hover { background: var(--gray-200); }
+
+  /* Step 2 layout */
+  .s2-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    margin-bottom: 10px;
+  }
+
+  .s2-label {
+    font-size: .78rem;
+    font-weight: 600;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    margin-bottom: 12px;
+  }
+
+  /* Calendar */
+  .cal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .cal-month {
+    font-size: .93rem; font-weight: 600; color: var(--gray-900);
+  }
+  .cal-nav {
+    background: none; border: none; cursor: pointer;
+    padding: 4px 8px; color: var(--gray-400);
+    font-size: 1rem; border-radius: 6px;
+    transition: background .15s, color .15s;
+  }
+  .cal-nav:hover { background: var(--gray-100); color: var(--blue); }
+
+  .cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+  .cal-day-name {
+    text-align: center; font-size: .7rem; font-weight: 600;
+    color: var(--gray-400); padding-bottom: 6px;
+    letter-spacing: .04em;
+  }
+  .cal-day {
+    text-align: center; padding: 6px 0;
+    font-size: .82rem; cursor: pointer;
+    border-radius: 7px;
+    color: var(--gray-700);
+    transition: background .15s, color .15s;
+    user-select: none;
+  }
+  .cal-day:hover:not(.empty):not(.disabled) { background: var(--blue-light); color: var(--blue); }
+  .cal-day.today { color: var(--blue); font-weight: 700; }
+  .cal-day.selected { background: var(--blue); color: #fff !important; font-weight: 600; border-radius: 7px; }
+  .cal-day.disabled { color: var(--gray-300); cursor: default; pointer-events: none; }
+  .cal-day.empty { cursor: default; }
+
+  /* Time slots */
+  .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .time-slot {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 10px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 8px;
+    font-size: .82rem; color: var(--gray-700);
+    cursor: pointer;
+    transition: border-color .2s, background .2s, color .2s;
+    user-select: none;
+  }
+  .time-slot svg { color: var(--gray-400); flex-shrink: 0; }
+  .time-slot:hover:not(.unavailable) { border-color: var(--blue); color: var(--blue); }
+  .time-slot.unavailable { background: var(--gray-100); color: var(--gray-300); cursor: default; border-color: transparent; }
+  .time-slot.unavailable svg { color: var(--gray-200); }
+  .time-slot.selected { border-color: var(--blue); background: var(--blue-light); color: var(--blue); font-weight: 600; }
+  .time-slot.selected svg { color: var(--blue); }
+
+  .s2-btn-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    margin-top: 20px;
+  }
+
+  .legend { display: flex; gap: 16px; margin-top: 12px; font-size: .75rem; color: var(--gray-400); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 4px; vertical-align: middle; }
+
+  /* Success */
+  #step-success {
+    text-align: center;
+    padding: 12px 0 8px;
+  }
+  .success-icon {
+    width: 62px; height: 62px; border-radius: 50%;
+    background: #DCFCE7;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 18px;
+  }
+  #step-success h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 8px; }
+  #step-success p { color: var(--gray-600); font-size: .9rem; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-icon">
+      <svg width="18" height="18" fill="none" stroke="#2563EB" stroke-width="2" viewBox="0 0 24 24">
+        <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+    </div>
+    <h1>Book Laboratory Appointment</h1>
+  </div>
+
+  <!-- Stepper -->
+  <div class="stepper">
+    <div class="step-circle active" id="sc1">1</div>
+    <div class="step-line" id="sl1"></div>
+    <div class="step-circle inactive" id="sc2">2</div>
+  </div>
+
+  <!-- Step 1: Patient Info -->
+  <div class="step active" id="step1">
+    <div class="row">
+      <div class="field"><label>First Name</label><input type="text" placeholder="John"></div>
+      <div class="field"><label>Last Name</label><input type="text" placeholder="Doe"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Date of Birth</label><input type="date"></div>
+      <div class="field"><label>Phone Number</label><input type="tel" placeholder="+1 555 000 0000"></div>
+    </div>
+    <div class="row full">
+      <div class="field"><label>Email</label><input type="email" placeholder="john.doe@email.com"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Insurance Provider</label><input type="text" placeholder="Provider name"></div>
+      <div class="field"><label>Insurance Number</label><input type="text" placeholder="INS-0000000"></div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>Department</label>
+        <select>
+          <option>General</option>
+          <option>Cardiology</option>
+          <option>Neurology</option>
+          <option>Oncology</option>
+          <option>Pediatrics</option>
+        </select>
+      </div>
+      <div class="field" style="display:flex;align-items:flex-end;padding-bottom:2px;">
+        <label class="checkbox-row">
+          <input type="checkbox"> Pre-appointment Blood Test Required
+        </label>
+      </div>
+    </div>
+    <div class="row full">
+      <div class="field"><label>Reason for Visit</label><textarea placeholder="Describe your symptoms or reason..."></textarea></div>
+    </div>
+    <button class="btn btn-primary" onclick="goStep2()">Continue to Schedule →</button>
+  </div>
+
+  <!-- Step 2: Date & Time -->
+  <div class="step" id="step2">
+    <div class="s2-grid">
+
+      <!-- Calendar -->
+      <div>
+        <div class="s2-label">Select Date</div>
+        <div class="cal-header">
+          <span class="cal-month" id="calMonth">April 2025</span>
+          <div>
+            <button class="cal-nav" onclick="changeMonth(-1)">&#8249;</button>
+            <button class="cal-nav" onclick="changeMonth(1)">&#8250;</button>
+          </div>
+        </div>
+        <div class="cal-days" id="calGrid"></div>
+      </div>
+
+      <!-- Time Slots -->
+      <div>
+        <div class="s2-label">Select Time</div>
+        <div class="time-grid" id="timeGrid"></div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><span class="legend-dot" style="background:var(--gray-200)"></span>Unavailable</span>
+      <span><span class="legend-dot" style="background:var(--blue)"></span>Selected</span>
+    </div>
+
+    <div class="s2-btn-row">
+      <button class="btn btn-secondary" onclick="goStep1()">← Back</button>
+      <button class="btn btn-primary" style="margin-top:0" onclick="bookAppointment()">Book Appointment</button>
+    </div>
+  </div>
+
+  <!-- Step 3: Success -->
+  <div class="step" id="step-success">
+    <div class="success-icon">
+      <svg width="28" height="28" fill="none" stroke="#16A34A" stroke-width="2.5" viewBox="0 0 24 24">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <h2>Appointment Confirmed!</h2>
+    <p>Your laboratory appointment has been successfully booked.<br>You will receive a confirmation by email shortly.</p>
+    <button class="btn btn-primary" style="max-width:220px;margin:24px auto 0;display:block" onclick="reset()">Book Another</button>
+  </div>
+
+</div>
+
+<script>
+// ---- Calendar Logic ----
+const DAYS = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const UNAVAILABLE_SLOTS = ['10:00','11:30','15:30'];
+
+let current = { year: 2025, month: 3 }; // April 2025 (0-indexed)
+let selectedDay = null;
+let selectedTime = null;
+
+function buildCalendar() {
+  const { year, month } = current;
+  document.getElementById('calMonth').textContent = `${MONTHS[month]} ${year}`;
+  const grid = document.getElementById('calGrid');
+  grid.innerHTML = '';
+
+  DAYS.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'cal-day-name';
+    el.textContent = d;
+    grid.appendChild(el);
+  });
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day empty';
+    grid.appendChild(el);
+  }
+
+  const today = new Date();
+  for (let d = 1; d <= daysInMonth; d++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day';
+    el.textContent = d;
+    const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === d;
+    if (isToday) el.classList.add('today');
+    if (selectedDay === d) el.classList.add('selected');
+    el.onclick = () => selectDay(d);
+    grid.appendChild(el);
+  }
+}
+
+function selectDay(d) {
+  selectedDay = d;
+  buildCalendar();
+}
+
+function changeMonth(dir) {
+  current.month += dir;
+  if (current.month > 11) { current.month = 0; current.year++; }
+  if (current.month < 0)  { current.month = 11; current.year--; }
+  selectedDay = null;
+  buildCalendar();
+}
+
+// ---- Time Slots ----
+const TIMES = ['09:00','09:30','10:00','10:30','11:00','11:30','14:00','14:30','15:00','15:30','16:00','16:30'];
+
+function buildTimeGrid() {
+  const grid = document.getElementById('timeGrid');
+  grid.innerHTML = '';
+  TIMES.forEach(t => {
+    const el = document.createElement('div');
+    const unavail = UNAVAILABLE_SLOTS.includes(t);
+    el.className = 'time-slot' + (unavail ? ' unavailable' : '') + (selectedTime === t ? ' selected' : '');
+    el.innerHTML = `<svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${t}`;
+    if (!unavail) el.onclick = () => { selectedTime = t; buildTimeGrid(); };
+    grid.appendChild(el);
+  });
+}
+
+// ---- Navigation ----
+function goStep2() {
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step2').classList.add('active');
+  document.getElementById('sc1').classList.remove('active'); document.getElementById('sc1').classList.add('inactive');
+  document.getElementById('sc2').classList.remove('inactive'); document.getElementById('sc2').classList.add('active');
+  document.getElementById('sl1').classList.add('done');
+  buildCalendar();
+  buildTimeGrid();
+}
+
+function goStep1() {
+  document.getElementById('step2').classList.remove('active');
+  document.getElementById('step1').classList.add('active');
+  document.getElementById('sc2').classList.remove('active'); document.getElementById('sc2').classList.add('inactive');
+  document.getElementById('sc1').classList.remove('inactive'); document.getElementById('sc1').classList.add('active');
+  document.getElementById('sl1').classList.remove('done');
+}
+
+function bookAppointment() {
+  if (!selectedDay || !selectedTime) { alert('Please select a date and a time slot.'); return; }
+  document.getElementById('step2').classList.remove('active');
+  document.getElementById('step-success').classList.add('active');
+}
+
+function reset() {
+  selectedDay = null; selectedTime = null;
+  document.getElementById('step-success').classList.remove('active');
+  document.getElementById('step1').classList.add('active');
+  document.getElementById('sc1').classList.remove('inactive'); document.getElementById('sc1').classList.add('active');
+  document.getElementById('sc2').classList.remove('active'); document.getElementById('sc2').classList.add('inactive');
+  document.getElementById('sl1').classList.remove('done');
+}
+</script>
+</body>
+</html>
