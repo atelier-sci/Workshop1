@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Meal Analyzer - NutriAI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../styles/style.css">
+    <style>
+        .analyzer-hero {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        .upload-zone {
+            border: 3px dashed var(--primary);
+            border-radius: var(--border-radius);
+            padding: 60px 40px;
+            text-align: center;
+            background: #f8f9fa;
+            transition: var(--transition);
+            cursor: pointer;
+            margin: 30px 0;
+        }
+        .upload-zone:hover, .upload-zone.dragover {
+            background: var(--primary);
+            color: white;
+            border-color: white;
+        }
+        .upload-zone i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        .upload-zone:hover i {
+            color: white;
+        }
+        .analysis-result {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+        .food-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .food-item:last-child {
+            border-bottom: none;
+        }
+        .food-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .food-calories {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        .total-calories {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin-top: 20px;
+        }
+        .total-calories .number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+        }
+        .nutrition-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .nutrition-item {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .nutrition-item .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        .nutrition-item .label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        .meal-history {
+            margin-top: 50px;
+        }
+        .meal-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+        .meal-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .meal-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+        }
+        .meal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .camera-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .camera-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        .tips-section {
+            background: #f8f9fa;
+            padding: 50px 0;
+            margin: 50px 0;
+        }
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .tip-card {
+            background: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .tip-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        .progress-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 75%, #e9ecef 0%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+        .progress-circle::before {
+            content: '';
+            width: 90px;
+            height: 90px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+        }
+        .progress-text {
+            position: relative;
+            z-index: 1;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        @media (max-width: 768px) {
+            .upload-zone {
+                padding: 40px 20px;
+            }
+            .upload-zone i {
+                font-size: 3rem;
+            }
+            .nutrition-breakdown {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+     <nav class="navbar-enhanced">
+        <div class="nav-container">
+            <a href="/" class="logo-modern">
+                <i class="bi bi-heart-pulse-fill"></i> NutriAI
+            </a>
+            <ul class="auth-links">
+                <li><a href="HomePage.html" class="btn-modern-outline">Back to Home</a></li>
+                <li><a href="UserDashboard.html" class="btn-modern-outline">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Hero Section -->
+    
+
+    <div class="container my-5">
+        <!-- Upload Section -->
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="upload-zone" id="uploadZone">
+                    <i class="bi bi-camera-fill"></i>
+                    <h3>Take a Photo or Upload Image</h3>
+                    <p>Click here or drag and drop your meal photo</p>
+                    <input type="file" id="mealImage" accept="image/*" style="display: none;">
+                    <button class="camera-btn mt-3" onclick="openCamera()">
+                        <i class="bi bi-camera"></i> Open Camera
+                    </button>
+                </div>
+
+                <!-- Analysis Result (Hidden initially) -->
+                <div class="analysis-result" id="analysisResult" style="display: none;">
+                    <h4 class="text-center mb-4"><i class="bi bi-graph-up"></i> Analysis Results</h4>
+
+                    <div class="food-items" id="foodItems">
+                        <!-- Food items will be populated here -->
+                    </div>
+
+                    <div class="total-calories">
+                        <span class="number" id="totalCalories">0</span>
+                        <span>Total Calories</span>
+                    </div>
+
+                    <div class="nutrition-breakdown">
+                        <div class="nutrition-item">
+                            <div class="value" id="protein">0g</div>
+                            <div class="label">Protein</div>
+                        </div>
+                        <div class="nutrition-item">
+                            <div class="value" id="carbs">0g</div>
+                            <div class="label">Carbs</div>
+                        </div>
+                        <div class="nutrition-item">
+                            <div class="value" id="fat">0g</div>
+                            <div class="label">Fat</div>
+                        </div>
+                        <div class="nutrition-item">
+                            <div class="value" id="fiber">0g</div>
+                            <div class="label">Fiber</div>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button class="btn btn-primary me-2" onclick="saveMeal()">
+                            <i class="bi bi-plus-circle"></i> Add to Today's Meals
+                        </button>
+                        <button class="btn btn-outline-primary" onclick="analyzeAgain()">
+                            <i class="bi bi-arrow-repeat"></i> Analyze Another Meal
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Progress -->
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-6">
+                <div class="text-center">
+                    <h3>Today's Progress</h3>
+                    <div class="progress-circle">
+                        <div class="progress-text" id="dailyProgress">0%</div>
+                    </div>
+                    <p class="text-muted">of your daily calorie goal</p>
+                    <div class="row text-center mt-3">
+                        <div class="col-6">
+                            <div class="fw-bold fs-4" id="consumedCalories">0</div>
+                            <small class="text-muted">Consumed</small>
+                        </div>
+                        <div class="col-6">
+                            <div class="fw-bold fs-4" id="remainingCalories">2000</div>
+                            <small class="text-muted">Remaining</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Meal History -->
+        <div class="meal-history">
+            <h3 class="text-center mb-4">Today's Meals</h3>
+            <div class="row" id="mealHistory">
+                <!-- Meal history will be populated here -->
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <section class="tips-section">
+            <div class="container">
+                <h3 class="text-center mb-4">AI Analyzer Tips</h3>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <i class="bi bi-lightbulb"></i>
+                        <h5>Good Lighting</h5>
+                        <p>Use natural light and ensure your meal is well-lit for better analysis accuracy.</p>
+                    </div>
+                    <div class="tip-card">
+                        <i class="bi bi-square"></i>
+                        <h5>Clear View</h5>
+                        <p>Make sure all food items are visible and not overlapping for precise identification.</p>
+                    </div>
+                    <div class="tip-card">
+                        <i class="bi bi-rulers"></i>
+                        <h5>Portion Size</h5>
+                        <p>Include a reference object (like a fork) to help estimate portion sizes accurately.</p>
+                    </div>
+                    <div class="tip-card">
+                        <i class="bi bi-clock"></i>
+                        <h5>Real-time Tracking</h5>
+                        <p>Analyze meals as you eat them for the most accurate daily nutrition tracking.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-modern">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                    <h3 class="footer-logo mb-3"><i class="bi bi-heart-pulse-fill"></i> NutriAI</h3>
+                    <p>Transforming lives through personalized nutrition and AI-powered health solutions.</p>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h4>Platform</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="HomePage.html">Home</a></li>
+                        <li><a href="AIAnalyzer.html">AI Analyzer</a></li>
+                        <li><a href="Blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h4>Company</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Team</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h4>Legal</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4>Contact & Support</h4>
+                    <p class="mb-1"><i class="bi bi-envelope me-2"></i> support@nutriai.com</p>
+                    <p class="mb-0"><i class="bi bi-telephone me-2"></i> +1 (800) NUTRIAI</p>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024 NutriAI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sample meal data for demonstration
+        const sampleMeals = [
+            {
+                name: "Grilled Chicken Breast",
+                calories: 165,
+                protein: 31,
+                carbs: 0,
+                fat: 3.6,
+                fiber: 0
+            },
+            {
+                name: "Brown Rice",
+                calories: 216,
+                protein: 5,
+                carbs: 44,
+                fat: 1.8,
+                fiber: 3.5
+            },
+            {
+                name: "Broccoli",
+                calories: 55,
+                protein: 3.7,
+                carbs: 11.2,
+                fat: 0.6,
+                fiber: 5.1
+            }
+        ];
+
+        let dailyCalories = 0;
+        const dailyGoal = 2000;
+        let mealHistory = [];
+
+        // Upload zone functionality
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('mealImage');
+        const analysisResult = document.getElementById('analysisResult');
+
+        uploadZone.addEventListener('click', () => fileInput.click());
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        });
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.classList.remove('dragover');
+        });
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            if (file.type.startsWith('image/')) {
+                // Simulate AI analysis
+                analyzeMeal();
+            } else {
+                alert('Please select an image file.');
+            }
+        }
+
+        function openCamera() {
+            // In a real implementation, this would access device camera
+            alert('Camera functionality would be implemented here. For now, click the upload zone to select an image.');
+            fileInput.click();
+        }
+
+        function analyzeMeal() {
+            // Show loading state
+            uploadZone.innerHTML = `
+                <i class="bi bi-arrow-repeat spinning"></i>
+                <h3>Analyzing...</h3>
+                <p>AI is processing your meal photo</p>
+            `;
+
+            // Simulate API call delay
+            setTimeout(() => {
+                displayAnalysisResults();
+            }, 2000);
+        }
+
+        function displayAnalysisResults() {
+            uploadZone.style.display = 'none';
+            analysisResult.style.display = 'block';
+
+            // Clear previous results
+            document.getElementById('foodItems').innerHTML = '';
+
+            let totalCalories = 0;
+            let totalProtein = 0;
+            let totalCarbs = 0;
+            let totalFat = 0;
+            let totalFiber = 0;
+
+            // Add food items
+            sampleMeals.forEach(meal => {
+                const foodItem = document.createElement('div');
+                foodItem.className = 'food-item';
+                foodItem.innerHTML = `
+                    <span class="food-name">${meal.name}</span>
+                    <span class="food-calories">${meal.calories} cal</span>
+                `;
+                document.getElementById('foodItems').appendChild(foodItem);
+
+                totalCalories += meal.calories;
+                totalProtein += meal.protein;
+                totalCarbs += meal.carbs;
+                totalFat += meal.fat;
+                totalFiber += meal.fiber;
+            });
+
+            // Update totals
+            document.getElementById('totalCalories').textContent = totalCalories;
+            document.getElementById('protein').textContent = totalProtein.toFixed(1) + 'g';
+            document.getElementById('carbs').textContent = totalCarbs.toFixed(1) + 'g';
+            document.getElementById('fat').textContent = totalFat.toFixed(1) + 'g';
+            document.getElementById('fiber').textContent = totalFiber.toFixed(1) + 'g';
+
+            // Update daily progress
+            updateDailyProgress(totalCalories);
+        }
+
+        function updateDailyProgress(newCalories) {
+            dailyCalories += newCalories;
+            const percentage = Math.min((dailyCalories / dailyGoal) * 100, 100);
+
+            document.getElementById('dailyProgress').textContent = Math.round(percentage) + '%';
+            document.getElementById('consumedCalories').textContent = dailyCalories;
+            document.getElementById('remainingCalories').textContent = Math.max(dailyGoal - dailyCalories, 0);
+
+            // Update progress circle
+            const progressCircle = document.querySelector('.progress-circle');
+            progressCircle.style.background = `conic-gradient(var(--primary) ${percentage}%, #e9ecef 0%)`;
+        }
+
+        function saveMeal() {
+            // Add to meal history
+            const mealCard = document.createElement('div');
+            mealCard.className = 'col-md-6 col-lg-4';
+            mealCard.innerHTML = `
+                <div class="meal-card">
+                    <div class="d-flex align-items-center">
+                        <div class="meal-image">
+                            <i class="bi bi-image text-muted fs-1"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">Recent Meal</h6>
+                            <p class="mb-1 text-primary fw-bold">${document.getElementById('totalCalories').textContent} calories</p>
+                            <small class="text-muted">${new Date().toLocaleTimeString()}</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('mealHistory').appendChild(mealCard);
+
+            alert('Meal added to your daily log!');
+        }
+
+        function analyzeAgain() {
+            analysisResult.style.display = 'none';
+            uploadZone.style.display = 'block';
+            uploadZone.innerHTML = `
+                <i class="bi bi-camera-fill"></i>
+                <h3>Take a Photo or Upload Image</h3>
+                <p>Click here or drag and drop your meal photo</p>
+                <input type="file" id="mealImage" accept="image/*" style="display: none;">
+                <button class="camera-btn mt-3" onclick="openCamera()">
+                    <i class="bi bi-camera"></i> Open Camera
+                </button>
+            `;
+
+            // Reattach event listeners
+            document.getElementById('mealImage').addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    handleFile(e.target.files[0]);
+                }
+            });
+        }
+
+        // Add spinning animation
+        const style = document.createElement('style');
+        style.textContent = `
+            .spinning {
+                animation: spin 1s linear infinite;
+            }
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
