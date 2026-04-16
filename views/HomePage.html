@@ -340,49 +340,41 @@
             </div>
         </section>
 
-        <!-- Testimonials Section -->
-        <section class="testimonials" id="testimonials">
-            <div class="container-custom">
-                <div class="section-header">
-                    <h2>Success Stories</h2>
-                    <p>Real people, real transformations</p>
+   <!-- Testimonials Section -->
+<section class="testimonials" id="testimonials">
+    <div class="container-custom">
+        <div class="section-header">
+            <h2>Success Stories</h2>
+            <p>Real people, real transformations</p>
+        </div>
+
+        <div class="testimonials-grid">
+
+            <div class="testimonial-card">
+                <p id="testimonialText" class="testimonial-text" contenteditable="true">
+                    Click here to edit testimonial...
+                </p>
+
+                <div class="testimonial-author">
+                    <div class="author-avatar"></div>
                 </div>
 
-                <div class="testimonials-grid">
-                   <div class="testimonial-card">
-                      <p class="testimonial-text" contenteditable="true">
-                          Click here to edit testimonial...
-                      </p>
-                     <div class="testimonial-author">
-                         <div class="author-avatar"></div>
-                              
-                         </div>
-                      </div>
-                      <div class="testimonial-card">
-                          <p class="testimonial-text" contenteditable="true">
-                             Click here to edit testimonial...
-                          </p>
-                          <div class="testimonial-author">
-                                  <div class="author-avatar"></div>
-                                     
-                          </div>
-                     </div>
+                <!-- Publish Button -->
+                <button class="btn-modern" style="margin-top:15px;" onclick="publishTestimonial()">
+                    Publish
+                </button>
+                 <!-- Remove Button -->
+                <button class="btn-modern" style="margin-top:15px;" onclick="removeTestimonial()">
+                    Remove
+              </button>
 
-                   <div class="testimonial-card">
-    <p class="testimonial-text" contenteditable="true">
-        Click here to edit testimonial...
-    </p>
-                         <div class="testimonial-author">
-                              <div class="author-avatar"></div>
-                              <div>
-                    
-                       </div>
-                      </div>
-                      </div>
-                </div>
+                <!-- Saved message -->
+                <p id="savedMsg" style="color:green; font-size:14px; margin-top:10px;"></p>
             </div>
-        </section>
 
+        </div>
+    </div>
+</section>
         <!-- Features Highlight -->
         <section class="features-highlight">
             <div class="container-custom">
@@ -497,4 +489,38 @@
         </div>
     </footer>
 </body>
+<script>
+    // Load saved testimonial when page opens
+    window.onload = function () {
+        const saved = localStorage.getItem("testimonial");
+        if (saved) {
+            document.getElementById("testimonialText").innerText = saved;
+        }
+    };
+
+    // Save testimonial
+    function publishTestimonial() {
+        const text = document.getElementById("testimonialText").innerText;
+
+        if (text.trim() === "") {
+            alert("Please write something before publishing!");
+            return;
+        }
+
+        localStorage.setItem("testimonial", text);
+
+        document.getElementById("savedMsg").innerText =
+            "✔ Testimonial published successfully!";
+    }
+    //remove
+    function removeTestimonial() {
+    localStorage.removeItem("testimonial");
+
+    document.getElementById("testimonialText").innerText =
+        "Click here to edit testimonial...";
+
+    document.getElementById("savedMsg").innerText =
+        "❌ Testimonial removed!";
+}
+</script>
 </html>
