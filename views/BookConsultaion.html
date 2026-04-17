@@ -6,12 +6,17 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../styles/style.css">
-    <title>Book Consultation - NutriAI</title>
+    <title>Choose Your Nutritionist - NutriAI</title>
     <style>
         :root {
             --primary: #4A7337;
             --primary-dark: #2d4a23;
             --primary-light: #6b9d4f;
+        }
+
+        .page-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(74, 115, 55, 0.05) 0%, rgba(255, 255, 255, 100%) 100%);
         }
 
         .navbar-enhanced {
@@ -44,477 +49,299 @@
             gap: 8px;
         }
 
-        .consultation-section {
-            padding: 80px 5%;
-            background: linear-gradient(135deg, rgba(74, 115, 55, 0.05) 0%, rgba(255, 107, 107, 0.05) 100%);
-        }
-
-        .container-custom {
+        .nutritionist-section {
+            padding: 60px 5%;
             max-width: 1200px;
             margin: 0 auto;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 50px;
         }
 
         .section-header h2 {
-            font-size: 44px;
+            font-size: 42px;
             font-weight: 800;
             margin-bottom: 15px;
-            line-height: 1.2;
             color: #1a1a1a;
         }
 
         .section-header p {
-            font-size: 18px;
-            color: #666;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 40px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .option-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafb 100%);
-            padding: 50px;
-            border: 1px solid rgba(74, 115, 55, 0.1);
-            border-radius: 16px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .option-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(74, 115, 55, 0.15);
-            border-color: var(--primary);
-        }
-
-        .option-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            margin-bottom: 25px;
-        }
-
-        .option-card h3 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: #1a1a1a;
-        }
-
-        .option-card p {
-            font-size: 15px;
-            color: #666;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-
-        select {
-            width: 100%;
-            padding: 12px 16px;
-            margin: 20px 0 30px 0;
-            border-radius: 10px;
-            border: 1px solid rgba(74, 115, 55, 0.2);
-            font-size: 15px;
-            font-family: 'Montserrat', sans-serif;
-            background: white;
-        }
-
-        .btn-primary-large {
-            padding: 14px 40px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 16px;
-            display: inline-block;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .btn-primary-large:hover {
-            background: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(74, 115, 55, 0.3);
-        }
-
-        .plans-section {
-            padding: 80px 5%;
-            background: #ffffff;
-        }
-
-        .plans-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .plan-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafb 100%);
-            border: 2px solid rgba(74, 115, 55, 0.1);
-            border-radius: 16px;
-            padding: 40px 30px;
-            text-align: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        .plan-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(74, 115, 55, 0.15);
-            border-color: var(--primary);
-        }
-
-        .plan-card.featured {
-            border-color: var(--primary);
-            box-shadow: 0 10px 40px rgba(74, 115, 55, 0.2);
-            transform: scale(1.05);
-        }
-
-        .plan-card.featured:hover {
-            transform: scale(1.05) translateY(-8px);
-            box-shadow: 0 25px 60px rgba(74, 115, 55, 0.25);
-        }
-
-        .plan-badge {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--primary);
-            color: white;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .plan-header {
-            margin-bottom: 30px;
-        }
-
-        .plan-header h3 {
-            font-size: 24px;
-            font-weight: 800;
-            color: #1a1a1a;
-            margin-bottom: 10px;
-        }
-
-        .plan-price {
             font-size: 16px;
             color: #666;
             margin: 0;
         }
 
-        .plan-price span {
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--primary);
+        .nutritionist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
         }
 
-        .plan-features {
-            list-style: none;
-            margin: 30px 0;
-            flex-grow: 1;
-            text-align: left;
+        .nutritionist-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafb 100%);
+            border: 1px solid rgba(74, 115, 55, 0.1);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
         }
 
-        .plan-features li {
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(74, 115, 55, 0.05);
-            font-size: 14px;
-            color: #666;
+        .nutritionist-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(74, 115, 55, 0.15);
+            border-color: var(--primary);
+        }
+
+        .nutritionist-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+            margin: 0 auto 20px;
         }
 
-        .plan-features li:last-child {
-            border-bottom: none;
+        .nutritionist-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin: 15px 0 5px;
         }
 
-        .plan-features li i {
+        .nutritionist-specialty {
+            font-size: 14px;
             color: var(--primary);
-            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
         }
 
-        .plan-features li.disabled {
-            opacity: 0.6;
+        .nutritionist-info {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
         }
 
-        .plan-features li.disabled i {
-            color: #ccc;
+        .nutritionist-rating {
+            font-size: 13px;
+            color: #f59e0b;
+            margin-bottom: 20px;
         }
 
-        .plan-btn {
-            padding: 14px 40px;
+        .btn-primary-large {
+            padding: 12px 30px;
             background: var(--primary);
             color: white;
             border: none;
             border-radius: 50px;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 14px;
             text-decoration: none;
             display: inline-block;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
-            margin-top: 30px;
         }
 
-        .plan-btn:hover {
+        .btn-primary-large:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(74, 115, 55, 0.3);
         }
 
-        .featured-btn {
-            background: var(--primary);
-            font-size: 16px;
-        }
-
-        .featured-btn:hover {
-            background: var(--primary-dark);
-        }
-
-        .diet-plans-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 0;
-            width: 100%;
-            max-width: 1200px;
-            padding: 0 20px;
-        }
-
-        .diet-plan-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafb 100%);
-            border: 1px solid rgba(74, 115, 55, 0.1);
-            border-radius: 14px;
-            padding: 30px;
-            text-align: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .diet-plan-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 15px 40px rgba(74, 115, 55, 0.12);
-            border-color: var(--primary);
-        }
-
-        .diet-plan-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-light));
-            color: white;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            margin-bottom: 15px;
-        }
-
-        .diet-plan-name {
-            font-size: 20px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 8px;
-        }
-
-        .diet-plan-desc {
-            font-size: 13px;
-            color: #666;
-            line-height: 1.5;
-            margin-bottom: 20px;
-        }
-
-        .diet-plan-btn {
-            padding: 11px 28px;
-            background: var(--primary);
-            color: white;
-            border: none;
+        .btn-secondary-large {
+            padding: 12px 30px;
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
             border-radius: 50px;
             font-weight: 700;
             font-size: 14px;
             text-decoration: none;
             display: inline-block;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
             cursor: pointer;
-            width: 100%;
-            margin-top: auto;
         }
 
-        .diet-plan-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(74, 115, 55, 0.25);
+        .btn-secondary-large:hover {
+            background: var(--primary);
+            color: white;
         }
 
-        .diet-plans-section {
-            padding: 60px 0;
-            background: linear-gradient(135deg, rgba(74, 115, 55, 0.05) 0%, rgba(255, 255, 255, 100%) 100%);
-            border-radius: 20px;
-            margin-bottom: 60px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
+        @media (max-width: 768px) {
+            .section-header h2 {
+                font-size: 28px;
+            }
 
-        .diet-plans-section h4 {
-            font-size: 32px;
-            font-weight: 800;
-            color: #1a1a1a;
-            margin-bottom: 50px;
-            text-align: center;
+            .nutritionist-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
         }
     </style>
 </head>
-
 <body>
+    <div class="page-container">
+        <!-- Navigation -->
+        <nav class="navbar-enhanced">
+            <div class="nav-container">
+                <a href="HomePage.html" class="logo-modern">
+                    <i class="bi bi-heart-pulse-fill"></i> NutriAI
+                </a>
+                <div style="display: flex; gap: 12px;">
+        
+                    <a href="UserDashboard.html" class="btn-primary-large" style="text-decoration: none;">
+                        <i class="bi bi-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </nav>
 
-    <!-- Navigation -->
-    <nav class="navbar-enhanced">
-        <div class="nav-container">
-            <a href="HomePage.html" class="logo-modern">
-                <i class="bi bi-heart-pulse-fill"></i> NutriAI
-            </a>
-            <a href="UserDashboard.html" class="btn-primary-large" style="text-decoration: none;">
-                <i class="bi bi-arrow-left"></i> Back to Dashboard
-            </a>
-        </div>
-    </nav>
-
-    <!-- Consultation Options Section -->
-    <section class="consultation-section">
-        <div class="container-custom">
+        <!-- Nutritionist Selection Section -->
+        <section class="nutritionist-section">
             <div class="section-header">
-                <h2>Choose Your Path</h2>
-                <p>Select how you want to start your nutrition journey with us</p>
+                <h2>Choose Your Nutritionist</h2>
+                <p>Select a certified expert who matches your health goals and preferences</p>
             </div>
 
-            <!-- Diet Plans Section -->
-            <div class="diet-plans-section">
-                <h4>Choose Your Perfect Diet Plan</h4>
-                <div class="diet-plans-container">
-                    <!-- Diet Plan 1: Weight Loss -->
-                    <div class="diet-plan-card">
-                        <div class="diet-plan-icon">
-                            <i class="bi bi-graph-down"></i>
-                        </div>
-                        <h5 class="diet-plan-name">Weight Loss Plan</h5>
-                        <p class="diet-plan-desc">Burn fat, boost metabolism, and lose weight safely with science-based nutrition</p>
-                        <a href="pay.html" class="diet-plan-btn">Pay</a>
+            <div class="nutritionist-grid">
+                <!-- Nutritionist 1 -->
+                <div class="nutritionist-card" onclick="selectNutritionist('Sarah Johnson')">
+                    <div class="nutritionist-avatar">
+                        <i class="bi bi-person-fill"></i>
                     </div>
+                    <div class="nutritionist-name">Sarah Johnson</div>
+                    <div class="nutritionist-specialty">Weight Loss Specialist</div>
+                    <div class="nutritionist-rating">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        (4.9 - 250 reviews)
+                    </div>
+                    <div class="nutritionist-info">
+                        Expert in weight loss resistance, hormonal imbalances, and PCOS management. 8+ years experience.
+                    </div>
+                    <a href="book.html" class="btn-primary-large">Book Consultation</a>
+                </div>
 
-                    <!-- Diet Plan 2: Muscle Gain -->
-                    <div class="diet-plan-card">
-                        <div class="diet-plan-icon">
-                            <i class="bi bi-graph-up"></i>
-                        </div>
-                        <h5 class="diet-plan-name">Muscle Gain Plan</h5>
-                        <p class="diet-plan-desc">Build lean muscle, increase strength, and optimize your athletic performance</p>
-                        <a href="pay.html" class="diet-plan-btn">Pay</a>
+                <!-- Nutritionist 2 -->
+                <div class="nutritionist-card" onclick="selectNutritionist('Dr. Amira Kahn')">
+                    <div class="nutritionist-avatar">
+                        <i class="bi bi-person-fill"></i>
                     </div>
+                    <div class="nutritionist-name">Dr. Amira Kahn</div>
+                    <div class="nutritionist-specialty">Diabetes & Insulin Resistance</div>
+                    <div class="nutritionist-rating">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        (4.8 - 189 reviews)
+                    </div>
+                    <div class="nutritionist-info">
+                        Specializes in diabetes management and insulin resistance with personalized meal plans. 10+ years.
+                    </div>
+                   <a href="book.html" class="btn-primary-large">Book Consultation</a>
+                </div>
 
-                    <!-- Diet Plan 3: Keto Plan -->
-                    <div class="diet-plan-card">
-                        <div class="diet-plan-icon">
-                            <i class="bi bi-lightning-fill"></i>
-                        </div>
-                        <h5 class="diet-plan-name">Keto Plan</h5>
-                        <p class="diet-plan-desc">Ketogenic diet for rapid fat loss, mental clarity, and stable energy levels</p>
-                        <a href="pay.html" class="diet-plan-btn">Pay</a>
+                <!-- Nutritionist 3 -->
+                <div class="nutritionist-card" onclick="selectNutritionist('Emily Carter')">
+                    <div class="nutritionist-avatar">
+                        <i class="bi bi-person-fill"></i>
                     </div>
+                    <div class="nutritionist-name">Emily Carter</div>
+                    <div class="nutritionist-specialty">Thyroid & Metabolism</div>
+                    <div class="nutritionist-rating">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        (4.9 - 312 reviews)
+                    </div>
+                    <div class="nutritionist-info">
+                        Expert in thyroid disorders, metabolism optimization, and energy enhancement protocols.
+                    </div>
+                   <a href="book.html" class="btn-primary-large">Book Consultation</a>
+                </div>
 
-                    <!-- Diet Plan 4: Diabetes Management -->
-                    <div class="diet-plan-card">
-                        <div class="diet-plan-icon">
-                            <i class="bi bi-heart-pulse-fill"></i>
-                        </div>
-                        <h5 class="diet-plan-name">Diabetes Management</h5>
-                        <p class="diet-plan-desc">Blood sugar control, balanced nutrition, and long-term health management</p>
-                        <a href="pay.html" class="diet-plan-btn">Pay</a>
+                <!-- Nutritionist 4 -->
+                <div class="nutritionist-card" onclick="selectNutritionist('Michael Torres')">
+                    <div class="nutritionist-avatar">
+                        <i class="bi bi-person-fill"></i>
                     </div>
+                    <div class="nutritionist-name">Michael Torres</div>
+                    <div class="nutritionist-specialty">Athletic Performance</div>
+                    <div class="nutritionist-rating">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <span class="bi bi-star-half"></span>
+                        (4.7 - 178 reviews)
+                    </div>
+                    <div class="nutritionist-info">
+                        Sports nutrition and athletic performance optimization. Works with athletes worldwide. 6+ years.
+                    </div>
+                    <a href="book.html" class="btn-primary-large">Book Consultation</a>
+                </div>
 
-                    <!-- Diet Plan 5: PCOS Plan -->
-                    <div class="diet-plan-card">
-                        <div class="diet-plan-icon">
-                            <i class="bi bi-star-fill"></i>
-                        </div>
-                        <h5 class="diet-plan-name">PCOS Management</h5>
-                        <p class="diet-plan-desc">Hormone-balancing nutrition for PCOS, fertility support, and symptom relief</p>
-                        <a href="pay.html" class="diet-plan-btn">Pay</a>
+                <!-- Nutritionist 5 -->
+                <div class="nutritionist-card" onclick="selectNutritionist('Jessica Kim')">
+                    <div class="nutritionist-avatar">
+                        <i class="bi bi-person-fill"></i>
                     </div>
-
-                    <!-- Diet Plan 6: Detox Plan -->
-                    <div class="diet-plan-card">
-                        <div class="diet-plan-icon">
-                            <i class="bi bi-droplet-fill"></i>
-                        </div>
-                        <h5 class="diet-plan-name">Detox Plan</h5>
-                        <p class="diet-plan-desc">Cleanse your body, boost energy, and reset your digestive system naturally</p>
-                        <a href="pay.html" class="diet-plan-btn">Pay</a>
+                    <div class="nutritionist-name">Jessica Kim</div>
+                    <div class="nutritionist-specialty">Postpartum Recovery</div>
+                    <div class="nutritionist-rating">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        (4.9 - 267 reviews)
                     </div>
+                    <div class="nutritionist-info">
+                        Specializes in postpartum nutrition, breastfeeding support, and maternal health recovery.
+                    </div>
+                    <a href="book.html" class="btn-primary-large">Book Consultation</a>
+             </div>
+                <!-- Nutritionist 6 -->
+                <div class="nutritionist-card" onclick="selectNutritionist('Dr. Hassan Ali')">
+                    <div class="nutritionist-avatar">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                    <div class="nutritionist-name">Dr. Hassan Ali</div>
+                    <div class="nutritionist-specialty">Chronic Disease Management</div>
+                    <div class="nutritionist-rating">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        (5.0 - 145 reviews)
+                    </div>
+                    <div class="nutritionist-info">
+                        Expert in managing chronic diseases with nutrition. PhD in Clinical Nutrition. 15+ years experience.
+                    </div>
+                   <a href="book.html" class="btn-primary-large">Book Consultation</a>
                 </div>
             </div>
-
-            <!-- Consultation Options -->
-            <div class="section-header" style="margin-top: 60px; margin-bottom: 40px;">
-                <h3 style="font-size: 28px;">Or Get Expert Guidance</h3>
-                <p>Work with certified nutritionists for personalized support</p>
-            </div>
-
-            <div class="options-grid">
-                <!-- OPTION: Nutritionist -->
-                <div class="option-card">
-                    <div class="option-icon">
-                        <i class="bi bi-person-heart"></i>
-                    </div>
-                    <h3>Consult a Nutritionist</h3>
-                    <p>Get personalized guidance from certified nutritionists matching your specific needs</p>
-
-                    <button class="btn-primary-large" onclick="goToNutritionist()">Choose Nutritionist</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-<script>
-function goToNutritionist() {
-    window.location.href = "ChooseNutritionist.html";
-}
-</script>
-
+        </section>
+    </div>
 </body>
 </html>
