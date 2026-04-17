@@ -531,26 +531,7 @@
       grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
-    .btn-primary-large {
-            padding: 14px 40px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 16px;
-            display: inline-block;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            text-decoration: none;
-        }
 
-        .btn-primary-large:hover {
-            background: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(74, 115, 55, 0.3);
-        }
-        
 
     @keyframes slideDown {
       from { opacity: 0; transform: translateY(-8px); }
@@ -577,15 +558,17 @@
 <body>
 
   <!-- Navbar -->
-  <nav class="navbar-custom">
-    <a href="HomePage.html" class="logo">
-      <i class="bi bi-heart-pulse-fill"></i> NutriAI
+<nav class="navbar-custom">
+  <a href="HomePage.html" class="logo">
+    <i class="bi bi-heart-pulse-fill"></i> NutriAI
+  </a>
 
-                    <a href="login.html" class="btn-primary-large" style="text-decoration: none;">
-                        <i class="bi bi-arrow-left"></i> Log out
-                    </a>
-              
-  </nav>
+  <div class="nav-btns">
+    <a href="login.html" class="btn-nav danger">
+      <i class="bi bi-box-arrow-right"></i> Log out
+    </a>
+  </div>
+</nav>
 
   <!-- Header Banner -->
   <div class="header-banner">
