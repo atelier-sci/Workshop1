@@ -16,6 +16,8 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      padding-top: 90px;
+
     }
 
     .payment-container {
@@ -91,9 +93,142 @@
       color: green;
       margin-top: 15px;
     }
+      /* ===== NAVBAR (GREEN THEME) ===== */
+:root {
+  --primary: #4A7337;
+  --primary-dark: #2d4a23;
+  --primary-light: #6b9d4f;
+}
+
+.navbar-enhanced {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(15px);
+  padding: 15px 5%;
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+  z-index: 1000;
+  border-bottom: 1px solid rgba(74,115,55,0.1);
+}
+
+.nav-container {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+ .btn-primary-large {
+            padding: 14px 40px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            display: inline-block;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-primary-large:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(74, 115, 55, 0.3);
+        }
+
+.logo-modern {
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-modern i {
+  font-size: 24px;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 25px;
+}
+
+.nav-link-animated {
+  position: relative;
+  color: #333;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-link-animated::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0;
+  height: 2px;
+  background: var(--primary);
+  transition: 0.3s;
+}
+
+.nav-link-animated:hover::after,
+.nav-link-animated.active::after {
+  width: 100%;
+}
+
+.auth-links {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-modern {
+  background: var(--primary);
+  color: white;
+  padding: 8px 18px;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.btn-modern:hover {
+  background: var(--primary-dark);
+}
+
+.btn-modern-outline {
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  padding: 8px 18px;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.btn-modern-outline:hover {
+  background: var(--primary);
+  color: white;
+}
   </style>
 </head>
 <body>
+  <!-- NAVBAR -->
+<nav class="navbar-enhanced">
+        <div class="nav-container">
+            <a href="HomePage.html" class="logo-modern">
+                <i class="bi bi-heart-pulse-fill"></i> NutriAI
+            </a>
+            <a href="HomePage.html" class="btn-primary-large" style="text-decoration: none;">
+                <i class="bi bi-arrow-left"></i>Log Out
+            </a>
+        </div>
+</nav>
+
 
 <div class="payment-container">
   <h2>Payment</h2>
