@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NutriAI – Nutritionist Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green:       #4A7337;
+      --accent:      #00695c;
+      --accent-mid:  #26a69a;
+      --accent-light:#e0f2f1;
+      --bg:          #f0fafa;
+      --white:       #ffffff;
+      --border:      #d0eae8;
+      --text:        #0d2b27;
+      --muted:       #6e8c89;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+    }
+
+    /* Navbar */
+    .navbar-custom {
+      background: white; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 28px; position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 1px 12px rgba(0,105,92,0.07);
+    }
+    .logo { font-size: 18px; font-weight: 700; color: var(--green); display: flex; align-items: center; gap: 8px; text-decoration: none; }
+    .nav-right { display: flex; gap: 10px; align-items: center; }
+    .btn-nav {
+      font-size: 13px; padding: 7px 16px; border-radius: 8px;
+      border: 1px solid #ccc; background: white; color: #333;
+      cursor: pointer; display: inline-flex; align-items: center;
+      gap: 6px; text-decoration: none; transition: all 0.2s;
+    }
+    .btn-nav:hover { background: #f0f0f0; }
+    .btn-nav.admin {
+      border-color: #1a237e; color: #1a237e; background: #e8eaf6;
+    }
+    .btn-nav.admin:hover { background: #c5cae9; }
+
+    /* Page body */
+    .page-body {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      padding: 40px 16px 60px; position: relative; overflow: hidden;
+    }
+
+    /* Background decoration */
+    .bg-deco { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+    .deco-wave {
+      position: absolute; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-mid));
+    }
+    .deco-1 { width: 480px; height: 480px; top: -180px; right: -120px; opacity: 0.07; }
+    .deco-2 { width: 280px; height: 280px; bottom: -80px; left: -60px; opacity: 0.05; }
+    .deco-3 { width: 140px; height: 140px; top: 45%; left: 20%; opacity: 0.04; }
+    .bg-dots {
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(0,105,92,0.07) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+
+    /* Card */
+    .login-wrapper {
+      position: relative; z-index: 1;
+      display: flex; width: 100%; max-width: 880px;
+      background: white; border-radius: 24px;
+      overflow: hidden; border: 1px solid var(--border);
+      box-shadow: 0 32px 80px rgba(0,105,92,0.11);
+      animation: fadeUp 0.55s ease both;
+    }
+
+    /* Form first (left) */
+    .form-area {
+      flex: 1; padding: 48px 44px;
+      display: flex; flex-direction: column; justify-content: center;
+      order: 1;
+    }
+
+    .portal-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; padding: 4px 12px; border-radius: 8px;
+      background: var(--accent-light); color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .form-area h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; font-weight: 700; color: var(--text);
+      margin-bottom: 6px; line-height: 1.2;
+    }
+    .form-area .subtitle { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+
+    /* Alert */
+    .alert-msg {
+      display: none; align-items: center; gap: 8px;
+      padding: 11px 14px; border-radius: 9px;
+      font-size: 13px; font-weight: 500; margin-bottom: 18px;
+    }
+    .alert-msg.show { display: flex; }
+    .alert-msg.error { background: #fff0f0; color: #c62828; border: 1px solid #ffcdd2; }
+    .alert-msg.success { background: var(--accent-light); color: var(--accent); border: 1px solid #b2dfdb; }
+
+    /* Inputs */
+    .form-group { margin-bottom: 18px; }
+    .form-group label {
+      font-size: 12px; font-weight: 600; color: #555;
+      display: block; margin-bottom: 6px;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .input-wrap { position: relative; }
+    .input-wrap i.ico {
+      position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+      font-size: 15px; color: #bbb; pointer-events: none; transition: color 0.2s;
+    }
+    .input-wrap input {
+      width: 100%; padding: 11px 14px 11px 40px;
+      font-size: 14px; font-family: 'DM Sans', sans-serif;
+      border: 1.5px solid var(--border); border-radius: 10px;
+      outline: none; background: #f5fdfc; color: var(--text); transition: all 0.25s;
+    }
+    .input-wrap input:focus {
+      background: white; border-color: var(--accent);
+      box-shadow: 0 0 0 3.5px rgba(0,105,92,0.1);
+    }
+    .input-wrap:focus-within i.ico { color: var(--accent); }
+    .toggle-pass {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      font-size: 15px; color: #bbb; padding: 4px; transition: color 0.2s;
+    }
+    .toggle-pass:hover { color: var(--accent); }
+
+    .extras-row {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px;
+    }
+    .remember-label {
+      display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; color: #555;
+    }
+    .remember-label input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--accent); }
+    .forgot-link { font-size: 13px; color: var(--accent); text-decoration: none; font-weight: 500; }
+    .forgot-link:hover { text-decoration: underline; }
+
+    .btn-submit {
+      width: 100%; padding: 13px; border: none; border-radius: 11px;
+      font-size: 15px; font-weight: 600; font-family: 'DM Sans', sans-serif;
+      cursor: pointer; color: white; display: flex; align-items: center;
+      justify-content: center; gap: 8px; transition: all 0.25s;
+      background: linear-gradient(135deg, #00695c, #26a69a);
+      box-shadow: 0 6px 20px rgba(0,105,92,0.25);
+    }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,105,92,0.3); }
+    .btn-submit:active { transform: scale(0.98); }
+    .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+    .divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; color: #ccc; font-size: 12px; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    .hint { text-align: center; font-size: 13px; color: var(--muted); }
+    .hint a { color: var(--green); font-weight: 600; text-decoration: none; }
+    .hint a:hover { text-decoration: underline; }
+
+    /* Side panel (right) */
+    .side-panel {
+      width: 310px; flex-shrink: 0; order: 2;
+      background: linear-gradient(160deg, #00695c 0%, #00796b 50%, #26a69a 100%);
+      padding: 44px 32px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      position: relative; overflow: hidden;
+    }
+    .side-panel::before {
+      content: ''; position: absolute;
+      top: -70px; left: -70px;
+      width: 220px; height: 220px; border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+    }
+    .side-panel::after {
+      content: ''; position: absolute;
+      bottom: -50px; right: -50px;
+      width: 180px; height: 180px; border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .panel-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.22);
+      color: white; font-size: 11px; font-weight: 700;
+      padding: 5px 13px; border-radius: 20px;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      width: fit-content; margin-bottom: 22px;
+    }
+    .panel-icon { font-size: 56px; margin-bottom: 16px; display: block; }
+    .side-panel h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px; font-weight: 700; color: white;
+      margin-bottom: 12px; line-height: 1.2;
+    }
+    .side-panel > div > p {
+      font-size: 13px; color: rgba(255,255,255,0.72); line-height: 1.65; margin-bottom: 30px;
+    }
+    .panel-features { list-style: none; }
+    .panel-features li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 13px; color: rgba(255,255,255,0.82);
+      padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .panel-features li:last-child { border-bottom: none; }
+    .panel-features li i { font-size: 16px; color: rgba(255,255,255,0.9); flex-shrink: 0; }
+    .panel-footer {
+      margin-top: 28px; font-size: 12px;
+      color: rgba(255,255,255,0.45);
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    /* Stats row inside panel */
+    .panel-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px;
+    }
+    .stat-box {
+      background: rgba(255,255,255,0.12); border-radius: 10px;
+      padding: 12px; text-align: center;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .stat-val { font-size: 22px; font-weight: 700; color: white; line-height: 1; }
+    .stat-lbl { font-size: 10px; color: rgba(255,255,255,0.65); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 700px) {
+      .side-panel { display: none; }
+      .form-area { padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar-custom">
+  <a href="HomePage.html" class="logo"><i class="bi bi-heart-pulse-fill"></i> NutriAI</a>
+  <div class="nav-right">
+    <a href="AdminLogin.html" class="btn-nav admin"><i class="bi bi-shield-lock-fill"></i> Admin Login</a>
+    <a href="login.html" class="btn-nav"><i class="bi bi-person"></i> User Login</a>
+  </div>
+</nav>
+
+<div class="page-body">
+  <div class="bg-deco">
+    <div class="bg-dots"></div>
+    <div class="deco-wave deco-1"></div>
+    <div class="deco-wave deco-2"></div>
+    <div class="deco-wave deco-3"></div>
+  </div>
+
+  <div class="login-wrapper">
+
+    <!-- Form (LEFT) -->
+    <div class="form-area">
+      <div class="portal-tag"><i class="bi bi-person-badge-fill"></i> Nutritionist Portal</div>
+      <h3>Welcome Back,<br>Nutritionist</h3>
+      <p class="subtitle">Sign in to your professional workspace</p>
+
+      <div class="alert-msg" id="alertMsg">
+        <i class="bi bi-exclamation-circle-fill" id="alertIcon"></i>
+        <span id="alertText">Invalid credentials. Please try again.</span>
+      </div>
+
+      <form id="loginForm" autocomplete="off">
+        <div class="form-group">
+          <label>Staff Email / License ID</label>
+          <div class="input-wrap">
+            <input type="text" id="nutriId" placeholder="nutritionist@nutriai.com" required>
+            <i class="bi bi-person-badge-fill ico"></i>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-wrap">
+            <input type="password" id="nutriPass" placeholder="••••••••" required>
+            <i class="bi bi-lock-fill ico"></i>
+            <button type="button" class="toggle-pass" onclick="togglePass()">
+              <i class="bi bi-eye" id="passEye"></i>
+            </button>
+          </div>
+        </div>
+        <div class="extras-row">
+          <label class="remember-label">
+            <input type="checkbox" id="remember"> Keep me signed in
+          </label>
+          <a href="ForgotPassword.html" class="forgot-link">Forgot password?</a>
+        </div>
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <span id="btnText"><i class="bi bi-box-arrow-in-right"></i> Sign In to Workspace</span>
+          <span class="spinner-border spinner-border-sm d-none" id="spinner"></span>
+        </button>
+      </form>
+
+      <div class="divider">Professional Access Only</div>
+      <p class="hint">Not a nutritionist? <a href="AdminLogin.html">Admin Login</a> · <a href="login.html">User Login</a></p>
+    </div>
+
+    <!-- Side Panel (RIGHT) -->
+    <div class="side-panel">
+      <div>
+        <div class="panel-badge"><i class="bi bi-heart-pulse-fill"></i> Professional Access</div>
+        <span class="panel-icon">🩺</span>
+        <h2>Nutritionist<br>Workspace</h2>
+
+        <div class="panel-stats">
+          <div class="stat-box">
+            <div class="stat-val">248</div>
+            <div class="stat-lbl">Active Clients</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">12</div>
+            <div class="stat-lbl">Today's Appts</div>
+          </div>
+        </div>
+
+        <ul class="panel-features">
+          <li><i class="bi bi-people"></i> View & manage your clients</li>
+          <li><i class="bi bi-calendar2-heart"></i> Appointment scheduling</li>
+          <li><i class="bi bi-journal-medical"></i> Create & edit diet plans</li>
+          <li><i class="bi bi-graph-up-arrow"></i> Track client progress</li>
+          <li><i class="bi bi-chat-dots-fill"></i> Client messaging</li>
+        </ul>
+      </div>
+      <div class="panel-footer"><i class="bi bi-lock-fill"></i> Encrypted & secure connection</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function togglePass() {
+    const i = document.getElementById('nutriPass');
+    const e = document.getElementById('passEye');
+    i.type = i.type === 'password' ? 'text' : 'password';
+    e.className = i.type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btnText = document.getElementById('btnText');
+    const spinner = document.getElementById('spinner');
+    const btn = document.getElementById('submitBtn');
+    const alertEl = document.getElementById('alertMsg');
+
+    alertEl.className = 'alert-msg';
+    btnText.classList.add('d-none');
+    spinner.classList.remove('d-none');
+    btn.disabled = true;
+
+    const id = document.getElementById('nutriId').value.trim();
+    const pass = document.getElementById('nutriPass').value;
+
+    await new Promise(r => setTimeout(r, 1200));
+
+    try {
+      // Replace with real API call
+      if (id === 'nutri@nutriai.com' && pass === 'nutri123') {
+        localStorage.setItem('staffRole', 'nutritionist');
+        localStorage.setItem('staffId', id);
+        btnText.innerHTML = '<i class="bi bi-check-circle-fill"></i> Access Granted!';
+        btnText.classList.remove('d-none');
+        spinner.classList.add('d-none');
+        alertEl.className = 'alert-msg success show';
+        document.getElementById('alertIcon').className = 'bi bi-check-circle-fill';
+        document.getElementById('alertText').textContent = 'Welcome! Redirecting to your workspace…';
+        setTimeout(() => window.location.href = 'NutritionistDashboard.html', 1500);
+      } else {
+        throw new Error('Invalid Staff Email or password.');
+      }
+    } catch (err) {
+      btnText.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> Sign In to Workspace';
+      btnText.classList.remove('d-none');
+      spinner.classList.add('d-none');
+      btn.disabled = false;
+      alertEl.className = 'alert-msg error show';
+      document.getElementById('alertIcon').className = 'bi bi-exclamation-circle-fill';
+      document.getElementById('alertText').textContent = err.message;
+    }
+  });
+</script>
+</body>
+</html>
