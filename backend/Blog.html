@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/style.css">
+
+    <title>Blog - Weight Loss</title>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar-enhanced">
+    <div class="nav-container">
+        <a href="/" class="logo-modern">
+            <i class="bi bi-heart-pulse-fill"></i> NutriAI
+        </a>
+
+        <ul class="auth-links">
+            <li><a href="HomePage.html" class="btn-modern-outline">Back to Home</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main>
+
+<!-- HERO -->
+<section class="blog-hero">
+    <div class="hero-background">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="blog-hero-content">
+        <h1>Expert Nutrition Insights</h1>
+        <p>Discover evidence-based tips, recipes, and stories</p>
+
+        <div class="search-box">
+            <input type="text" placeholder="Search articles..." class="search-input">
+            <button class="search-btn"><i class="bi bi-search"></i></button>
+        </div>
+    </div>
+</section>
+
+<!-- BLOG SECTION -->
+<section class="blog-section">
+    <div class="container-custom">
+
+        <div class="blog-header">
+            <h2>Latest Articles</h2>
+        </div>
+
+        <!-- هنا تتعرض المقالات -->
+        <div class="blog-grid" id="blogGrid"></div>
+
+    </div>
+</section>
+ <footer class="footer-modern">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3 class="footer-logo"><i class="bi bi-heart-pulse-fill"></i> NutriAI</h3>
+                    <p>Transforming lives through personalized nutrition and AI-powered health solutions.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-twitter"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="Blog.html">Blog</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#ai-feature">AI Features</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Team</a></li>
+                        <li><a href="#">Career</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">HIPAA Compliance</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact & Support</h4>
+                    <p><i class="bi bi-envelope"></i> support@nutriai.com</p>
+                    <p><i class="bi bi-telephone"></i> +1 (800) NUTRIAI</p>
+                    <p><i class="bi bi-geo-alt"></i> Global Support Center</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 NutriAI. All rights reserved. | Designed for Health & Wellness</p>
+            </div>
+        </div>
+    </footer>
+
+</main>
+
+<script>
+const container = document.getElementById("blogGrid");
+
+// LOAD ALL BLOGS
+async function loadBlogs() {
+    const res = await fetch("http://localhost:5000/api/blogs");
+    const blogs = await res.json();
+
+    renderBlogs(blogs);
+}
+
+// RENDER
+
+function renderBlogs(blogs) {
+    container.innerHTML = "";
+
+    blogs.forEach(blog => {
+        container.innerHTML += `
+        <article class="blog-card-modern">
+            <div class="blog-content">
+                <h3>${blog.title}</h3>
+                <p>${blog.summary}</p>
+
+                <div class="blog-author">
+                    <span><strong>${blog.author}</strong></span>
+                </div>
+
+                <a href="article.html?id=${blog._id}" class="read-full">
+                    Read More
+                </a>
+            </div>
+        </article>
+        `;
+    });
+}
+
+// SEARCH
+document.querySelector(".search-input").addEventListener("input", async (e) => {
+    const value = e.target.value;
+
+    if (value.trim() === "") {
+        loadBlogs();
+        return;
+    }
+
+    const res = await fetch(
+        `http://localhost:5000/api/blogs/search?q=${value}`
+    );
+    const data = await res.json();
+    renderBlogs(data);
+});
+
+// INIT
+loadBlogs();
+</script>
+
+</body>
+</html>
