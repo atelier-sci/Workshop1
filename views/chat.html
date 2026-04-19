@@ -592,7 +592,7 @@
 <!-- HEADER -->
 <header>
   <!-- Back link changes based on role; default to user dashboard -->
-  <a class="header-back" href="UserDashboard.html" id="backLink">
+  <a class="header-back" href="NutritionistPanel.html" id="backLink">
     <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
     </svg>
@@ -777,7 +777,10 @@
     // Flip "ME" avatar for nutritionist side
     document.querySelectorAll('.msg.user .msg-avatar').forEach(el => el.textContent = 'PT');
     document.querySelectorAll('.msg.user .msg-name').forEach(el => el.textContent = 'Patient');
-  }
+  } else {
+  document.getElementById('backLink').href        = 'UserDashboard.html';
+  document.getElementById('backLabel').textContent = 'My Dashboard';
+}
 
   /* ── Auto-resize textarea ────────────────────────────────────── */
   function autoResize(el) {
