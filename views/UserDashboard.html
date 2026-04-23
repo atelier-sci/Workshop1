@@ -531,6 +531,14 @@
       grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
+     .plan-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-icon i {
+  font-size: 16px;
+}
 
 
     @keyframes slideDown {
@@ -757,6 +765,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
     // ══════════════════════════════════════
     //  TOAST
@@ -903,6 +912,7 @@
           <span class="plan-name">${escapeHTML(name)}</span>
         </div>
         <div class="plan-actions">
+          <button class="btn-icon" title="Download PDF" onclick="downloadPlan(this)"><i class="bi bi-download"></i></button>
           <button class="btn-icon" title="Edit" onclick="editPlan(this)"><i class="bi bi-pencil"></i></button>
           <button class="btn-icon delete" title="Delete" onclick="deletePlan(this)"><i class="bi bi-trash3"></i></button>
         </div>
@@ -922,7 +932,36 @@
       if (e.key === 'Enter') { e.preventDefault(); confirmAddPlan(); }
       if (e.key === 'Escape') { cancelAddPlan(); }
     });
+     // ══════════════════════════════════════
+    // DOWNLOAD PLAN
+    // ══════════════════════════════════════
 
+    function downloadPlan(btn) {
+    const { jsPDF } = window.jspdf;
+
+     const li = btn.closest('.list-group-item');
+     const planName = li.querySelector('.plan-name').textContent;
+
+     const doc = new jsPDF();
+
+    // Title
+  doc.setFontSize(18);
+  doc.text("NutriAI Diet Plan", 20, 20);
+
+  // Plan Name
+  doc.setFontSize(14);
+  doc.text("Plan Name:", 20, 40);
+  doc.text(planName, 20, 50);
+
+  // Fake content (you can replace later with real meals)
+  doc.setFontSize(12);
+  doc.text("Sample Plan:", 20, 70);
+  doc.text("- Breakfast: Oatmeal + Fruits", 20, 80);
+  doc.text("- Lunch: Chicken Salad", 20, 90);
+  doc.text("- Dinner: Grilled Fish + Vegetables", 20, 100);
+
+  doc.save(planName + ".pdf");
+}
     // ══════════════════════════════════════
     //  DELETE PLAN
     // ══════════════════════════════════════
