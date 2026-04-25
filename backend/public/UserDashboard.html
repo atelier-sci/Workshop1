@@ -59,11 +59,7 @@
       margin: 20px 24px 0;
       border-radius: 12px;
     }
-    .header-banner h2 {
-      font-size: 22px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
+    .header-banner h2 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
     .header-banner p { font-size: 14px; opacity: 0.85; margin: 0; }
 
     /* ── Content Area ── */
@@ -78,10 +74,7 @@
       transition: transform 0.2s, box-shadow 0.2s;
       height: 100%;
     }
-    .dashboard-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-    }
+    .dashboard-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
     .dashboard-card h3 {
       font-size: 17px;
       font-weight: 600;
@@ -92,465 +85,220 @@
       color: #222;
     }
     .dashboard-card h3 i { color: #4A7337; font-size: 20px; }
-    .dashboard-card > p {
-      font-size: 14px;
-      color: #666;
-    }
+    .dashboard-card > p { font-size: 14px; color: #666; }
 
     /* ── Profile Card ── */
     .profile-avatar {
-      width: 70px;
-      height: 70px;
+      width: 70px; height: 70px;
       border-radius: 50%;
       background: linear-gradient(135deg, #4A7337, #2d4a23);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       margin: 0 auto 16px;
     }
     .profile-avatar i { font-size: 30px; color: white; }
-
-    .profile-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 10px;
-      margin: 14px 0;
-    }
-    .profile-field {
-      background: #f5f7fa;
-      border-radius: 8px;
-      padding: 10px 14px;
-    }
+    .profile-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 14px 0; }
+    .profile-field { background: #f5f7fa; border-radius: 8px; padding: 10px 14px; }
     .profile-field label {
-      font-size: 11px;
-      color: #888;
-      display: block;
-      margin-bottom: 2px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      font-weight: 600;
+      font-size: 11px; color: #888; display: block; margin-bottom: 2px;
+      text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600;
     }
     .profile-field span.editable-value {
-      font-size: 14px;
-      color: #222;
-      font-weight: 500;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 2px 4px;
-      border-radius: 4px;
-      transition: background 0.2s;
+      font-size: 14px; color: #222; font-weight: 500; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 2px 4px; border-radius: 4px; transition: background 0.2s;
     }
     .profile-field span.editable-value:hover { background: #e8f1e4; }
     .profile-field span.editable-value::after {
-      content: '\F4C9';
-      font-family: 'bootstrap-icons';
-      font-size: 11px;
-      color: #4A7337;
-      opacity: 0;
-      transition: opacity 0.2s;
+      content: '\F4C9'; font-family: 'bootstrap-icons'; font-size: 11px;
+      color: #4A7337; opacity: 0; transition: opacity 0.2s;
     }
     .profile-field span.editable-value:hover::after { opacity: 1; }
     .profile-field .edit-input {
-      font-size: 14px;
-      font-weight: 500;
-      color: #222;
-      border: 2px solid #4A7337;
-      border-radius: 6px;
-      padding: 4px 8px;
-      outline: none;
-      width: 100%;
-      background: white;
-      box-shadow: 0 0 0 3px rgba(74, 115, 55, 0.15);
-    }
-    .profile-field .edit-input:focus {
-      box-shadow: 0 0 0 4px rgba(74, 115, 55, 0.25);
+      font-size: 14px; font-weight: 500; color: #222;
+      border: 2px solid #4A7337; border-radius: 6px; padding: 4px 8px;
+      outline: none; width: 100%; background: white;
+      box-shadow: 0 0 0 3px rgba(74,115,55,0.15);
     }
 
-    /* ── Health Stats Row ── */
-    .health-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px;
-      margin: 14px 0;
-    }
-    .stat-box {
-      background: #f5f7fa;
-      border-radius: 8px;
-      padding: 10px;
-      text-align: center;
-    }
-    .stat-box .stat-value {
-      font-size: 18px;
-      font-weight: 700;
-      color: #4A7337;
-    }
-    .stat-box .stat-label {
-      font-size: 10px;
-      color: #888;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-top: 2px;
-    }
+    /* ── Health Stats ── */
+    .health-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 14px 0; }
+    .stat-box { background: #f5f7fa; border-radius: 8px; padding: 10px; text-align: center; }
+    .stat-box .stat-value { font-size: 18px; font-weight: 700; color: #4A7337; }
+    .stat-box .stat-label { font-size: 10px; color: #888; text-transform: uppercase; letter-spacing: 0.04em; margin-top: 2px; }
 
     /* ── Buttons ── */
     .btn-green {
-      background: #4A7337;
-      color: white;
-      border: none;
-      padding: 9px 18px;
-      border-radius: 8px;
-      font-size: 13px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      text-decoration: none;
-      transition: background 0.2s;
+      background: #4A7337; color: white; border: none;
+      padding: 9px 18px; border-radius: 8px; font-size: 13px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px;
+      text-decoration: none; transition: background 0.2s;
     }
     .btn-green:hover { background: #2d4a23; color: white; }
 
     /* ── Diet Plans List ── */
     .list-group { border-radius: 8px; overflow: hidden; margin: 14px 0; }
     .list-group-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      justify-content: space-between;
-      padding: 10px 14px;
-      border: 1px solid #e0e0e0;
-      background: white;
-      transition: background 0.2s;
+      display: flex; align-items: center; gap: 8px; font-size: 14px;
+      justify-content: space-between; padding: 10px 14px;
+      border: 1px solid #e0e0e0; background: white; transition: background 0.2s;
     }
     .list-group-item:hover { background: #f9fdf9; }
     .list-group-item .plan-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0;
     }
     .list-group-item .plan-left::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #4A7337;
-      flex-shrink: 0;
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: #4A7337; flex-shrink: 0;
     }
     .plan-name {
-      cursor: pointer;
-      padding: 2px 4px;
-      border-radius: 4px;
-      transition: background 0.2s;
+      cursor: pointer; padding: 2px 4px; border-radius: 4px;
+      transition: background 0.2s; white-space: nowrap; overflow: hidden;
+      text-overflow: ellipsis; max-width: 260px;
     }
     .plan-name:hover { background: #e8f1e4; }
+
+    /* ── Plan Actions ── */
     .plan-actions {
-      display: flex;
-      gap: 4px;
-      opacity: 0;
-      transition: opacity 0.2s;
+      display: flex; gap: 4px;
+      opacity: 1; flex-shrink: 0;
     }
-    .list-group-item:hover .plan-actions { opacity: 1; }
+
     .btn-icon {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 14px;
-      padding: 4px 6px;
-      border-radius: 6px;
-      transition: background 0.2s, color 0.2s;
-      color: #888;
+      background: none; border: none; cursor: pointer; font-size: 14px;
+      padding: 4px 6px; border-radius: 6px; transition: background 0.2s, color 0.2s; color: #888;
     }
     .btn-icon:hover { background: #f0f0f0; color: #333; }
     .btn-icon.delete:hover { background: #fff0f0; color: #dc3545; }
 
+    /* ── Download button style ── */
+    .btn-icon.download { color: #1565c0; }
+    .btn-icon.download:hover { background: #e3f2fd; color: #0d47a1; }
+
     .plan-count {
-      background: #e8f1e4;
-      color: #4A7337;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 2px 8px;
-      border-radius: 10px;
-      margin-left: auto;
+      background: #e8f1e4; color: #4A7337; font-size: 11px; font-weight: 600;
+      padding: 2px 8px; border-radius: 10px; margin-left: auto;
     }
 
     /* ── Add Plan Form ── */
     .add-plan-form {
-      display: none;
-      align-items: center;
-      gap: 8px;
-      margin-top: 12px;
+      display: none; align-items: center; gap: 8px; margin-top: 12px;
       animation: slideDown 0.25s ease;
     }
     .add-plan-form.active { display: flex; }
     .add-plan-form input {
-      flex: 1;
-      font-size: 13px;
-      padding: 8px 12px;
-      border: 2px solid #4A7337;
-      border-radius: 8px;
-      outline: none;
-      background: white;
-      box-shadow: 0 0 0 3px rgba(74, 115, 55, 0.12);
-    }
-    .add-plan-form input:focus {
-      box-shadow: 0 0 0 4px rgba(74, 115, 55, 0.22);
+      flex: 1; font-size: 13px; padding: 8px 12px;
+      border: 2px solid #4A7337; border-radius: 8px; outline: none; background: white;
+      box-shadow: 0 0 0 3px rgba(74,115,55,0.12);
     }
     .btn-sm-green {
-      background: #4A7337;
-      color: white;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 8px;
-      font-size: 13px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
+      background: #4A7337; color: white; border: none;
+      padding: 8px 14px; border-radius: 8px; font-size: 13px; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 4px;
     }
     .btn-sm-green:hover { background: #2d4a23; }
     .btn-sm-cancel {
-      background: #f0f0f0;
-      color: #666;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 8px;
-      font-size: 13px;
-      cursor: pointer;
+      background: #f0f0f0; color: #666; border: none;
+      padding: 8px 14px; border-radius: 8px; font-size: 13px; cursor: pointer;
     }
     .btn-sm-cancel:hover { background: #e0e0e0; }
-
     .plan-edit-input {
-      font-size: 14px;
-      border: 2px solid #4A7337;
-      border-radius: 6px;
-      padding: 3px 8px;
-      outline: none;
-      background: white;
-      box-shadow: 0 0 0 3px rgba(74, 115, 55, 0.15);
-      width: 200px;
+      font-size: 14px; border: 2px solid #4A7337; border-radius: 6px;
+      padding: 3px 8px; outline: none; background: white;
+      box-shadow: 0 0 0 3px rgba(74,115,55,0.15); width: 200px;
     }
-
-    .empty-plans {
-      text-align: center;
-      padding: 20px;
-      color: #aaa;
-      font-size: 13px;
-    }
+    .empty-plans { text-align: center; padding: 20px; color: #aaa; font-size: 13px; }
     .empty-plans i { font-size: 28px; display: block; margin-bottom: 6px; }
 
     /* ── Action Buttons Row ── */
-    .action-buttons-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      margin-top: 20px;
-    }
+    .action-buttons-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 20px; }
     .action-card {
       background: linear-gradient(135deg, #ffffff 0%, #f8fafb 100%);
-      border-radius: 14px;
-      border: 1px solid rgba(74, 115, 55, 0.1);
-      padding: 28px 24px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      color: inherit;
-      position: relative;
-      overflow: hidden;
+      border-radius: 14px; border: 1px solid rgba(74,115,55,0.1);
+      padding: 28px 24px; text-align: center; cursor: pointer;
+      transition: all 0.3s ease; text-decoration: none; color: inherit;
+      position: relative; overflow: hidden;
     }
-    .action-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 50px rgba(74, 115, 55, 0.15);
-      border-color: #4A7337;
-    }
+    .action-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(74,115,55,0.15); border-color: #4A7337; }
     .action-card .action-icon {
-      width: 60px;
-      height: 60px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 14px;
-      font-size: 26px;
-      transition: transform 0.3s ease;
+      width: 60px; height: 60px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px; font-size: 26px; transition: transform 0.3s ease;
     }
     .action-card:hover .action-icon { transform: scale(1.1); }
-
-    .action-card.ai-card .action-icon {
-      background: linear-gradient(135deg, #4A7337, #6b9d4f);
-      color: white;
-    }
+    .action-card.ai-card .action-icon,
     .action-card.consult-card .action-icon {
-      background: linear-gradient(135deg, #4A7337, #6b9d4f);
-      color: white;
+      background: linear-gradient(135deg, #4A7337, #6b9d4f); color: white;
     }
-    .action-card h4 {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: #222;
-    }
-    .action-card p {
-      font-size: 13px;
-      color: #888;
-      margin: 0;
-    }
+    .action-card h4 { font-size: 16px; font-weight: 600; margin-bottom: 6px; color: #222; }
+    .action-card p  { font-size: 13px; color: #888; margin: 0; }
     .action-card .action-arrow {
-      margin-top: 12px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #4A7337;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      opacity: 0;
-      transform: translateY(6px);
-      transition: all 0.3s ease;
+      margin-top: 12px; font-size: 13px; font-weight: 600; color: #4A7337;
+      display: inline-flex; align-items: center; gap: 4px;
+      opacity: 0; transform: translateY(6px); transition: all 0.3s ease;
     }
-    .action-card:hover .action-arrow {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .action-card.consult-card .action-arrow { color: #1976d2; }
+    .action-card:hover .action-arrow { opacity: 1; transform: translateY(0); }
 
     /* ── Toast ── */
     .save-toast {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: #4A7337;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 6px 20px rgba(74, 115, 55, 0.3);
-      transform: translateY(80px);
-      opacity: 0;
-      transition: all 0.3s ease;
-      z-index: 9999;
+      position: fixed; bottom: 24px; right: 24px;
+      background: #4A7337; color: white; padding: 12px 20px;
+      border-radius: 10px; font-size: 13px; font-weight: 500;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 6px 20px rgba(74,115,55,0.3);
+      transform: translateY(80px); opacity: 0;
+      transition: all 0.3s ease; z-index: 9999;
     }
     .save-toast.show { transform: translateY(0); opacity: 1; }
 
+    /* ── Download Toast ── */
+    .download-toast {
+      position: fixed; bottom: 24px; left: 24px;
+      background: #1565c0; color: white; padding: 12px 20px;
+      border-radius: 10px; font-size: 13px; font-weight: 500;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 6px 20px rgba(21,101,192,0.3);
+      transform: translateY(80px); opacity: 0;
+      transition: all 0.3s ease; z-index: 9999;
+    }
+    .download-toast.show { transform: translateY(0); opacity: 1; }
+
     /* ── Modal ── */
     .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
-      align-items: center;
-      justify-content: center;
-      backdrop-filter: blur(4px);
+      display: none; position: fixed; top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.5); z-index: 1000;
+      align-items: center; justify-content: center; backdrop-filter: blur(4px);
     }
     .modal-overlay.active { display: flex; }
     .modal-box {
-      background: white;
-      border-radius: 16px;
-      padding: 28px;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-      animation: modalIn 0.3s ease;
-      position: relative;
+      background: white; border-radius: 16px; padding: 28px; width: 90%; max-width: 500px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15); animation: modalIn 0.3s ease; position: relative;
     }
-    .modal-box h3 {
-      font-size: 18px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 16px;
-      color: #222;
-    }
+    .modal-box h3 { font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; color: #222; }
     .modal-box h3 i { color: #4A7337; }
     .modal-close {
-      position: absolute;
-      top: 16px;
-      right: 16px;
-      background: #f0f0f0;
-      border: none;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 16px;
-      color: #666;
-      transition: all 0.2s;
+      position: absolute; top: 16px; right: 16px; background: #f0f0f0; border: none;
+      width: 32px; height: 32px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; cursor: pointer;
+      font-size: 16px; color: #666; transition: all 0.2s;
     }
     .modal-close:hover { background: #e0e0e0; color: #333; }
-
     .modal-box .form-control {
-      font-size: 13px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      padding: 10px 12px;
-      margin-bottom: 12px;
+      font-size: 13px; border-radius: 8px; border: 1px solid #ddd;
+      padding: 10px 12px; margin-bottom: 12px;
     }
-    .modal-box .form-control:focus {
-      border-color: #4A7337;
-      box-shadow: 0 0 0 3px rgba(74, 115, 55, 0.12);
-    }
-    .modal-box .form-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: #555;
-      margin-bottom: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-    .modal-result {
-      margin-top: 14px;
-      padding: 14px;
-      border-radius: 10px;
-      font-size: 14px;
-      display: none;
-    }
+    .modal-box .form-control:focus { border-color: #4A7337; box-shadow: 0 0 0 3px rgba(74,115,55,0.12); }
+    .modal-box .form-label { font-size: 12px; font-weight: 600; color: #555; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .modal-result { margin-top: 14px; padding: 14px; border-radius: 10px; font-size: 14px; display: none; }
     .modal-result.show { display: block; }
-    .modal-result.info {
-      background: #e8f5e9;
-      color: #1e7e34;
-      border: 1px solid #c8e6c9;
-    }
-    .modal-result.success {
-      background: #e3f2fd;
-      color: #1565c0;
-      border: 1px solid #bbdefb;
-    }
+    .modal-result.info { background: #e8f5e9; color: #1e7e34; border: 1px solid #c8e6c9; }
+    .modal-result.success { background: #e3f2fd; color: #1565c0; border: 1px solid #bbdefb; }
 
-    .date-time-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
     .btn-primary-large {
-            padding: 14px 40px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 16px;
-            display: inline-block;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .btn-primary-large:hover {
-            background: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(74, 115, 55, 0.3);
-        }
-        
+      padding: 14px 40px; background: #4A7337; color: white; border: none;
+      border-radius: 50px; font-weight: 700; font-size: 16px; display: inline-block;
+      transition: all 0.3s; cursor: pointer; text-decoration: none;
+    }
+    .btn-primary-large:hover { background: #2d4a23; transform: translateY(-3px); box-shadow: 0 15px 35px rgba(74,115,55,0.3); color: white; }
 
     @keyframes slideDown {
       from { opacity: 0; transform: translateY(-8px); }
@@ -566,12 +314,10 @@
     }
     .plan-new { animation: fadeIn 0.3s ease; }
 
-    /* ── Responsive ── */
     @media (max-width: 768px) {
       .action-buttons-row { grid-template-columns: 1fr; }
       .health-stats { grid-template-columns: 1fr 1fr 1fr; }
     }
-    
   </style>
 </head>
 <body>
@@ -580,11 +326,10 @@
   <nav class="navbar-custom">
     <a href="HomePage.html" class="logo">
       <i class="bi bi-heart-pulse-fill"></i> NutriAI
-
-                    <a href="login.html" class="btn-primary-large" style="text-decoration: none;">
-                        <i class="bi bi-arrow-left"></i> Log out
-                    </a>
-              
+    </a>
+    <a href="login.html" class="btn-primary-large" style="text-decoration:none; padding: 8px 20px; font-size:13px;">
+      <i class="bi bi-box-arrow-left"></i> Log out
+    </a>
   </nav>
 
   <!-- Header Banner -->
@@ -600,14 +345,11 @@
       <!-- LEFT: Profile Card -->
       <div class="col-md-5 mb-3">
         <div id="profile" class="dashboard-card">
-          <div class="profile-avatar">
-            <i class="bi bi-person-fill"></i>
-          </div>
-          <h3 style="justify-content: center;"><i class="bi bi-person"></i> My Profile</h3>
-          <p style="font-size:12px; color:#999; text-align:center; margin-bottom: 4px;">
+          <div class="profile-avatar"><i class="bi bi-person-fill"></i></div>
+          <h3 style="justify-content:center;"><i class="bi bi-person"></i> My Profile</h3>
+          <p style="font-size:12px;color:#999;text-align:center;margin-bottom:4px;">
             <i class="bi bi-info-circle"></i> Click any field to edit
           </p>
-
           <div class="profile-grid">
             <div class="profile-field">
               <label><i class="bi bi-person-badge"></i> Name</label>
@@ -626,8 +368,6 @@
               <span class="editable-value" data-field="goal">—</span>
             </div>
           </div>
-
-          <!-- Health Stats -->
           <div class="health-stats">
             <div class="stat-box">
               <div class="stat-value" id="stat-weight">—</div>
@@ -642,8 +382,7 @@
               <div class="stat-label">Age</div>
             </div>
           </div>
-
-          <div style="text-align: center; margin-top: 10px;">
+          <div style="text-align:center;margin-top:10px;">
             <button class="btn-green" id="editAllBtn"><i class="bi bi-pencil"></i> Edit Profile</button>
           </div>
         </div>
@@ -651,108 +390,84 @@
 
       <!-- RIGHT: Diet Plans Card -->
       <div class="col-md-7 mb-3">
-        <div id="diet" class="dashboard-card">
+        <div id="diet" class="dashboard-card" style="display:flex; flex-direction:column;">
           <h3>
             <i class="bi bi-journal-text"></i> Diet Plans
             <span class="plan-count" id="planCount">0 plans</span>
           </h3>
-          <p>Your personalized meal plans <span style="font-size:12px; color:#999;">— hover to edit or delete</span></p>
+          <p>Your personalized meal plans <span style="font-size:12px;color:#999;">— hover to download</span></p>
 
-          <ul class="list-group" id="planList">
-            <!-- Plans loaded dynamically -->
-          </ul>
+          <ul class="list-group" id="planList"></ul>
 
-          <!-- Empty State -->
           <div class="empty-plans" id="emptyPlans">
             <i class="bi bi-journal-x"></i> No plans yet. Add your first plan!
           </div>
 
-          <!-- Add Plan Form -->
-          <div class="add-plan-form" id="addPlanForm" style="display: none;">
+          <div class="add-plan-form" id="addPlanForm" style="display:none;">
             <input type="text" id="newPlanInput" placeholder="e.g. Keto Plan, Vegan Plan…" maxlength="50">
             <button class="btn-sm-green" onclick="confirmAddPlan()"><i class="bi bi-check-lg"></i> Add</button>
             <button class="btn-sm-cancel" onclick="cancelAddPlan()">Cancel</button>
           </div>
 
-          <button class="btn-green mt-2" id="addPlanBtn" onclick="showAddPlanForm()" style="display: none;">
-            <i class="bi bi-plus-circle"></i> Get New Plan
-          </button>
+          <div style="flex:1;"></div>
+
+          <div style="text-align: center; margin-top: 16px; padding-top: 16px; border-top: 1px solid #eee;">
+            <button class="btn-green" id="downloadPlanBtn" onclick="downloadSelectedPlan()">
+              <i class="bi bi-file-earmark-arrow-down"></i> Download Plan
+            </button>
+          </div>
+
         </div>
       </div>
     </div>
 
-    <!-- ACTION BUTTONS ROW -->
+    <!-- Action Buttons -->
     <div class="action-buttons-row">
-
-      <!-- Food Recognition Button -->
       <div class="action-card ai-card" onclick="window.location.href='AIAnalyzer.html'">
-        <div class="action-icon">
-          <i class="bi bi-camera"></i>
-        </div>
+        <div class="action-icon"><i class="bi bi-camera"></i></div>
         <h4>Food Recognition (AI)</h4>
         <p>Upload a meal photo to detect calories & nutrients</p>
-        <div class="action-arrow">
-          Get Started <i class="bi bi-arrow-right"></i>
-        </div>
+        <div class="action-arrow">Get Started <i class="bi bi-arrow-right"></i></div>
       </div>
-
-      <!-- Book Consultation Button -->
       <div class="action-card consult-card" onclick="window.location.href='ChooseNutritionist.html'">
-        <div class="action-icon">
-          <i class="bi bi-calendar-check"></i>
-        </div>
+        <div class="action-icon"><i class="bi bi-calendar-check"></i></div>
         <h4>Book Consultation</h4>
         <p>Schedule a session with a certified nutritionist</p>
-        <div class="action-arrow">
-          Book Now <i class="bi bi-arrow-right"></i>
-   
-        </div>
+        <div class="action-arrow">Book Now <i class="bi bi-arrow-right"></i></div>
       </div>
-
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════ -->
   <!-- MODAL: Food Recognition -->
-  <!-- ═══════════════════════════════════════════ -->
   <div class="modal-overlay" id="aiModal">
     <div class="modal-box">
       <button class="modal-close" onclick="closeAIModal()"><i class="bi bi-x"></i></button>
       <h3><i class="bi bi-camera"></i> Food Recognition (AI)</h3>
-      <p style="font-size:13px; color:#888; margin-bottom:16px;">Upload your meal image to detect calories and nutrients.</p>
-
+      <p style="font-size:13px;color:#888;margin-bottom:16px;">Upload your meal image to detect calories and nutrients.</p>
       <label class="form-label">Upload Image</label>
       <input type="file" class="form-control" accept="image/*" id="foodImageInput">
-
       <div style="margin-top:16px;">
         <button class="btn-green" onclick="analyzeFood()"><i class="bi bi-cpu"></i> Analyze Food</button>
       </div>
-
       <div class="modal-result info" id="aiResult">
         <i class="bi bi-info-circle"></i> <span id="aiResultText">Calories will appear here...</span>
       </div>
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════ -->
   <!-- MODAL: Book Consultation -->
-  <!-- ═══════════════════════════════════════════ -->
   <div class="modal-overlay" id="consultModal">
     <div class="modal-box">
       <button class="modal-close" onclick="closeConsultModal()"><i class="bi bi-x"></i></button>
       <h3><i class="bi bi-calendar-check"></i> Book Consultation</h3>
-      <p style="font-size:13px; color:#888; margin-bottom:16px;">Schedule a session with a nutritionist.</p>
-
+      <p style="font-size:13px;color:#888;margin-bottom:16px;">Schedule a session with a nutritionist.</p>
       <label class="form-label">Select Date</label>
       <input type="date" class="form-control" id="consultDate">
-
       <label class="form-label">Select Time</label>
       <input type="time" class="form-control" id="consultTime">
-
       <div style="margin-top:16px;">
         <button class="btn-green" onclick="bookConsultation()"><i class="bi bi-check-circle"></i> Book Now</button>
       </div>
-
       <div class="modal-result success" id="consultResult">
         <i class="bi bi-check-circle-fill"></i> <span id="consultResultText">Your appointment is confirmed!</span>
       </div>
@@ -764,6 +479,13 @@
     <i class="bi bi-check-circle-fill"></i> <span id="toastMsg">Saved!</span>
   </div>
 
+  <!-- Download Toast -->
+  <div class="download-toast" id="downloadToast">
+    <i class="bi bi-file-earmark-arrow-down-fill"></i> <span id="downloadToastMsg">Plan downloaded!</span>
+  </div>
+
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     // ══════════════════════════════════════
@@ -773,22 +495,29 @@
       const toast = document.getElementById('saveToast');
       document.getElementById('toastMsg').textContent = msg;
       toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2000);
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    function showDownloadToast(msg) {
+      const toast = document.getElementById('downloadToast');
+      document.getElementById('downloadToastMsg').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
     // ══════════════════════════════════════
-    //  LOAD USER DATA FROM LOCAL STORAGE
+    //  LOAD USER DATA
     // ══════════════════════════════════════
     function loadUserData() {
       const user = JSON.parse(localStorage.getItem('user'));
       if (user) {
-        document.querySelector('[data-field="name"]').textContent = user.fullName || '—';
-        document.querySelector('[data-field="email"]').textContent = user.email || '—';
+        document.querySelector('[data-field="name"]').textContent  = user.fullName     || '—';
+        document.querySelector('[data-field="email"]').textContent = user.email        || '—';
         document.querySelector('[data-field="health"]').textContent = user.healthStatus || '—';
-        document.querySelector('[data-field="goal"]').textContent = formatGoal(user.goal) || '—';
+        document.querySelector('[data-field="goal"]').textContent  = formatGoal(user.goal) || '—';
         document.getElementById('stat-weight').textContent = user.weight || '—';
         document.getElementById('stat-height').textContent = user.height || '—';
-        document.getElementById('stat-age').textContent = user.age || '—';
+        document.getElementById('stat-age').textContent    = user.age    || '—';
         updateBannerName(user.fullName);
       }
     }
@@ -796,17 +525,13 @@
     function formatGoal(goal) {
       if (!goal) return '—';
       const goals = {
-        'lose_weight': '🔥 Lose Weight',
-        'gain_weight': '💪 Gain Weight',
-        'maintain_weight': '⚖️ Maintain Weight',
-        'build_muscle': '🏋️ Build Muscle',
-        'improve_fitness': '🏃 Improve Fitness',
-        'eat_healthier': '🥗 Eat Healthier'
+        'lose_weight': '🔥 Lose Weight', 'gain_weight': '💪 Gain Weight',
+        'maintain_weight': '⚖️ Maintain Weight', 'build_muscle': '🏋️ Build Muscle',
+        'improve_fitness': '🏃 Improve Fitness', 'eat_healthier': '🥗 Eat Healthier'
       };
       return goals[goal] || goal;
     }
 
-    // Load data on page load
     loadUserData();
 
     // ══════════════════════════════════════
@@ -820,21 +545,16 @@
 
     function makeEditable(spanEl) {
       if (spanEl.querySelector('input')) return;
-
       const currentValue = spanEl.textContent.trim() === '—' ? '' : spanEl.textContent.trim();
       const field = spanEl.dataset.field;
-      const inputType = field === 'email' ? 'email' : 'text';
-
       const input = document.createElement('input');
-      input.type = inputType;
+      input.type = field === 'email' ? 'email' : 'text';
       input.className = 'edit-input';
       input.value = currentValue;
       input.placeholder = `Enter your ${fieldLabels[field].toLowerCase()}…`;
-
       spanEl.textContent = '';
       spanEl.appendChild(input);
-      input.focus();
-      input.select();
+      input.focus(); input.select();
 
       function saveValue() {
         const newValue = input.value.trim();
@@ -842,19 +562,17 @@
         if (field === 'name') updateBannerName(newValue);
         if (newValue && newValue !== currentValue) showToast(`${fieldLabels[field]} updated!`);
       }
-
       input.addEventListener('blur', saveValue);
-      input.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter')  { e.preventDefault(); input.blur(); }
         if (e.key === 'Escape') { spanEl.textContent = currentValue || '—'; }
       });
     }
 
     document.querySelectorAll('.editable-value').forEach(span => {
-      span.addEventListener('click', function () { makeEditable(this); });
+      span.addEventListener('click', function() { makeEditable(this); });
     });
-
-    document.getElementById('editAllBtn').addEventListener('click', function () {
+    document.getElementById('editAllBtn').addEventListener('click', function() {
       makeEditable(document.querySelector('.editable-value[data-field="name"]'));
     });
 
@@ -863,15 +581,8 @@
     // ══════════════════════════════════════
     function updatePlanCount() {
       const count = document.querySelectorAll('#planList .list-group-item').length;
-      const badge = document.getElementById('planCount');
-      badge.textContent = count === 1 ? '1 plan' : `${count} plans`;
-
-      const emptyState = document.getElementById('emptyPlans');
-      if (count === 0) {
-        emptyState.style.display = 'block';
-      } else {
-        emptyState.style.display = 'none';
-      }
+      document.getElementById('planCount').textContent = count === 1 ? '1 plan' : `${count} plans`;
+      document.getElementById('emptyPlans').style.display = count === 0 ? 'block' : 'none';
     }
 
     // ══════════════════════════════════════
@@ -879,15 +590,12 @@
     // ══════════════════════════════════════
     function showAddPlanForm() {
       document.getElementById('addPlanForm').classList.add('active');
-      document.getElementById('addPlanBtn').style.display = 'none';
       const input = document.getElementById('newPlanInput');
-      input.value = '';
-      input.focus();
+      input.value = ''; input.focus();
     }
 
     function cancelAddPlan() {
       document.getElementById('addPlanForm').classList.remove('active');
-      document.getElementById('addPlanBtn').style.display = 'inline-flex';
     }
 
     function confirmAddPlan() {
@@ -895,41 +603,336 @@
       const name = input.value.trim();
       if (!name) {
         input.style.borderColor = '#dc3545';
-        input.style.boxShadow = '0 0 0 3px rgba(220,53,69,0.15)';
-        input.focus();
-        setTimeout(() => {
-          input.style.borderColor = '#28a745';
-          input.style.boxShadow = '0 0 0 3px rgba(40,167,69,0.12)';
-        }, 1000);
-        return;
+        setTimeout(() => { input.style.borderColor = '#4A7337'; }, 1000);
+        input.focus(); return;
       }
+      const generatedPlan = generateWeeklyPlan();
+      const tips = generateTips();
+      appendPlanItem(name, '', { days: generatedPlan, tips });
+      cancelAddPlan();
+      updatePlanCount();
+      document.getElementById('downloadPlanBtn').style.display = 'inline-flex';
+      showToast(`"${name}" plan added!`);
+    }
 
+    document.getElementById('newPlanInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter')  { e.preventDefault(); confirmAddPlan(); }
+      if (e.key === 'Escape') { cancelAddPlan(); }
+    });
+
+    // ══════════════════════════════════════
+    //  APPEND PLAN ITEM (shared helper)
+    // ══════════════════════════════════════
+    function appendPlanItem(name, metadata, planData) {
       const li = document.createElement('li');
       li.className = 'list-group-item plan-new';
+      li.dataset.planName = name;
+      li.dataset.planMeta = metadata || '';
+      if (planData) li.dataset.planData = JSON.stringify(planData);
       li.innerHTML = `
         <div class="plan-left">
           <span class="plan-name">${escapeHTML(name)}</span>
         </div>
-        <div class="plan-actions">
-          <button class="btn-icon" title="Edit" onclick="editPlan(this)"><i class="bi bi-pencil"></i></button>
-          <button class="btn-icon delete" title="Delete" onclick="deletePlan(this)"><i class="bi bi-trash3"></i></button>
-        </div>
       `;
-
       document.getElementById('planList').appendChild(li);
-      li.querySelector('.plan-name').addEventListener('click', function () {
-        editPlanBySpan(this);
-      });
-
-      cancelAddPlan();
-      updatePlanCount();
-      showToast(`"${name}" plan added!`);
+      li.querySelector('.plan-name').addEventListener('click', function() { editPlanBySpan(this); });
     }
 
-    document.getElementById('newPlanInput').addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') { e.preventDefault(); confirmAddPlan(); }
-      if (e.key === 'Escape') { cancelAddPlan(); }
-    });
+    // ══════════════════════════════════════
+    //  DOWNLOAD PLAN AS PDF
+    // ══════════════════════════════════════
+    function downloadPlan(btn) {
+      const li       = btn.closest('.list-group-item');
+      const planName = li.querySelector('.plan-name').textContent.trim();
+      const metadata = li.dataset.planMeta || '';
+      const planData = li.dataset.planData ? JSON.parse(li.dataset.planData) : null;
+
+      const icon = btn.querySelector('i');
+      icon.className = 'bi bi-hourglass-split';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        buildPlanPDF(planName, metadata, planData);
+        icon.className = 'bi bi-file-earmark-arrow-down';
+        btn.disabled = false;
+        showDownloadToast(`"${planName}" downloaded!`);
+      }, 600);
+    }
+
+    // ══════════════════════════════════════
+    //  PLAN GENERATORS (called at creation time)
+    // ══════════════════════════════════════
+    const mealPool = {
+      breakfast: [
+        'Oatmeal + Mixed Berries + Green Tea',
+        'Scrambled Eggs + Whole Grain Toast',
+        'Greek Yogurt + Granola + Banana',
+        'Smoothie Bowl (Spinach, Banana, Almond Milk)',
+        'Avocado Toast + Boiled Eggs',
+        'Oat Flour Pancakes + Fresh Fruit',
+        'Fruit Salad + Cottage Cheese',
+        'Chia Pudding + Mango Slices',
+        'Whole Grain Cereal + Skimmed Milk',
+        'Veggie Omelette + Orange Juice',
+      ],
+      lunch: [
+        'Grilled Chicken Salad + Lemon Dressing',
+        'Lentil Soup + Whole Grain Bread',
+        'Tuna Wrap + Mixed Greens',
+        'Quinoa Bowl + Roasted Vegetables',
+        'Turkey & Veggie Wrap',
+        'Chickpea Salad + Hummus',
+        'Veggie Pasta + Tomato Sauce',
+        'Brown Rice + Steamed Broccoli + Chicken',
+        'Caesar Salad + Grilled Shrimp',
+        'Bean & Sweet Potato Soup',
+      ],
+      dinner: [
+        'Baked Salmon + Quinoa + Asparagus',
+        'Stir-fry Tofu + Brown Rice',
+        'Chicken Stew + Sweet Potato',
+        'Grilled Sea Bass + Asparagus',
+        'Beef Stir-fry + Cauliflower Rice',
+        'Grilled Chicken + Roasted Potatoes',
+        'Baked Cod + Steamed Broccoli',
+        'Lamb Kebab + Tabbouleh',
+        'Zucchini Noodles + Bolognese Sauce',
+        'Stuffed Bell Peppers + Green Salad',
+      ]
+    };
+
+    const tipPool = [
+      '💧  Drink at least 8 glasses of water (2L) per day.',
+      '🍽️  Eat 3 main meals and 2 healthy snacks between meals.',
+      '🚫  Avoid processed foods, excess sugar and saturated fats.',
+      '🏃  Combine this plan with 30 min of physical activity daily.',
+      '😴  Sleep 7–9 hours per night to support recovery and metabolism.',
+      '🥦  Fill half your plate with vegetables at every meal.',
+      '🧂  Reduce sodium intake — use herbs and spices instead of salt.',
+      '🍎  Snack on fruits, nuts or yogurt instead of chips or sweets.',
+      '⏰  Try to eat meals at consistent times each day.',
+      '📊  Track your progress weekly and adjust portions as needed.',
+    ];
+
+    function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+    function generateWeeklyPlan() {
+      const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+      const b = shuffle(mealPool.breakfast);
+      const l = shuffle(mealPool.lunch);
+      const d = shuffle(mealPool.dinner);
+      return days.map((day, i) => ({
+        day,
+        breakfast: b[i % b.length],
+        lunch:     l[i % l.length],
+        dinner:    d[i % d.length],
+      }));
+    }
+
+    function generateTips() {
+      return shuffle(tipPool).slice(0, 5);
+    }
+
+    function downloadSelectedPlan() {
+      // Download the last added plan
+      const items = document.querySelectorAll('#planList .list-group-item');
+      if (!items.length) return;
+      const last = items[items.length - 1];
+      const planName = last.querySelector('.plan-name').textContent.trim();
+      const metadata = last.dataset.planMeta || '';
+      const planData = last.dataset.planData ? JSON.parse(last.dataset.planData) : null;
+
+      const btn = document.getElementById('downloadPlanBtn');
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Downloading...';
+      btn.disabled = true;
+
+      setTimeout(() => {
+        buildPlanPDF(planName, metadata, planData);
+        btn.innerHTML = '<i class="bi bi-file-earmark-arrow-down"></i> Download Plan';
+        btn.disabled = false;
+        showDownloadToast(`"${planName}" downloaded!`);
+      }, 600);
+    }
+
+    function buildPlanPDF(planName, metadata, planData) {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+
+      const user = JSON.parse(localStorage.getItem('user')) || {};
+      const userName   = user.fullName     || 'User';
+      const userGoal   = formatGoal(user.goal) || '—';
+      const userHealth = user.healthStatus || '—';
+      const userWeight = user.weight ? user.weight + ' kg' : '—';
+      const userHeight = user.height ? user.height + ' cm' : '—';
+      const today      = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+
+      const green     = [74, 115, 55];
+      const darkGreen = [45, 74, 35];
+      const lightGreen= [232, 241, 228];
+      const white     = [255, 255, 255];
+      const dark      = [34, 34, 34];
+      const gray      = [102, 102, 102];
+      const lightGray = [245, 247, 250];
+
+      const W = 210;
+      let y   = 0;
+
+      // ── Header bar ──
+      doc.setFillColor(...green);
+      doc.rect(0, 0, W, 42, 'F');
+
+      doc.setTextColor(...white);
+      doc.setFontSize(22);
+      doc.setFont('helvetica', 'bold');
+      doc.text('NutriAI', 14, 16);
+
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.text('Your Personal Nutrition Assistant', 14, 23);
+
+      doc.setFontSize(9);
+      doc.text(`Generated: ${today}`, 14, 30);
+      doc.text(`For: ${userName}`, 14, 36);
+
+      // Right side logo mark
+      doc.setFillColor(...darkGreen);
+      doc.roundedRect(176, 8, 22, 22, 4, 4, 'F');
+      doc.setTextColor(...white);
+      doc.setFontSize(18);
+      doc.text('N', 184, 23);
+
+      // ── Plan title section ──
+      y = 52;
+      doc.setFillColor(...lightGreen);
+      doc.roundedRect(14, y, W - 28, 18, 4, 4, 'F');
+      doc.setTextColor(...darkGreen);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+      doc.text(planName, 20, y + 12);
+
+      // ── User profile box ──
+      y = 78;
+      doc.setFillColor(...lightGray);
+      doc.roundedRect(14, y, W - 28, 36, 4, 4, 'F');
+      doc.setDrawColor(...green);
+      doc.setLineWidth(0.5);
+      doc.roundedRect(14, y, W - 28, 36, 4, 4, 'S');
+
+      doc.setTextColor(...green);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.text('CLIENT PROFILE', 20, y + 9);
+
+      const col1x = 20, col2x = 75, col3x = 130;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(...gray);
+
+      doc.text('Goal', col1x, y + 18);
+      doc.text('Health Status', col2x, y + 18);
+      doc.text('Weight / Height', col3x, y + 18);
+
+      doc.setTextColor(...dark);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(10);
+      doc.text(userGoal.replace(/[^\x00-\x7F]/g, ''), col1x, y + 27);
+      doc.text(userHealth, col2x, y + 27);
+      doc.text(`${userWeight} / ${userHeight}`, col3x, y + 27);
+
+      // ── Metadata (if from consultation) ──
+      if (metadata) {
+        y = 122;
+        doc.setFillColor(227, 242, 253);
+        doc.roundedRect(14, y, W - 28, 14, 3, 3, 'F');
+        doc.setTextColor(21, 101, 192);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(9);
+        doc.text(`📅  ${metadata}`, 20, y + 9);
+        y = 144;
+      } else {
+        y = 124;
+      }
+
+      // ── Weekly plan table ──
+      doc.setTextColor(...green);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.text('WEEKLY MEAL PLAN', 14, y);
+      y += 6;
+
+      // Use stored plan data if available, otherwise generate fresh
+      const days = (planData && planData.days) ? planData.days : generateWeeklyPlan();
+
+      // Table header
+      doc.setFillColor(...green);
+      doc.rect(14, y, W - 28, 8, 'F');
+      doc.setTextColor(...white);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(8);
+      const colW = (W - 28) / 4;
+      doc.text('DAY',       14 + 3,           y + 5.5);
+      doc.text('BREAKFAST', 14 + colW + 3,    y + 5.5);
+      doc.text('LUNCH',     14 + colW*2 + 3,  y + 5.5);
+      doc.text('DINNER',    14 + colW*3 + 3,  y + 5.5);
+      y += 8;
+
+      days.forEach((row, idx) => {
+        const rowH = 10;
+        doc.setFillColor(idx % 2 === 0 ? 248 : 255, idx % 2 === 0 ? 250 : 255, idx % 2 === 0 ? 248 : 255);
+        doc.rect(14, y, W - 28, rowH, 'F');
+
+        doc.setTextColor(...darkGreen);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(8);
+        doc.text(row.day, 14 + 3, y + 7);
+
+        doc.setTextColor(...dark);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7.5);
+        doc.text(row.breakfast, 14 + colW + 3,   y + 7, { maxWidth: colW - 4 });
+        doc.text(row.lunch,     14 + colW*2 + 3, y + 7, { maxWidth: colW - 4 });
+        doc.text(row.dinner,    14 + colW*3 + 3, y + 7, { maxWidth: colW - 4 });
+
+        // Row border
+        doc.setDrawColor(220, 220, 220);
+        doc.setLineWidth(0.2);
+        doc.rect(14, y, W - 28, rowH, 'S');
+        y += rowH;
+      });
+
+      // ── Nutrition tips ──
+      y += 10;
+      doc.setTextColor(...green);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.text('DAILY NUTRITION TIPS', 14, y);
+      y += 6;
+
+      const tips = (planData && planData.tips) ? planData.tips : generateTips();
+
+      tips.forEach(tip => {
+        doc.setFillColor(...lightGray);
+        doc.roundedRect(14, y, W - 28, 9, 2, 2, 'F');
+        doc.setTextColor(...dark);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(8.5);
+        doc.text(tip, 20, y + 6);
+        y += 12;
+      });
+
+      // ── Footer ──
+      y = 287;
+      doc.setFillColor(...green);
+      doc.rect(0, y, W, 10, 'F');
+      doc.setTextColor(...white);
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.text('NutriAI — Your Personal Nutrition Assistant  |  nutriai.dz', W / 2, y + 6.5, { align: 'center' });
+
+      // ── Save ──
+      const fileName = planName.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 40);
+      doc.save(`NutriAI_${fileName}.pdf`);
+    }
 
     // ══════════════════════════════════════
     //  DELETE PLAN
@@ -940,34 +943,25 @@
       li.style.transition = 'all 0.3s ease';
       li.style.opacity = '0';
       li.style.transform = 'translateX(30px)';
-      setTimeout(() => {
-        li.remove();
-        updatePlanCount();
-        showToast(`"${name}" removed`);
-      }, 300);
+      setTimeout(() => { li.remove(); updatePlanCount(); showToast(`"${name}" removed`); }, 300);
     }
 
     // ══════════════════════════════════════
     //  EDIT PLAN
     // ══════════════════════════════════════
     function editPlan(btn) {
-      const li = btn.closest('.list-group-item');
-      const span = li.querySelector('.plan-name');
-      editPlanBySpan(span);
+      editPlanBySpan(btn.closest('.list-group-item').querySelector('.plan-name'));
     }
 
     function editPlanBySpan(span) {
       if (span.querySelector('input')) return;
       const currentName = span.textContent.trim();
       const input = document.createElement('input');
-      input.type = 'text';
-      input.className = 'plan-edit-input';
-      input.value = currentName;
-      input.maxLength = 50;
+      input.type = 'text'; input.className = 'plan-edit-input';
+      input.value = currentName; input.maxLength = 50;
       span.textContent = '';
       span.appendChild(input);
-      input.focus();
-      input.select();
+      input.focus(); input.select();
 
       function save() {
         const newName = input.value.trim();
@@ -975,15 +969,11 @@
         if (newName && newName !== currentName) showToast(`Renamed to "${newName}"`);
       }
       input.addEventListener('blur', save);
-      input.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') { e.preventDefault(); input.blur(); }
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter')  { e.preventDefault(); input.blur(); }
         if (e.key === 'Escape') { span.textContent = currentName; }
       });
     }
-
-    document.querySelectorAll('.plan-name').forEach(span => {
-      span.addEventListener('click', function () { editPlanBySpan(this); });
-    });
 
     function escapeHTML(str) {
       const div = document.createElement('div');
@@ -994,54 +984,28 @@
     // ══════════════════════════════════════
     //  MODALS
     // ══════════════════════════════════════
-    function openAIModal() {
-      document.getElementById('aiModal').classList.add('active');
-      document.getElementById('aiResult').classList.remove('show');
-    }
-    function closeAIModal() {
-      document.getElementById('aiModal').classList.remove('active');
-    }
+    function openAIModal()      { document.getElementById('aiModal').classList.add('active'); document.getElementById('aiResult').classList.remove('show'); }
+    function closeAIModal()     { document.getElementById('aiModal').classList.remove('active'); }
+    function openConsultModal() { document.getElementById('consultModal').classList.add('active'); document.getElementById('consultResult').classList.remove('show'); }
+    function closeConsultModal(){ document.getElementById('consultModal').classList.remove('active'); }
 
-    function openConsultModal() {
-      document.getElementById('consultModal').classList.add('active');
-      document.getElementById('consultResult').classList.remove('show');
-    }
-    function closeConsultModal() {
-      document.getElementById('consultModal').classList.remove('active');
-    }
-
-    // Close modals when clicking overlay
     document.querySelectorAll('.modal-overlay').forEach(modal => {
-      modal.addEventListener('click', function (e) {
-        if (e.target === this) {
-          this.classList.remove('active');
-        }
-      });
+      modal.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); });
     });
-
-    // Close modals with Escape key
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') {
-        document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
-      }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
     });
 
     // ══════════════════════════════════════
     //  AI FOOD ANALYSIS
     // ══════════════════════════════════════
     function analyzeFood() {
-      const fileInput = document.getElementById('foodImageInput');
-      if (!fileInput.files.length) {
-        showToast('Please upload an image first!');
-        return;
-      }
+      if (!document.getElementById('foodImageInput').files.length) { showToast('Please upload an image first!'); return; }
       const result = document.getElementById('aiResult');
       document.getElementById('aiResultText').textContent = '⏳ Analyzing your meal...';
       result.classList.add('show');
-
-      // Simulate AI analysis
       setTimeout(() => {
-        document.getElementById('aiResultText').textContent = '🍕 Detected: Pizza — ~285 calories per slice | Carbs: 36g | Protein: 12g | Fat: 10g';
+        document.getElementById('aiResultText').textContent = '🍕 Detected: Pizza — ~285 cal | Carbs: 36g | Protein: 12g | Fat: 10g';
         showToast('Food analyzed successfully!');
       }, 2000);
     }
@@ -1052,77 +1016,32 @@
     function bookConsultation() {
       const date = document.getElementById('consultDate').value;
       const time = document.getElementById('consultTime').value;
+      if (!date || !time) { showToast('Please select date and time!'); return; }
 
-      if (!date || !time) {
-        showToast('Please select date and time!');
-        return;
-      }
-
-      const result = document.getElementById('consultResult');
-      const formattedDate = new Date(date).toLocaleDateString('en-US', {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-      });
-
-      document.getElementById('consultResultText').textContent =
-        `✅ Appointment booked for ${formattedDate} at ${time}`;
-      result.classList.add('show');
+      const formattedDate = new Date(date).toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+      document.getElementById('consultResultText').textContent = `✅ Appointment booked for ${formattedDate} at ${time}`;
+      document.getElementById('consultResult').classList.add('show');
       showToast('Consultation booked!');
 
-      // Automatically add a personalized diet plan
-      setTimeout(() => {
-        addAutomaticDietPlan(formattedDate);
-      }, 500);
+      setTimeout(() => { addAutomaticDietPlan(formattedDate, time); }, 500);
     }
 
-    // ══════════════════════════════════════
-    //  ADD AUTOMATIC DIET PLAN
-    // ══════════════════════════════════════
-    function addAutomaticDietPlan(consultationDate) {
-      const planNames = [
-        'Personalized Nutrition Plan',
-        'Custom Meal Plan',
-        'Tailored Diet Program',
-        'Expert Designed Plan'
-      ];
-      
-      const randomPlan = planNames[Math.floor(Math.random() * planNames.length)];
-      const planName = `${randomPlan} (from ${consultationDate})`;
+    function addAutomaticDietPlan(date, time) {
+      const planNames = ['Personalized Nutrition Plan', 'Custom Meal Plan', 'Tailored Diet Program', 'Expert Designed Plan'];
+      const name = planNames[Math.floor(Math.random() * planNames.length)];
+      const meta = `Consultation on ${date} at ${time}`;
 
-      const li = document.createElement('li');
-      li.className = 'list-group-item plan-new';
-      li.innerHTML = `
-        <div class="plan-left">
-          <span class="plan-name">${escapeHTML(planName)}</span>
-        </div>
-        <div class="plan-actions">
-          <button class="btn-icon" title="Edit" onclick="editPlan(this)"><i class="bi bi-pencil"></i></button>
-          <button class="btn-icon delete" title="Delete" onclick="deletePlan(this)"><i class="bi bi-trash3"></i></button>
-        </div>
-      `;
+      // Generate the actual plan content at creation time
+      const generatedPlan = generateWeeklyPlan();
+      const tips = generateTips();
 
-      document.getElementById('planList').appendChild(li);
-      li.querySelector('.plan-name').addEventListener('click', function () {
-        editPlanBySpan(this);
-      });
-
+      appendPlanItem(name, meta, { days: generatedPlan, tips });
       updatePlanCount();
+      document.getElementById('downloadPlanBtn').style.display = 'inline-flex';
       showToast('Diet plan created from your consultation!');
     }
 
-    // Initial plan count
     updatePlanCount();
-    const user = JSON.parse(localStorage.getItem("user"));
-
-fetch(`http://localhost:5000/api/user/${user._id}`, {
-  method: "PUT",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    [field]: newValue
-  })
-});
-user[field] = newValue;
-localStorage.setItem("user", JSON.stringify(user));
   </script>
-
 </body>
 </html>
