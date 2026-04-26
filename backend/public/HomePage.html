@@ -7,20 +7,471 @@
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/styles/style.css">
     <title>NutriAI - Personalized AI Nutrition Platform</title>
+    <style>
+        /* ══════════════════════════════════════
+           SEASONAL PLANS SECTION
+        ══════════════════════════════════════ */
+        .seasonal-plans {
+            padding: 100px 5%;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .seasonal-plans::before {
+            content: '';
+            position: absolute;
+            top: -80px; right: -80px;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(74,115,55,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* ── Season Tabs ── */
+        .season-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+        }
+
+        .season-tab {
+            padding: 10px 26px;
+            border-radius: 50px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            color: #666;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .season-tab:hover { border-color: var(--primary); color: var(--primary); }
+
+        .season-tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 8px 20px rgba(74,115,55,0.25);
+        }
+
+        /* ── Season Panels ── */
+        .season-panel { display: none; }
+        .season-panel.active { display: block; animation: fadeInUp 0.4s ease; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── Plans Grid ── */
+        .seasonal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ── Plan Card ── */
+        .seasonal-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafb 100%);
+            border-radius: 20px;
+            padding: 36px 28px 28px;
+            border: 2px solid rgba(74,115,55,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .seasonal-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 50px rgba(74,115,55,0.15);
+        }
+
+        .seasonal-card.featured {
+            border-color: var(--primary);
+            transform: scale(1.03);
+            box-shadow: 0 20px 50px rgba(74,115,55,0.2);
+        }
+
+        .seasonal-card.featured:hover {
+            transform: scale(1.03) translateY(-8px);
+        }
+
+        /* ── Top Badge ── */
+        .season-top-badge {
+            position: absolute;
+            top: 0; right: 20px;
+            padding: 6px 16px;
+            border-radius: 0 0 12px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: white;
+        }
+
+        .badge-ramadan { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
+        .badge-summer  { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .badge-winter  { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .badge-popular { background: var(--primary); }
+
+        /* ── Plan Icon ── */
+        .plan-season-icon {
+            width: 64px; height: 64px;
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px;
+            margin-bottom: 18px;
+        }
+
+        .icon-ramadan { background: linear-gradient(135deg, #ede9fe, #ddd6fe); }
+        .icon-summer  { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+        .icon-winter  { background: linear-gradient(135deg, #dbeafe, #bfdbfe); }
+        .icon-green   { background: linear-gradient(135deg, rgba(74,115,55,0.12), rgba(107,157,79,0.15)); }
+
+        /* ── Plan Content ── */
+        .seasonal-card h3 { font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+        .seasonal-card .plan-desc { font-size: 14px; color: var(--text-light); line-height: 1.6; margin-bottom: 20px; }
+
+        /* ── Features List ── */
+        .plan-features-list { list-style: none; padding: 0; margin: 0 0 24px; flex-grow: 1; }
+        .plan-features-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .plan-features-list li:last-child { border-bottom: none; }
+        .plan-features-list li i { color: var(--primary); font-size: 16px; flex-shrink: 0; }
+
+        /* ── Pricing ── */
+        .plan-pricing {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .price-current {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .price-original {
+            font-size: 16px;
+            color: #bbb;
+            text-decoration: line-through;
+            margin-bottom: 4px;
+        }
+
+        .price-discount {
+            background: var(--accent);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 20px;
+            margin-bottom: 4px;
+        }
+
+        .price-period { font-size: 13px; color: var(--text-light); margin-bottom: 4px; }
+
+        /* ── Plan CTA Button ── */
+        .plan-btn {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            text-align: center;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .plan-btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .plan-btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(74,115,55,0.3);
+            color: white;
+        }
+
+        .plan-btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .plan-btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* ── Seasonal Banner (inside panel header) ── */
+        .season-banner {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: linear-gradient(135deg, rgba(74,115,55,0.06), rgba(74,115,55,0.02));
+            border: 1px solid rgba(74,115,55,0.15);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 40px;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .season-banner-icon { font-size: 2.5rem; flex-shrink: 0; }
+
+        .season-banner-text h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .season-banner-text p {
+            font-size: 13px;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .season-banner-badge {
+            margin-left: auto;
+            background: var(--accent);
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 16px;
+            border-radius: 20px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .season-banner { flex-wrap: wrap; }
+            .season-banner-badge { margin-left: 0; }
+            .seasonal-card.featured { transform: scale(1); }
+            .seasonal-card.featured:hover { transform: translateY(-8px); }
+        }
+    
+        /* ══════════════════════════════════════
+           SPECIAL PLANS SECTION
+        ══════════════════════════════════════ */
+        .special-plans {
+            padding: 100px 5%;
+            background: linear-gradient(135deg, rgba(74,115,55,0.04) 0%, rgba(255,107,107,0.04) 100%);
+        }
+
+        /* Tabs */
+        .sp-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .sp-tab {
+            padding: 10px 26px;
+            border-radius: 50px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            color: #666;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .sp-tab:hover { border-color: var(--primary); color: var(--primary); }
+
+        .sp-tab.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 8px 20px rgba(74,115,55,0.25);
+        }
+
+        /* Panels */
+        .sp-panel { display: none; }
+        .sp-panel.active { display: block; animation: spFadeIn 0.4s ease; }
+
+        @keyframes spFadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Banner */
+        .sp-banner {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: linear-gradient(135deg, rgba(74,115,55,0.06), rgba(74,115,55,0.02));
+            border: 1px solid rgba(74,115,55,0.15);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 36px;
+            flex-wrap: wrap;
+        }
+
+        .sp-banner-icon { font-size: 2.4rem; flex-shrink: 0; }
+        .sp-banner h4 { font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
+        .sp-banner p  { font-size: 13px; color: var(--text-light); margin: 0; }
+
+        .sp-discount-badge {
+            margin-left: auto;
+            background: var(--accent);
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 7px 18px;
+            border-radius: 20px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* Grid */
+        .sp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 28px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Cards */
+        .sp-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafb 100%);
+            border-radius: 20px;
+            padding: 36px 28px 28px;
+            border: 2px solid rgba(74,115,55,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sp-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 50px rgba(74,115,55,0.15);
+        }
+
+        .sp-card.featured {
+            border-color: var(--primary);
+            transform: scale(1.03);
+            box-shadow: 0 20px 50px rgba(74,115,55,0.2);
+        }
+
+        .sp-card.featured:hover { transform: scale(1.03) translateY(-8px); }
+
+        .sp-top-badge {
+            position: absolute;
+            top: 0; right: 20px;
+            padding: 6px 16px;
+            border-radius: 0 0 12px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: white;
+        }
+
+        .sp-icon {
+            width: 64px; height: 64px;
+            border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 28px;
+            margin-bottom: 18px;
+        }
+
+        .sp-card h3 { font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+        .sp-desc { font-size: 14px; color: var(--text-light); line-height: 1.6; margin-bottom: 18px; }
+
+        .sp-features { list-style: none; padding: 0; margin: 0 0 22px; flex-grow: 1; }
+        .sp-features li {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .sp-features li:last-child { border-bottom: none; }
+        .sp-features li i { color: var(--primary); font-size: 15px; flex-shrink: 0; }
+
+        /* Pricing */
+        .sp-pricing {
+            display: flex;
+            align-items: flex-end;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .sp-original { font-size: 14px; color: #bbb; text-decoration: line-through; }
+        .sp-current  { font-size: 30px; font-weight: 800; color: var(--primary); line-height: 1; }
+        .sp-period   { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+
+        .sp-pct {
+            background: var(--accent);
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 20px;
+            margin-bottom: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .sp-card.featured { transform: scale(1); }
+            .sp-card.featured:hover { transform: translateY(-8px); }
+            .sp-banner { flex-direction: column; align-items: flex-start; }
+            .sp-discount-badge { margin-left: 0; }
+        }
+
+        </style>
 </head>
 <body>
     <!-- Enhanced Navigation -->
     <nav class="navbar-enhanced">
         <div class="nav-container">
-            <a href="/" class="logo-modern">
+            <a href="HomePage.html" class="logo-modern">
                 <i class="bi bi-heart-pulse-fill"></i> NutriAI
             </a>
             <ul class="nav-links">
-                <li><a href="/views/HomePage.html" class="nav-link-animated">Home</a></li>
-                <li><a href="#Services" class="nav-link-animated">Services</a></li>
+                <li><a href="HomePage.html" class="nav-link-animated">Home</a></li>
+                <li><a href="BecomeNutritionist.html" class="nav-link-animated">Become Nutritionist</a></li>
                 <li><a href="#ai-feature" class="nav-link-animated">AI Analyzer</a></li>
                 <li><a href="Blog.html" class="nav-link-animated">Blog</a></li>
-                <li><a href="#Contact" class="nav-link-animated">Contact</a></li>
+                <li><a href="Chat.html" class="nav-link-animated">Contact</a></li>
             </ul>
             <ul class="auth-links">
                 <li><a href="signup.html" class="btn-modern">Sign Up</a></li>
@@ -30,12 +481,10 @@
     </nav>
 
     <main>
-       
+        <!-- Hero -->
         <section class="hero-section">
-            
             <div class="hero-content">
                 <div class="hero-text">
-                    
                     <h1 class="hero-title">
                          Transform Your Health<br>
                          With Personalized Nutrition
@@ -45,164 +494,93 @@
                         and connect with certified experts worldwide via video consultations.
                     </p>
                     <div class="hero-features">
-                        <div class="feature-mini">
-                            <i class="bi bi-check-circle-fill"></i>
-                            <span>Expert Nutritionists</span>
-                        </div>
-                        <div class="feature-mini">
-                            <i class="bi bi-check-circle-fill"></i>
-                            <span>AI Calorie Detection</span>
-                        </div>
-                        <div class="feature-mini">
-                            <i class="bi bi-check-circle-fill"></i>
-                            <span>Personalized Plans</span>
-                        </div>
+                        <div class="feature-mini"><i class="bi bi-check-circle-fill"></i><span>Expert Nutritionists</span></div>
+                        <div class="feature-mini"><i class="bi bi-check-circle-fill"></i><span>AI Calorie Detection</span></div>
+                        <div class="feature-mini"><i class="bi bi-check-circle-fill"></i><span>Personalized Plans</span></div>
                     </div>
                     <div class="hero-buttons">
                         <a href="signup.html" class="btn-primary-large">Start Consultation</a>
-                        
                     </div>
                 </div>
                 <div class="hero-image">
-                    
-                        <div class="phone-mockup">
-                            <img src="/images/background-removebg-preview.png" alt="NutriAI App" class="hero-img">
-                        </div>
-                       
+                    <div class="phone-mockup">
+                        <img src="/images/background-removebg-preview.png" alt="NutriAI App" class="hero-img">
+                    </div>
                 </div>
             </div>
-
-           
         </section>
 
-        <!-- Problem & Solution Section
-        <section class="problem-solution">
-            <div class="container-custom">
-                <div class="section-header">
-                    <h2>Why NutriAI?</h2>
-                    <p>Traditional weight loss approaches fail because they ignore individual health complexity</p>
-                </div>
-
-                <div class="problem-grid">
-                    <div class="problem-card">
-                        <div class="problem-icon">
-                            <i class="bi bi-exclamation-triangle-fill"></i>
-                        </div>
-                        <h3>The Problem</h3>
-                        <p><strong>Generic diets don't work.</strong> Your body is unique—hormonal imbalances, thyroid disorders, insulin resistance, PCOS, and stress affect weight loss differently for everyone.</p>
-                    </div>
-
-                    <div class="arrow-divider">
-                        <i class="bi bi-arrow-right"></i>
-                    </div>
-
-                    <div class="solution-card">
-                        <div class="solution-icon">
-                            <i class="bi bi-check-circle-fill"></i>
-                        </div>
-                        <h3>Our Solution</h3>
-                        <p><strong>Personalized + AI-Powered.</strong> Get customized nutrition plans from certified experts, track meals with AI, and receive ongoing support tailored to your health conditions.</p>
-                    </div>
-                </div>
-            </div>
-        </section>-->
-
-        <!-- How It Works Section -->
+        <!-- How It Works -->
         <section class="how-it-works" id="how-it-works">
             <div class="container-custom">
                 <div class="section-header">
-                   
                     <h2>How <span class="text-gradient">NutriAI</span> Works</h2>
                     <p>Simple, personalized, and backed by science</p>
                 </div>
-
                 <div class="steps-container">
                     <div class="step">
                         <div class="step-number">01</div>
                         <div class="step-icon"><i class="bi bi-person-check"></i></div>
                         <h3>Health Assessment</h3>
-                        <p>Tell us about your medical history, lifestyle, goals, and health conditions. Our system analyzes your unique profile.</p>
+                        <p>Tell us about your medical history, lifestyle, goals, and health conditions.</p>
                     </div>
-
                     <div class="step-arrow"><i class="bi bi-arrow-right"></i></div>
-
                     <div class="step">
                         <div class="step-number">02</div>
                         <div class="step-icon"><i class="bi bi-video"></i></div>
                         <h3>Expert Consultation</h3>
-                        <p>Book a video call with a certified nutritionist worldwide. Discuss your challenges and health conditions in detail.</p>
+                        <p>Book a video call with a certified nutritionist worldwide.</p>
                     </div>
-
                     <div class="step-arrow"><i class="bi bi-arrow-right"></i></div>
-
                     <div class="step">
                         <div class="step-number">03</div>
                         <div class="step-icon"><i class="bi bi-file-earmark"></i></div>
                         <h3>Personalized Plan</h3>
-                        <p>Receive a custom nutrition plan designed for YOUR body—considering hormones, metabolism, and lifestyle.</p>
+                        <p>Receive a custom nutrition plan designed for YOUR body.</p>
                     </div>
-
                     <div class="step-arrow"><i class="bi bi-arrow-right"></i></div>
-
                     <div class="step">
                         <div class="step-number">04</div>
                         <div class="step-icon"><i class="bi bi-camera"></i></div>
                         <h3>Track with AI</h3>
-                        <p>Use our AI camera to snap photos of meals. Get instant calorie counts and nutritional insights.</p>
+                        <p>Use our AI camera to snap photos of meals and get instant calorie counts.</p>
                     </div>
-
                     <div class="step-arrow"><i class="bi bi-arrow-right"></i></div>
-
                     <div class="step">
                         <div class="step-number">05</div>
                         <div class="step-icon"><i class="bi bi-graph-up"></i></div>
                         <h3>Monitor & Adjust</h3>
-                        <p>Track progress with detailed dashboards. Regular consultations with your nutritionist ensure the plan stays effective.</p>
+                        <p>Track progress with detailed dashboards and regular consultations.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- AI Feature Section -->
+        <!-- AI Feature -->
         <section class="ai-feature" id="ai-feature">
             <div class="container-custom">
                 <div class="ai-content">
                     <div class="ai-text">
-                       
                         <h2>AI-Powered Meal Recognition</h2>
                         <p>Our cutting-edge deep learning model identifies food items, estimates portion sizes, and calculates calories instantly.</p>
-                        
                         <div class="ai-features-list">
                             <div class="ai-feature-item">
                                 <div class="ai-feature-icon"><i class="bi bi-camera-fill"></i></div>
-                                <div>
-                                    <h4>Snap & Analyze</h4>
-                                    <p>Take a photo of your meal and get instant analysis</p>
-                                </div>
+                                <div><h4>Snap & Analyze</h4><p>Take a photo of your meal and get instant analysis</p></div>
                             </div>
                             <div class="ai-feature-item">
                                 <div class="ai-feature-icon"><i class="bi bi-lightbulb-fill"></i></div>
-                                <div>
-                                    <h4>Smart Recognition</h4>
-                                    <p>Advanced computer vision identifies all food items</p>
-                                </div>
+                                <div><h4>Smart Recognition</h4><p>Advanced computer vision identifies all food items</p></div>
                             </div>
                             <div class="ai-feature-item">
                                 <div class="ai-feature-icon"><i class="bi bi-database"></i></div>
-                                <div>
-                                    <h4>Nutritional Data</h4>
-                                    <p>Access comprehensive nutritional databases</p>
-                                </div>
+                                <div><h4>Nutritional Data</h4><p>Access comprehensive nutritional databases</p></div>
                             </div>
                             <div class="ai-feature-item">
                                 <div class="ai-feature-icon"><i class="bi bi-graph-up"></i></div>
-                                <div>
-                                    <h4>Daily Insights</h4>
-                                    <p>Track trends and receive personalized recommendations</p>
-                                </div>
+                                <div><h4>Daily Insights</h4><p>Track trends and receive personalized recommendations</p></div>
                             </div>
                         </div>
-
                         <a href="AIAnalyzer.html" class="btn-primary-large">Try AI Analyzer</a>
                     </div>
                     <div class="ai-image">
@@ -213,8 +591,7 @@
                                     <div class="analysis-result">
                                         <h4>Meal Analysis</h4>
                                         <p>Avocado: 350 cal</p>
-                                        <p>tomato: 200 cal</p>
-                                        <p></p>
+                                        <p>Tomato: 200 cal</p>
                                         <hr>
                                         <p><strong>Total: 550 cal</strong></p>
                                     </div>
@@ -226,153 +603,312 @@
             </div>
         </section>
 
-        <!-- Target Users Section -->
+        <!-- Target Users -->
         <section class="target-users">
             <div class="container-custom">
                 <div class="section-header">
                     <h2>Who Can Benefit?</h2>
                     <p>NutriAI is designed for diverse health needs</p>
                 </div>
-
                 <div class="users-grid">
-                    <div class="user-card">
-                        <div class="user-icon"><i class="bi bi-graph-down"></i></div>
-                        <h3>Weight Loss Resistance</h3>
-                        <p>Struggling to lose weight despite dieting? We address underlying causes like hormonal imbalances and metabolic issues.</p>
-                    </div>
-
-                    <div class="user-card">
-                        <div class="user-icon"><i class="bi bi-heart"></i></div>
-                        <h3>PCOS & Hormonal Issues</h3>
-                        <p>Specialized plans for polycystic ovary syndrome, thyroid disorders, and hormonal imbalances affecting weight.</p>
-                    </div>
-
-                    <div class="user-card">
-                        <div class="user-icon"><i class="bi bi-droplet"></i></div>
-                        <h3>Insulin Resistance</h3>
-                        <p>Learn how to manage insulin sensitivity through targeted nutrition and lifestyle modifications.</p>
-                    </div>
-
-                    <div class="user-card">
-                        <div class="user-icon"><i class="bi bi-hospital"></i></div>
-                        <h3>Chronic Conditions</h3>
-                        <p>Diabetes, thyroid disorders, and other conditions require expert nutrition guidance.</p>
-                    </div>
-
-                    <div class="user-card">
-                        <div class="user-icon"><i class="bi bi-person-heart"></i></div>
-                        <h3>Postpartum Recovery</h3>
-                        <p>Mothers seeking body confidence and healthy habits after pregnancy with specialized support.</p>
-                    </div>
-
-                    <div class="user-card">
-                        <div class="user-icon"><i class="bi bi-emoji-smile"></i></div>
-                        <h3>Lifestyle Transformation</h3>
-                        <p>Break free from diet cycles and build sustainable, healthy habits that last a lifetime.</p>
-                    </div>
+                    <div class="user-card"><div class="user-icon"><i class="bi bi-graph-down"></i></div><h3>Weight Loss Resistance</h3><p>Struggling to lose weight despite dieting? We address underlying causes like hormonal imbalances and metabolic issues.</p></div>
+                    <div class="user-card"><div class="user-icon"><i class="bi bi-heart"></i></div><h3>PCOS & Hormonal Issues</h3><p>Specialized plans for polycystic ovary syndrome, thyroid disorders, and hormonal imbalances affecting weight.</p></div>
+                    <div class="user-card"><div class="user-icon"><i class="bi bi-droplet"></i></div><h3>Insulin Resistance</h3><p>Learn how to manage insulin sensitivity through targeted nutrition and lifestyle modifications.</p></div>
+                    <div class="user-card"><div class="user-icon"><i class="bi bi-hospital"></i></div><h3>Chronic Conditions</h3><p>Diabetes, thyroid disorders, and other conditions require expert nutrition guidance.</p></div>
+                    <div class="user-card"><div class="user-icon"><i class="bi bi-person-heart"></i></div><h3>Postpartum Recovery</h3><p>Mothers seeking body confidence and healthy habits after pregnancy with specialized support.</p></div>
+                    <div class="user-card"><div class="user-icon"><i class="bi bi-emoji-smile"></i></div><h3>Lifestyle Transformation</h3><p>Break free from diet cycles and build sustainable, healthy habits that last a lifetime.</p></div>
                 </div>
             </div>
         </section>
 
-       
-
-                    
+        <!-- ══════════════════════════════════════════ -->
+        <!-- SEASONAL PLANS SECTION                    -->
+        <!-- ══════════════════════════════════════════ -->
+        <section class="seasonal-plans" id="seasonal-plans">
+            <div class="container-custom">
+                <div class="section-header">
+                    <span class="section-badge">🌙 Limited Time Offers</span>
+                    <h2>Special <span class="text-gradient">Seasonal Plans</span></h2>
+                    <p>Tailored nutrition programs for every season and occasion — at unbeatable prices</p>
                 </div>
+
+                <!-- Season Tabs -->
+                <div class="season-tabs">
+                    <button class="season-tab active" onclick="switchSeason('ramadan', this)">🌙 Ramadan</button>
+                    <button class="season-tab" onclick="switchSeason('summer', this)">☀️ Summer</button>
+                    <button class="season-tab" onclick="switchSeason('winter', this)">❄️ Winter</button>
+                </div>
+
+                <!-- ── RAMADAN PANEL ── -->
+                <div class="season-panel active" id="panel-ramadan">
+                    <div class="season-banner">
+                        <span class="season-banner-icon">🌙</span>
+                        <div class="season-banner-text">
+                            <h4>Ramadan Nutrition Program — Limited Offer</h4>
+                            <p>Specially designed Suhoor & Iftar meal plans to keep you energized, hydrated and healthy throughout the holy month.</p>
+                        </div>
+                        <span class="season-banner-badge">Up to 50% OFF</span>
+                    </div>
+                    <div class="seasonal-grid">
+                        <!-- Card 1 -->
+                        <div class="seasonal-card">
+                            <span class="season-top-badge badge-ramadan">🌙 Ramadan</span>
+                            <div class="plan-season-icon icon-ramadan">🌙</div>
+                            <h3>Suhoor Starter</h3>
+                            <p class="plan-desc">Perfect for beginners — balanced Suhoor meals to keep you full and focused all day.</p>
+                            <ul class="plan-features-list">
+                                <li><i class="bi bi-check-circle-fill"></i> 7-day Suhoor meal plan</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Hydration & energy tips</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Portion control guide</li>
+                                <li><i class="bi bi-check-circle-fill"></i> PDF download included</li>
+                            </ul>
+                            <div class="plan-pricing">
+                                <div>
+                                    <div class="price-original">2,000 DA</div>
+                                    <div class="price-current">990 DA</div>
+                                    <div class="price-period">one-time</div>
+                                </div>
+                                <div class="price-discount">-50%</div>
+                            </div>
+                            <a href="signup.html" class="plan-btn plan-btn-outline">Get Started</a>
+                        </div>
+                        <!-- Card 2 — Featured -->
+                        <div class="seasonal-card featured">
+                            <span class="season-top-badge badge-popular">⭐ Most Popular</span>
+                            <div class="plan-season-icon icon-ramadan">🕌</div>
+                            <h3>Full Ramadan Plan</h3>
+                            <p class="plan-desc">Complete Suhoor + Iftar nutrition program with a certified nutritionist consultation.</p>
+                            <ul class="plan-features-list">
+                                <li><i class="bi bi-check-circle-fill"></i> 30-day complete meal plan</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Suhoor + Iftar + Snacks</li>
+                                <li><i class="bi bi-check-circle-fill"></i> 1 nutritionist consultation</li>
+                                <li><i class="bi bi-check-circle-fill"></i> AI calorie tracking access</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Weight management tips</li>
+                            </ul>
+                            <div class="plan-pricing">
+                                <div>
+                                    <div class="price-original">5,000 DA</div>
+                                    <div class="price-current">2,500 DA</div>
+                                    <div class="price-period">full month</div>
+                                </div>
+                                <div class="price-discount">-50%</div>
+                            </div>
+                            <a href="signup.html" class="plan-btn plan-btn-primary">Get This Plan</a>
+                        </div>
+                        <!-- Card 3 -->
+                        <div class="seasonal-card">
+                            <span class="season-top-badge badge-ramadan">🌙 Ramadan</span>
+                            <div class="plan-season-icon icon-ramadan">🥗</div>
+                            <h3>Iftar Detox</h3>
+                            <p class="plan-desc">Light, nutritious Iftar meals designed to detox your body and avoid post-fast bloating.</p>
+                            <ul class="plan-features-list">
+                                <li><i class="bi bi-check-circle-fill"></i> 30-day Iftar meal plan</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Anti-bloating recipes</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Digestive health guide</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Shopping list included</li>
+                            </ul>
+                            <div class="plan-pricing">
+                                <div>
+                                    <div class="price-original">3,000 DA</div>
+                                    <div class="price-current">1,490 DA</div>
+                                    <div class="price-period">full month</div>
+                                </div>
+                                <div class="price-discount">-50%</div>
+                            </div>
+                            <a href="signup.html" class="plan-btn plan-btn-outline">Get Started</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── SUMMER PANEL ── -->
+                <div class="season-panel" id="panel-summer">
+                    <div class="season-banner">
+                        <span class="season-banner-icon">☀️</span>
+                        <div class="season-banner-text">
+                            <h4>Summer Body Program — Seasonal Offer</h4>
+                            <p>Light, refreshing nutrition plans to keep you hydrated, lean, and energized all summer long.</p>
+                        </div>
+                        <span class="season-banner-badge">Up to 40% OFF</span>
+                    </div>
+                    <div class="seasonal-grid">
+                        <div class="seasonal-card">
+                            <span class="season-top-badge badge-summer">☀️ Summer</span>
+                            <div class="plan-season-icon icon-summer">🥤</div>
+                            <h3>Hydration & Detox</h3>
+                            <p class="plan-desc">Beat the heat with refreshing detox drinks, smoothies, and light meals designed for hot weather.</p>
+                            <ul class="plan-features-list">
+                                <li><i class="bi bi-check-circle-fill"></i> 14-day detox plan</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Infused water & smoothie recipes</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Hydration tracker</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Heat-friendly meal ideas</li>
+                            </ul>
+                            <div class="plan-pricing">
+                                <div>
+                                    <div class="price-original">2,500 DA</div>
+                                    <div class="price-current">1,490 DA</div>
+                                    <div class="price-period">2 weeks</div>
+                                </div>
+                                <div class="price-discount">-40%</div>
+                            </div>
+                            <a href="signup.html" class="plan-btn plan-btn-outline">Get Started</a>
+                        </div>
+                        <div class="seasonal-card featured">
+                            <span class="season-top-badge badge-popular">⭐ Best Value</span>
+                            <div class="plan-season-icon icon-summer">🏖️</div>
+                            <h3>Summer Body Plan</h3>
+                            <p class="plan-desc">Complete 30-day summer nutrition + workout nutrition guide to get lean and feel your best.</p>
+                            <ul class="plan-features-list">
+                                <li><i class="bi bi-check-circle-fill"></i> 30-day complete plan</li>
+                                <li><i class="bi bi-check-circle-fill"></i> 1 nutritionist consultation</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Pre & post-workout meals</li>
+                                <li><i class="bi bi-check-circle-fill"></i> AI meal tracking access</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Progress check-ins</li>
+                            </ul>
+                            <div class="plan-pricing">
+                                <div>
+                                    <div class="price-original">5,500 DA</div>
+                                    <div class="price-current">2,990 DA</div>
+                                    <div class="price-period">full month</div>
+                                </div>
+                                <div class="price-discount">-45%</div>
+                            </div>
+                            <a href="signup.html" class="plan-btn plan-btn-primary">Get This Plan</a>
+                        </div>
+                        <div class="seasonal-card">
+                            <span class="season-top-badge badge-summer">☀️ Summer</span>
+                            <div class="plan-season-icon icon-summer">🥗</div>
+                            <h3>Light & Fresh</h3>
+                            <p class="plan-desc">Salads, cold dishes, and refreshing recipes keeping you full without feeling heavy in the heat.</p>
+                            <ul class="plan-features-list">
+                                <li><i class="bi bi-check-circle-fill"></i> 30 quick fresh recipes</li>
+                                <li><i class="bi bi-check-circle-fill"></i> No-cook meal options</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Calorie-counted portions</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Weekly grocery list</li>
+                            </ul>
+                            <div class="plan-pricing">
+                                <div>
+                                    <div class="price-original">2,000 DA</div>
+                                    <div class="price-current">1,190 DA</div>
+                                    <div class="price-period">one-time</div>
+                                </div>
+                                <div class="price-discount">-40%</div>
+                            </div>
+                            <a href="signup.html" class="plan-btn plan-btn-outline">Get Started</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── WINTER PANEL ── -->
+                <div class="season-panel" id="panel-winter">
+                    <div class="season-banner">
+                        <span class="season-banner-icon">❄️</span>
+                        <div class="season-banner-text">
+                            <h4>Winter Wellness Program — Cold Season Offer</h4>
+                            <p>Warm, nourishing meal plans to boost your immunity, energy and mood during the cold months.</p>
+                        </div>
+                        <span class="season-banner-badge">Up to 35% OFF</span>
+                    </div>
+                    <div class="seasonal-grid">
+                        <div class="seasonal-card">
+                            <span class="season-top-badge badge-winter">❄️ Winter</span>
+                            <div class="plan-season-icon icon-winter">🍲</div>
+                            <h3>Immunity Boost</h3>
+                            <p class="plan-desc">Soups, stews, and immunity-boosting foods to protect you from cold-season illness.</p>
+                            <ul class="plan-features-list">
+                                <li><i class="bi bi-check-circle-fill"></i> 14-day immunity plan</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Vitamin C & zinc-rich meals</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Warming soup recipes</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Supplement guide</li>
+                            </ul>
+                            <div class="plan-pricing">
+                                <div>
+                                    <div class="price-original">2,200 DA</div>
+                                    <div class="price-current">1,390 DA</div>
+                                    <div class="price-period">2 weeks</div>
+                                </div>
+                                <div class="price-discount">-35%</div>
+                            </div>
+                            <a href="signup.html" class="plan-btn plan-btn-outline">Get Started</a>
+                        </div>
+                        <div class="seasonal-card featured">
+                            <span class="season-top-badge badge-popular">⭐ Most Popular</span>
+                            <div class="plan-season-icon icon-winter">🧣</div>
+                            <h3>Winter Wellness Plan</h3>
+                            <p class="plan-desc">Full month of warm, balanced nutrition to stay healthy, energized and comfortable all winter.</p>
+                            <ul class="plan-features-list">
+                                <li><i class="bi bi-check-circle-fill"></i> 30-day complete plan</li>
+                                <li><i class="bi bi-check-circle-fill"></i> 1 nutritionist consultation</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Comfort food alternatives</li>
+                                <li><i class="bi bi-check-circle-fill"></i> AI meal tracking access</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Mood & energy nutrition tips</li>
+                            </ul>
+                            <div class="plan-pricing">
+                                <div>
+                                    <div class="price-original">5,000 DA</div>
+                                    <div class="price-current">2,990 DA</div>
+                                    <div class="price-period">full month</div>
+                                </div>
+                                <div class="price-discount">-40%</div>
+                            </div>
+                            <a href="signup.html" class="plan-btn plan-btn-primary">Get This Plan</a>
+                        </div>
+                        <div class="seasonal-card">
+                            <span class="season-top-badge badge-winter">❄️ Winter</span>
+                            <div class="plan-season-icon icon-winter">🫖</div>
+                            <h3>Cozy & Balanced</h3>
+                            <p class="plan-desc">Hearty, nutritious winter comfort food that satisfies cravings without the extra calories.</p>
+                            <ul class="plan-features-list">
+                                <li><i class="bi bi-check-circle-fill"></i> 30 cozy healthy recipes</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Slow-cooker meal plans</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Calorie-smart comfort food</li>
+                                <li><i class="bi bi-check-circle-fill"></i> Weekly grocery list</li>
+                            </ul>
+                            <div class="plan-pricing">
+                                <div>
+                                    <div class="price-original">2,000 DA</div>
+                                    <div class="price-current">1,290 DA</div>
+                                    <div class="price-period">one-time</div>
+                                </div>
+                                <div class="price-discount">-35%</div>
+                            </div>
+                            <a href="signup.html" class="plan-btn plan-btn-outline">Get Started</a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
+        <!-- END SEASONAL PLANS -->
 
-        <!-- Testimonials Section -->
+        <!-- Testimonials -->
         <section class="testimonials" id="testimonials">
             <div class="container-custom">
                 <div class="section-header">
                     <h2>Success Stories</h2>
                     <p>Real people, real transformations</p>
                 </div>
-
-
-    
-<div class="testimonial-card">
-                <p id="testimonialText" class="testimonial-text" contenteditable="true">
-                    Click here to edit testimonial...
-                </p>
-
-                <div class="testimonial-author">
-                    <div class="author-avatar"></div>
-                </div>
-
-                <!-- Publish Button -->
-                <button class="btn-modern" style="margin-top:15px;" onclick="publishTestimonial()">
-                    Publish
-                </button>
-                 <!-- Remove Button -->
-                <button class="btn-modern" style="margin-top:15px;" onclick="removeTestimonial()">
-                    Remove
-              </button>
-
-                <!-- Saved message -->
-                <p id="savedMsg" style="color:green; font-size:14px; margin-top:10px;"></p>
-            </div>
-
-        </div>
-                          </div>
-
-</div>
-
-</div>
-                
-
-                    
-
-                    
-                        </div>
-                    </div>
+                <div class="testimonial-card">
+                    <p id="testimonialText" class="testimonial-text" contenteditable="true">Click here to edit testimonial...</p>
+                    <div class="testimonial-author"><div class="author-avatar"></div></div>
+                    <button class="btn-modern" style="margin-top:15px;" onclick="publishTestimonial()">Publish</button>
+                    <button class="btn-modern" style="margin-top:15px;" onclick="removeTestimonial()">Remove</button>
+                    <p id="savedMsg" style="color:green;font-size:14px;margin-top:10px;"></p>
                 </div>
             </div>
         </section>
 
+
         <!-- Features Highlight -->
         <section class="features-highlight">
             <div class="container-custom">
-                <div class="section-header">
-                    <h2>Why Choose NutriAI?</h2>
-                </div>
-
+                <div class="section-header"><h2>Why Choose NutriAI?</h2></div>
                 <div class="features-highlight-grid">
-                    <div class="feature-highlight-card">
-                        <div class="feature-highlight-icon"><i class="bi bi-shield-check"></i></div>
-                        <h3>Certified Experts</h3>
-                        <p>All nutritionists are board-certified and experienced in managing complex health conditions.</p>
-                    </div>
-
-                    <div class="feature-highlight-card">
-                        <div class="feature-highlight-icon"><i class="bi bi-globe"></i></div>
-                        <h3>Global Access</h3>
-                        <p>Connect with world-class nutritionists worldwide via secure video consultations.</p>
-                    </div>
-
-                    <div class="feature-highlight-card">
-                        <div class="feature-highlight-icon"><i class="bi bi-robot"></i></div>
-                        <h3>AI Technology</h3>
-                        <p>State-of-the-art machine learning for accurate meal recognition and calorie estimation.</p>
-                    </div>
-
-                    <div class="feature-highlight-card">
-                        <div class="feature-highlight-icon"><i class="bi bi-lock"></i></div>
-                        <h3>Data Privacy</h3>
-                        <p>Your health data is encrypted and secured with HIPAA-compliant standards.</p>
-                    </div>
-
-                    <div class="feature-highlight-card">
-                        <div class="feature-highlight-icon"><i class="bi bi-graph-up"></i></div>
-                        <h3>Proven Results</h3>
-                        <p>98% success rate with clients achieving sustainable weight loss and health improvements.</p>
-                    </div>
-
-                    <div class="feature-highlight-card">
-                        <div class="feature-highlight-icon"><i class="bi bi-chat-dots"></i></div>
-                        <h3>24/7 Support</h3>
-                        <p>Round-the-clock customer support to answer your questions and help your journey.</p>
-                    </div>
+                    <div class="feature-highlight-card"><div class="feature-highlight-icon"><i class="bi bi-shield-check"></i></div><h3>Certified Experts</h3><p>All nutritionists are board-certified and experienced in managing complex health conditions.</p></div>
+                    <div class="feature-highlight-card"><div class="feature-highlight-icon"><i class="bi bi-globe"></i></div><h3>Global Access</h3><p>Connect with world-class nutritionists worldwide via secure video consultations.</p></div>
+                    <div class="feature-highlight-card"><div class="feature-highlight-icon"><i class="bi bi-robot"></i></div><h3>AI Technology</h3><p>State-of-the-art machine learning for accurate meal recognition and calorie estimation.</p></div>
+                    <div class="feature-highlight-card"><div class="feature-highlight-icon"><i class="bi bi-lock"></i></div><h3>Data Privacy</h3><p>Your health data is encrypted and secured with HIPAA-compliant standards.</p></div>
+                    <div class="feature-highlight-card"><div class="feature-highlight-icon"><i class="bi bi-graph-up"></i></div><h3>Proven Results</h3><p>98% success rate with clients achieving sustainable weight loss and health improvements.</p></div>
+                    <div class="feature-highlight-card"><div class="feature-highlight-icon"><i class="bi bi-chat-dots"></i></div><h3>24/7 Support</h3><p>Round-the-clock customer support to answer your questions and help your journey.</p></div>
                 </div>
             </div>
         </section>
@@ -390,7 +926,7 @@
         </section>
     </main>
 
-    <!-- Enhanced Footer -->
+    <!-- Footer -->
     <footer class="footer-modern">
         <div class="footer-container">
             <div class="footer-grid">
@@ -443,58 +979,50 @@
             </div>
         </div>
     </footer>
-   <script>
-const container = document.getElementById("storiesContainer");
 
-async function addStory() {
+    <script>
+        // ── Special Plans Tab Switcher ──
+        function switchSP(season, btn) {
+            document.querySelectorAll('.sp-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.sp-panel').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('sp-' + season).classList.add('active');
+        }
 
-    const content = document.getElementById("storyContent").value;
-    const user = JSON.parse(localStorage.getItem("user"));
+        // ── Season Tab Switcher ──
+        function switchSeason(season, btn) {
+            document.querySelectorAll('.season-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.season-panel').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('panel-' + season).classList.add('active');
+        }
 
-    if (!content.trim()) {
-        alert("Write something");
-        return;
-    }
+        // ── Testimonials ──
+        const container = document.getElementById("storiesContainer");
 
-    if (!user) {
-        alert("Login first");
-        return;
-    }
-
-    const newStory = {
-        userId: user.id,
-        name: user.fullName,
-        content: content
-    };
-
-    // إرسال للباك
-    await fetch("http://localhost:5000/api/stories", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(newStory)
-    });
-
-    // 🔥 إضافة مباشرة في الصفحة (UI)
-    container.innerHTML = `
-        <div class="testimonial-card">
-            <p class="testimonial-text">
-                "${content}"
-            </p>
-            <div class="testimonial-author">
-                <div class="author-avatar"></div>
-                <div>
-                    <h4>${user.fullName}</h4>
-                    <p>Just now</p>
-                </div>
-            </div>
-        </div>
-    ` + container.innerHTML;
-
-    // reset
-    document.getElementById("storyContent").value = "";
-}
-</script>
+        async function addStory() {
+            const content = document.getElementById("storyContent").value;
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!content.trim()) { alert("Write something"); return; }
+            if (!user) { alert("Login first"); return; }
+            const newStory = { userId: user.id, name: user.fullName, content };
+            await fetch("http://localhost:5000/api/stories", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(newStory)
+            });
+            if (container) {
+                container.innerHTML = `
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"${content}"</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar"></div>
+                            <div><h4>${user.fullName}</h4><p>Just now</p></div>
+                        </div>
+                    </div>` + container.innerHTML;
+            }
+            document.getElementById("storyContent").value = "";
+        }
+    </script>
 </body>
 </html>

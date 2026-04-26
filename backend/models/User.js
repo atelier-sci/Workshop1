@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema(
       default: "user",
     },
 
-    // ✅ زيدهم هنا
+    
     healthStatus: {
       type: String,
       default: "",
