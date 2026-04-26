@@ -199,10 +199,7 @@
                 <a href="HomePage.html" class="logo-modern">
                     <i class="bi bi-heart-pulse-fill"></i> NutriAI
                 </a>
-                <div style="display: flex; gap: 12px;">
-                    <a href="BookConsultaion.html" class="btn-primary-large" style="text-decoration: none;">
-                        <i class="bi bi-arrow-left"></i> Back to Book Consultation
-                    </a>
+                
                     <a href="UserDashboard.html" class="btn-primary-large" style="text-decoration: none;">
                         <i class="bi bi-arrow-left"></i> Back to Dashboard
                     </a>
@@ -218,37 +215,65 @@
             </div>
 
             <div class="nutritionist-grid">
-                
+        
 
-               
-
-               
-
-
-                
+              
 
                 <!-- Nutritionist 6 -->
-                <div class="nutritionist-card" onclick="selectNutritionist('Dr. Hassan Ali')">
-                    <div class="nutritionist-avatar">
-                        <i class="bi bi-person-fill"></i>
-                    </div>
-                    <div class="nutritionist-name">Dr. Hassan Ali</div>
-                    <div class="nutritionist-specialty">Chronic Disease Management</div>
-                    <div class="nutritionist-rating">
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        <i class="bi bi-star-fill"></i>
-                        (5.0 - 145 reviews)
-                    </div>
-                    <div class="nutritionist-info">
-                        Expert in managing chronic diseases with nutrition. PhD in Clinical Nutrition. 15+ years experience.
-                    </div>
-                   <a href="book.html" class="btn-primary-large">Book Consultation</a>
-                </div>
-            </div>
+               <div class="nutritionist-grid" id="nutritionistsList">
+  <!-- cards يتحطو هنا -->
+</div>
+                    
         </section>
     </div>
 </body>
+<script>
+async function loadNutritionists() {
+  const res = await fetch("http://localhost:5000/api/nutritionists");
+  const data = await res.json();
+
+  const container = document.getElementById("nutritionistsList");
+  container.innerHTML = "";
+
+  data.forEach(n => {
+    container.innerHTML += `
+      <div class="nutritionist-card">
+        <div class="nutritionist-avatar">
+          <i class="bi bi-person-fill"></i>
+        </div>
+
+        <div class="nutritionist-name">${n.fullName}</div>
+
+        <div class="nutritionist-specialty">
+          ${n.specialty || "Nutritionist"}
+        </div>
+
+        <div class="nutritionist-rating">
+          ⭐⭐⭐⭐⭐ (5.0)
+        </div>
+
+        <div class="nutritionist-info">
+          Certified nutrition expert
+        </div>
+
+        <button class="btn-primary-large"
+           onclick="goToBooking('${n._id}')">
+          Book Consultation
+        </button>
+      </div>
+    `;
+  });
+}
+
+// تحويل لصفحة الحجز
+function goToBooking(nutritionistId) {
+  localStorage.setItem("selectedNutritionist", nutritionistId);
+   console.log("Saved:", nutritionistId);
+  window.location.href = "book.html";
+}
+
+loadNutritionists();
+
+</script>
+
 </html>

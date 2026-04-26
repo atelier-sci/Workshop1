@@ -370,12 +370,22 @@
             <input type="text" placeholder="1234 5678 9012 3456" required>
           </div>
         </div>
-
-        <div class="row">
-          <div class="field">
-            <label>Expiry Date</label>
-            <input type="text" placeholder="MM/YY" required>
-          </div>
+<div class="row">
+    <div class="field">
+      <label>Consultation Date</label>
+      <input type="date" id="date" required>
+    </div>
+    <div class="field">
+      <label>Consultation Time</label>
+      <input type="time" id="time" required>
+    </div>
+  </div>
+  <div class="row">
+    <div class="field">
+      <label>Expiry Date</label>
+      <input type="month" required>
+    </div>
+        
           <div class="field">
             <label>CVV</label>
             <input type="text" placeholder="123" required>
@@ -401,16 +411,16 @@
       <div class="step" id="step-2">
         <div class="summary-section">
           <div class="summary-row">
-            <span class="label">Selected Plan:</span>
-            <span class="value">Premium Nutrition Plan</span>
+            <span class="label"></span>
+            <span class="value"></span>
           </div>
           <div class="summary-row">
-            <span class="label">Duration:</span>
-            <span class="value">3 Months</span>
+            <span class="label"></span>
+            <span class="value"></span>
           </div>
           <div class="summary-row total">
-            <span class="label">Total Amount:</span>
-            <span class="value">DZ 79</span>
+            <span class="label"></span>
+            <span class="value"></span>
           </div>
         </div>
 
@@ -437,51 +447,109 @@
 
     </div>
   </div>
-
   <script>
-    function goStep2() {
-      const terms = document.getElementById('terms').checked;
-      if (!terms) {
-        alert('Please agree to the terms and conditions');
-        return;
-      }
-      document.getElementById('step-1').classList.remove('active');
-      document.getElementById('step-2').classList.add('active');
-      
-      document.getElementById('circle-1').classList.remove('active');
-      document.getElementById('circle-2').classList.add('active');
-      document.getElementById('line-1').classList.add('done');
+function goStep2() {
+  const terms = document.getElementById('terms').checked;
+  const date = document.getElementById('date').value;
+  const time = document.getElementById('time').value;
+
+  if (!terms) {
+    alert('Please agree to the terms and conditions');
+    return;
+  }
+
+  // ✅ تحقق من التاريخ والوقت
+  if (!date || !time) {
+    alert('Please select a consultation date and time');
+    return;
+  }
+
+  // ✅ أملأ الـ summary
+  const user = JSON.parse(localStorage.getItem("user"));
+  document.querySelector('#step-2 .summary-row:nth-child(1) .label').textContent = 'Patient';
+  document.querySelector('#step-2 .summary-row:nth-child(1) .value').textContent = user?.fullName || '';
+  document.querySelector('#step-2 .summary-row:nth-child(2) .label').textContent = 'Date & Time';
+  document.querySelector('#step-2 .summary-row:nth-child(2) .value').textContent = `${date} at ${time}`;
+  document.querySelector('#step-2 .summary-row:nth-child(3) .label').textContent = 'Status';
+  document.querySelector('#step-2 .summary-row:nth-child(3) .value').textContent = 'Pending Confirmation';
+
+  document.getElementById('step-1').classList.remove('active');
+  document.getElementById('step-2').classList.add('active');
+  document.getElementById('circle-1').classList.remove('active');
+  document.getElementById('circle-2').classList.add('active');
+  document.getElementById('line-1').classList.add('done');
+}
+
+function goStep1() {
+  document.getElementById('step-2').classList.remove('active');
+  document.getElementById('step-1').classList.add('active');
+  document.getElementById('circle-2').classList.remove('active');
+  document.getElementById('circle-1').classList.add('active');
+  document.getElementById('line-1').classList.remove('done');
+}
+
+async function completePayment() {
+  const confirm = document.getElementById('confirm').checked;
+  if (!confirm) {
+    alert('Please confirm the payment details');
+    return;
+  }
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const nutritionistId = localStorage.getItem("selectedNutritionist");
+
+  if (!nutritionistId) {
+    alert("Nutritionist not selected ❌");
+    return;
+  }
+
+  // ✅ اقرأهم من الـ inputs الصح
+  const date = document.getElementById("date").value;
+  const time = document.getElementById("time").value;
+
+  try {
+    const res = await fetch("http://localhost:5000/api/bookings", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: user._id,
+        userName: user.fullName,
+        nutritionistId,
+        date,
+        time,
+        status: "pending"
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.message || "Booking failed");
+      return;
     }
 
-    function goStep1() {
-      document.getElementById('step-2').classList.remove('active');
-      document.getElementById('step-1').classList.add('active');
-      
-      document.getElementById('circle-2').classList.remove('active');
-      document.getElementById('circle-1').classList.add('active');
-      document.getElementById('line-1').classList.remove('done');
-    }
+    document.getElementById('step-2').classList.remove('active');
+    document.getElementById('step-success').classList.add('active');
+    document.getElementById('circle-2').classList.remove('active');
+    document.getElementById('circle-3').classList.add('active');
+    document.getElementById('line-2').classList.add('done');
 
-    function completePayment() {
-      const confirm = document.getElementById('confirm').checked;
-      if (!confirm) {
-        alert('Please confirm the payment details');
-        return;
-      }
-      document.getElementById('step-2').classList.remove('active');
-      document.getElementById('step-success').classList.add('active');
-      
-      document.getElementById('circle-2').classList.remove('active');
-      document.getElementById('circle-3').classList.add('active');
-      document.getElementById('line-2').classList.add('done');
-    }
+  } catch (err) {
+    console.log(err);
+    alert("Server error");
+  }
+}
 
-    function makeAnotherPayment() {
-      location.reload();
-    }
-    function goDashboard() {
+// ✅ عرّف الدوال الناقصة
+function makeAnotherPayment() {
+  window.location.href = "ChooseNutritionist.html";
+}
+
+function goDashboard() {
   window.location.href = "UserDashboard.html";
 }
-  </script>
+
+</script>
+ 
 </body>
 </html>

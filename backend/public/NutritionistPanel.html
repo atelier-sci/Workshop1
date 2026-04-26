@@ -1,423 +1,576 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/style.css">
-    <title>NutriAI Nutritionist Panel</title>
-    <style>
-        .nutritionist-panel {
-            padding: 20px;
-            background-color: var(--bg-light);
-            min-height: 100vh;
-        }
-        .panel-header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            padding: 30px;
-            border-radius: var(--border-radius);
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .panel-card {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: var(--transition);
-        }
-        .panel-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-        }
-        .card-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-        .btn-nutritionist {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: var(--transition);
-        }
-        .btn-nutritionist:hover {
-            background: var(--primary-dark);
-            color: white;
-        }
-        .sidebar {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-        .sidebar li {
-            margin-bottom: 10px;
-        }
-        .sidebar a {
-            color: var(--text-dark);
-            text-decoration: none;
-            display: block;
-            padding: 10px;
-            border-radius: 8px;
-            transition: var(--transition);
-        }
-        .sidebar a:hover, .sidebar a.active {
-            background: var(--primary);
-            color: white;
-        }
-        .consultation-card {
-            border-left: 4px solid var(--primary);
-            background: #f8f9fa;
-        }
-        .progress-bar-custom {
-            height: 20px;
-            border-radius: 10px;
-        }
-        .patient-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/style.css">
+  <title>NutriAI Nutritionist Panel</title>
+  <style>
+    .nutritionist-panel { padding: 20px; background-color: var(--bg-light); min-height: 100vh; }
+    .panel-header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white; padding: 30px; border-radius: var(--border-radius);
+      margin-bottom: 30px; text-align: center;
+    }
+    .panel-card {
+      background: white; border-radius: var(--border-radius);
+      padding: 25px; margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: var(--transition);
+    }
+    .panel-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.2); }
+    .sidebar {
+      background: white; border-radius: var(--border-radius);
+      padding: 20px; margin-bottom: 20px; position: sticky; top: 20px;
+    }
+    .sidebar ul { list-style: none; padding: 0; }
+    .sidebar li { margin-bottom: 10px; }
+    .sidebar a {
+      color: var(--text-dark); text-decoration: none;
+      display: block; padding: 10px; border-radius: 8px; transition: var(--transition);
+    }
+    .sidebar a:hover { background: var(--primary); color: white; }
+    .patient-avatar {
+      width: 45px; height: 45px; border-radius: 50%;
+      background: var(--primary); color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: bold; font-size: 16px; flex-shrink: 0;
+    }
+    .booking-card-pending  { border-left: 4px solid #ffc107; }
+    .booking-card-accepted { border-left: 4px solid #198754; }
+    .booking-card-rejected { border-left: 4px solid #dc3545; }
+    .zoom-group { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+    .zoom-group input {
+      flex: 1; min-width: 200px; border-radius: 8px;
+      border: 1px solid #dee2e6; padding: 6px 12px; font-size: 14px;
+    }
+    .empty-state { text-align: center; padding: 30px; color: #aaa; font-size: 15px; }
+    #toast {
+      display: none; position: fixed; top: 20px; right: 20px;
+      z-index: 9999; color: white; padding: 14px 22px;
+      border-radius: 10px; font-size: 15px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2); max-width: 340px;
+    }
+    .blog-card {
+      border: 1px solid #e8e8e8; border-radius: 10px;
+      padding: 16px; margin-bottom: 12px; transition: box-shadow 0.2s;
+    }
+    .blog-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .blog-card h5 { font-size: 15px; margin-bottom: 4px; color: var(--primary); }
+    .blog-card p  { font-size: 13px; color: #666; margin-bottom: 8px; }
+    .blog-card img {
+      width: 100%; height: 140px; object-fit: cover;
+      border-radius: 8px; margin-bottom: 10px;
+    }
+    .modal-overlay {
+      display: none; position: fixed;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000; align-items: center; justify-content: center;
+      backdrop-filter: blur(3px);
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: white; border-radius: 14px;
+      padding: 28px; width: 90%; max-width: 520px;
+      max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15); position: relative;
+    }
+    .modal-box h4 { margin-bottom: 18px; color: var(--primary); }
+    .modal-close {
+      position: absolute; top: 14px; right: 14px;
+      background: #f0f0f0; border: none; border-radius: 50%;
+      width: 30px; height: 30px; cursor: pointer; font-size: 16px;
+    }
+  </style>
 </head>
 <body>
-    <!-- Nutritionist Navigation -->
-     <nav class="navbar-enhanced">
-        <div class="nav-container">
-            <a href="/" class="logo-modern">
-                <i class="bi bi-heart-pulse-fill"></i> NutriAI
-            </a>
-            <ul class="auth-links">
-                <li><a href="HomePage.html" class="btn-modern-outline">Back to Home</a></li>
-            </ul>
-        </div>
-    </nav>
 
-    <div class="nutritionist-panel">
-        <div class="container-fluid">
-            <div class="panel-header">
-                <h1><i class="bi bi-person-badge"></i> Nutritionist Dashboard</h1>
-                <p>Manage consultations, create plans, and support your patients' health journey</p>
-            </div>
+<div id="toast"></div>
 
-            <div class="row">
-                <!-- Sidebar -->
-                <div class="col-md-3">
-                    <div class="sidebar">
-                        <h5>Quick Actions</h5>
-                        <ul>
-                            <li><a href="#overview" class="active"><i class="bi bi-speedometer2"></i> Overview</a></li>
-                            <li><a href="#consultations"><i class="bi bi-camera-video"></i> Consultations</a></li>
-                            <li><a href="#plans"><i class="bi bi-clipboard-data"></i> Nutrition Plans</a></li>
-                            <li><a href="#patients"><i class="bi bi-people"></i> My Patients</a></li>
-                            <li><a href="#progress"><i class="bi bi-graph-up"></i> Progress Tracking</a></li>
-                            <li><a href="#messages"><i class="bi bi-chat-dots"></i> Messages</a></li>
-                            </ul>
-                    </div>
-                </div>
+<nav class="navbar-enhanced">
+  <div class="nav-container">
+    <a href="/" class="logo-modern">
+      <i class="bi bi-heart-pulse-fill"></i> NutriAI
+    </a>
+    <ul class="auth-links">
+      <li>
+        <a href="login.html" class="btn-modern-outline" onclick="localStorage.clear()">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
 
-                <!-- Main Content -->
-                <div class="col-md-9">
-                    <!-- Overview Stats -->
-                    <div id="overview" class="row mb-4">
-                        <div class="col-md-3">
-                            <div class="panel-card text-center">
-                                <i class="bi bi-people card-icon"></i>
-                                <div class="stat-number"></div>
-                                <p>Active Patients</p>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="panel-card text-center">
-                                <i class="bi bi-camera-video card-icon"></i>
-                                <div class="stat-number"></div>
-                                <p>Today's Consultations</p>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="panel-card text-center">
-                                <i class="bi bi-clipboard-check card-icon"></i>
-                                <div class="stat-number"></div>
-                                <p>Plans Created</p>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="panel-card text-center">
-                                <i class="bi bi-chat-dots card-icon"></i>
-                                <div class="stat-number"></div>
-                                <p>Unread Messages</p>
-                            </div>
-                        </div>
-                    </div>
+<div class="nutritionist-panel">
+<div class="container-fluid">
+  <div class="panel-header">
+    <h1><i class="bi bi-person-badge-fill me-2"></i>Nutritionist Dashboard</h1>
+    <p class="mb-0" id="welcomeMsg"></p>
+  </div>
 
-                    <!-- Today's Consultations -->
-                    <div id="consultations" class="panel-card">
-                        <h3><i class="bi bi-camera-video"></i> Today's Consultations</h3>
-                        <p>Manage your scheduled online consultations and assessments.</p>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <button class="btn btn-nutritionist me-2"><i class="bi bi-play-circle"></i> Start Consultation</button>
-                                <button class="btn btn-outline-primary"><i class="bi bi-calendar-plus"></i> Schedule New</button>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                <button class="btn btn-info"><i class="bi bi-list"></i> View All Appointments</button>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <h5>Upcoming Sessions</h5>
-                            <div class="consultation-card p-3 mb-2">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <div class="patient-avatar me-3"></div>
-                                        <div>
-                                            <h6 class="mb-0"> </h6>
-                                            <small class="text-muted"></small>
-                                        </div>
-                                    </div>
-                                    <div class="text-end">
-                                        <div class="fw-bold"></div>
-                                        <button class="btn btn-sm btn-nutritionist mt-1">Join Call</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="consultation-card p-3 mb-2">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="d-flex align-items-center">
-                                        <div class="patient-avatar me-3"></div>
-                                        <div>
-                                            <h6 class="mb-0"></h6>
-                                            <small class="text-muted"></small>
-                                        </div>
-                                    </div>
-                                    <div class="text-end">
-                                        <div class="fw-bold"></div>
-                                        <button class="btn btn-sm btn-outline-secondary mt-1">View Notes</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Nutrition Plans -->
-                    <div id="plans" class="panel-card">
-                        <h3><i class="bi bi-clipboard-data"></i> Nutrition Plans</h3>
-                        <p>Create and manage personalized nutrition plans for your patients.</p>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <button class="btn btn-nutritionist me-2"><i class="bi bi-plus-circle"></i> Create New Plan</button>
-                                <button class="btn btn-outline-primary"><i class="bi bi-search"></i> Browse Templates</button>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                   </div>
-                        </div>
-                        <div class="mt-3">
-                            <h5>Recent Plans</h5>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h6 class="card-title"></h6>
-                                            <p class="card-text">.</p>
-                                            <div class="d-flex justify-content-between">
-                                                <small class="text-muted">Created: </small>
-                                                <button class="btn btn-sm btn-nutritionist">Edit</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h6 class="card-title"></h6>
-                                            <p class="card-text"></p>
-                                            <div class="d-flex justify-content-between">
-                                                <small class="text-muted">Created: </small>
-                                                <button class="btn btn-sm btn-nutritionist">Edit</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Patient Progress -->
-                    <div id="progress" class="panel-card">
-                        <h3><i class="bi bi-graph-up"></i> Patient Progress Tracking</h3>
-                        <p>Monitor patient adherence, results, and adjust plans accordingly.</p>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <button class="btn btn-nutritionist me-2"><i class="bi bi-bar-chart"></i> View Analytics</button>
-                                <button class="btn btn-outline-primary"><i class="bi bi-pencil-square"></i> Update Progress</button>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                </div>
-                        </div>
-                        <div class="mt-3">
-                            <h5>Patient Progress Overview</h5>
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <h6 class="mb-0"></h6>
-                                        <span class="badge bg-success"></span>
-                                    </div>
-                                    <div class="progress mb-2">
-                                        <div class="progress-bar progress-bar-custom bg-success" style="width: 75%"></div>
-                                    </div>
-                                    <small class="text-muted"></small>
-                                </div>
-                            </div>
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <h6 class="mb-0"></h6>
-                                        <span class="badge bg-warning"></span>
-                                    </div>
-                                    <div class="progress mb-2">
-                                        <div class="progress-bar progress-bar-custom bg-warning" style="width: 45%"></div>
-                                    </div>
-                                    <small class="text-muted"></small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Communication -->
-                    <div id="messages" class="panel-card">
-                        <h3><i class="bi bi-chat-dots"></i> Patient Communication</h3>
-                        <p>Send follow-up messages, provide support, and maintain patient engagement.</p>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <button class="btn btn-nutritionist me-2"><i class="bi bi-envelope"></i> Compose Message</button>
-                                <button class="btn btn-outline-primary"><i class="bi bi-telephone"></i> Quick Call</button>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                <button class="btn btn-info"><i class="bi bi-archive"></i> Archived Messages</button>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <h5>Recent Messages</h5>
-                            <div class="list-group">
-                                <div class="list-group-item">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1"> </h6>
-                                        <small></small>
-                                    </div>
-                                    <p class="mb-1">Question about meal replacement options...</p>
-                                    <small class="text-muted">Click to respond</small>
-                                </div>
-                                <div class="list-group-item">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-1"></h6>
-                                        <small></small>
-                                    </div>
-                                    <p class="mb-1">Weekly progress update submitted</p>
-                                    <small class="text-muted">Review and provide feedback</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Schedule Management -->
-                    <div id="schedule" class="panel-card">
-                        <h3><i class="bi bi-calendar"></i> Schedule Management</h3>
-                        <p>Organize your consultations, availability, and time blocks.</p>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <button class="btn btn-nutritionist me-2"><i class="bi bi-calendar-plus"></i> Add Appointment</button>
-                                <button class="btn btn-outline-primary"><i class="bi bi-clock"></i> Set Availability</button>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                <button class="btn btn-success"><i class="bi bi-share"></i> Share Calendar</button>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <h5>This Week's Schedule</h5>
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Day</th>
-                                            <th>Morning</th>
-                                            <th>Afternoon</th>
-                                            <th>Evening</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><strong>Monday</strong></td>
-                                            <td>9:00 AM - Consultation</td>
-                                            <td>2:00 PM - Follow-up</td>
-                                            <td>Available</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Tuesday</strong></td>
-                                            <td>10:00 AM - Assessment</td>
-                                            <td>3:00 PM - Consultation</td>
-                                            <td>7:00 PM - Group Session</td>
-                                        </tr>
-                                        <tr class="table-primary">
-                                            <td><strong>Today</strong></td>
-                                            <td>Available</td>
-                                            <td>2:00 PM - John Doe<br>4:30 PM - Jane Smith</td>
-                                            <td>Available</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="sidebar">
+        <ul>
+          <li><a href="#patients"><i class="bi bi-people-fill me-2"></i>Patients</a></li>
+          <li><a href="#consultations"><i class="bi bi-calendar-check me-2"></i>Consultations</a></li>
+          <li><a href="#plans"><i class="bi bi-journal-text me-2"></i>Plans</a></li>
+          <li><a href="#myblogs"><i class="bi bi-newspaper me-2"></i>My Blogs</a></li>
+        </ul>
+      </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
-      async function loadBookings() {
-  const nutritionistId = "123456"; // نفس ID
+    <div class="col-md-9">
 
-  const res = await fetch(`http://localhost:5000/api/bookings/${nutritionistId}`);
-  const data = await res.json();
+      <!-- PATIENTS -->
+      <div id="patients" class="panel-card">
+        <h3><i class="bi bi-people-fill me-2 text-primary"></i>Patients Booked With You</h3>
+        <div id="patientsList"><div class="empty-state">Loading patients...</div></div>
+      </div>
 
-  console.log(data); // هنا ديري UI
-} 
-const Booking = mongoose.model("Booking", {
-  userId: String,
-  userName: String,
-  nutritionistId: String,
-  date: String,
-  time: String
-});
- const user = await User.findById(userId);
+      <!-- CONSULTATIONS -->
+      <div id="consultations" class="panel-card">
+        <h3><i class="bi bi-calendar-check me-2 text-primary"></i>All Consultations</h3>
+        <div class="mb-3 d-flex gap-2 flex-wrap">
+          <button class="btn btn-sm btn-outline-secondary" onclick="filterBookings('all')">All</button>
+          <button class="btn btn-sm btn-outline-warning"   onclick="filterBookings('pending')">Pending</button>
+          <button class="btn btn-sm btn-outline-success"   onclick="filterBookings('accepted')">Accepted</button>
+          <button class="btn btn-sm btn-outline-danger"    onclick="filterBookings('rejected')">Rejected</button>
+        </div>
+        <div id="consultationsList"><div class="empty-state">Loading consultations...</div></div>
+      </div>
 
-const booking = new Booking({
-  userId,
-  userName: user.fullName,
-  nutritionistId,
-  date,
-  time
-});
-    </script>
+      <!-- PLANS -->
+      <div id="plans" class="panel-card">
+        <h3><i class="bi bi-journal-text me-2 text-primary"></i>Nutrition Plans</h3>
+        <div class="mb-4 p-3" style="background:#f8f9fa; border-radius:10px;">
+          <h5 class="mb-3"> Create New Plan</h5>
+          <label class="form-label fw-semibold">Select Patient</label>
+          <select id="patientSelect" class="form-control mb-2">
+            <option value="">-- Choose a patient --</option>
+          </select>
+          <label class="form-label fw-semibold">Plan Title</label>
+          <input id="planTitle" class="form-control mb-2" placeholder="e.g. Weight Loss - Week 1">
+          <label class="form-label fw-semibold">Plan Description</label>
+          <textarea id="planDescription" class="form-control mb-3" rows="4"
+            placeholder="Describe meals, calories, goals..."></textarea>
+          <button onclick="createPlan()" class="btn btn-success">
+            <i class="bi bi-plus-circle me-1"></i> Create Plan
+          </button>
+        </div>
+        <hr>
+        <h5 class="mb-3">My Created Plans</h5>
+        <div id="plansList"><div class="empty-state">Loading plans...</div></div>
+      </div>
+
+      <!-- BLOGS -->
+      <div id="myblogs" class="panel-card">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3><i class="bi bi-newspaper me-2 text-primary"></i>My Blog Posts</h3>
+          <button class="btn btn-success btn-sm" onclick="openBlogModal()">
+            <i class="bi bi-plus-circle me-1"></i> New Blog Post
+          </button>
+        </div>
+        <div id="myBlogsList"><div class="empty-state">Loading blogs...</div></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- MODAL BLOG -->
+<div class="modal-overlay" id="blogModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeBlogModal()">✕</button>
+    <h4 id="blogModalTitle"><i class="bi bi-pencil me-2"></i>New Blog Post</h4>
+    <input type="hidden" id="blogEditId">
+    <label class="form-label fw-semibold">Title *</label>
+    <input id="blogTitle" class="form-control mb-2" placeholder="e.g. 5 Tips for Healthy Eating">
+    <label class="form-label fw-semibold">Summary</label>
+    <input id="blogSummary" class="form-control mb-2" placeholder="Short description...">
+    <label class="form-label fw-semibold">Content *</label>
+    <textarea id="blogContent" class="form-control mb-2" rows="5" placeholder="Full article content..."></textarea>
+    <label class="form-label fw-semibold">Category</label>
+    <select id="blogCategory" class="form-control mb-2">
+      <option value="">-- Select Category --</option>
+      <option value="Nutrition">Nutrition</option>
+      <option value="Wellness">Wellness</option>
+      <option value="Weight Loss">Weight Loss</option>
+      <option value="Fitness">Fitness</option>
+      <option value="Recipes">Recipes</option>
+      <option value="Tips">Tips</option>
+    </select>
+    <label class="form-label fw-semibold">Image URL (optional)</label>
+    <input id="blogImage" class="form-control mb-3" placeholder="https://...">
+    <button class="btn btn-success w-100" onclick="saveBlog()">
+      <i class="bi bi-save me-1"></i> <span id="blogSaveLabel">Publish Blog</span>
+    </button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+
+const user = JSON.parse(localStorage.getItem("user"));
+if (!user) { window.location.href = "login.html"; }
+else if (user.role !== "nutritionist") {
+  if (user.role === "user") window.location.href = "UserDashboard.html";
+  else if (user.role === "admin") window.location.href = "AdminDashboard.html";
+  else window.location.href = "login.html";
+}
+
+const nutritionistId = user._id;
+document.getElementById("welcomeMsg").textContent = `Welcome, ${user.fullName}`;
+let allBookings = [];
+
+function showToast(msg, type = "success") {
+  const colors = { success:"#198754", danger:"#dc3545", warning:"#ffc107", info:"#0dcaf0" };
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.style.background = colors[type] || colors.success;
+  toast.style.display = "block";
+  setTimeout(() => { toast.style.display = "none"; }, 3500);
+}
+
+function getInitials(name) {
+  if (!name) return "?";
+  return name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2);
+}
+
+async function loadMyBookings() {
+  try {
+    const res = await fetch(`http://localhost:5000/api/nutritionist/bookings/${nutritionistId}`);
+    allBookings = await res.json();
+    renderBookings(allBookings);
+  } catch (err) {
+    document.getElementById("consultationsList").innerHTML =
+      `<div class="empty-state text-danger">Failed to load consultations.</div>`;
+  }
+}
+
+function renderBookings(list) {
+  const container = document.getElementById("consultationsList");
+  container.innerHTML = "";
+  if (!list || list.length === 0) {
+    container.innerHTML = `<div class="empty-state">No consultations found.</div>`;
+    return;
+  }
+  list.forEach(b => {
+    const statusMap = {
+      accepted: { badge: "bg-success",           border: "booking-card-accepted", label: "Accepted" },
+      rejected: { badge: "bg-danger",            border: "booking-card-rejected", label: "Rejected" },
+      pending:  { badge: "bg-warning text-dark", border: "booking-card-pending",  label: "Pending"  }
+    };
+    const s = statusMap[b.status] || statusMap.pending;
+    const uid = b.userId || "";
+    const actionBtns = b.status === "pending" ? `
+      <button class="btn btn-sm btn-success me-1"
+        onclick="updateStatus('${b._id}', 'accepted', '${b.userName}', '${uid}')">
+        <i class="bi bi-check-circle me-1"></i>Accept
+      </button>
+      <button class="btn btn-sm btn-danger"
+        onclick="updateStatus('${b._id}', 'rejected', '${b.userName}', '${uid}')">
+        <i class="bi bi-x-circle me-1"></i>Reject
+      </button>
+    ` : `<span class="text-muted small">No further action needed</span>`;
+    const zoomSection = b.status === "accepted" ? `
+      <div class="zoom-group mt-2">
+        <input id="zoom-${b._id}" placeholder="Paste Zoom / Google Meet link..." value="${b.zoomLink || ""}">
+        <button class="btn btn-sm btn-outline-primary"
+          onclick="setZoom('${b._id}', '${b.userName}', '${uid}')">
+          <i class="bi bi-camera-video me-1"></i>Send Link
+        </button>
+      </div>
+      ${b.zoomLink ? `<p class="mt-1 mb-0"><small>🔗 Current: <a href="${b.zoomLink}" target="_blank">${b.zoomLink}</a></small></p>` : ""}
+    ` : "";
+    container.innerHTML += `
+      <div class="card p-3 mb-3 ${s.border}">
+        <div class="d-flex justify-content-between align-items-start">
+          <div class="d-flex align-items-center gap-3">
+            <div class="patient-avatar">${getInitials(b.userName)}</div>
+            <div>
+              <h5 class="mb-0">${b.userName}</h5>
+              <small class="text-muted">📅 ${b.date} &nbsp;⏰ ${b.time}</small>
+            </div>
+          </div>
+          <span class="badge ${s.badge}">${s.label}</span>
+        </div>
+        <div class="mt-3 d-flex gap-2 flex-wrap">${actionBtns}</div>
+        ${zoomSection}
+      </div>
+    `;
+  });
+}
+
+function filterBookings(status) {
+  if (status === "all") renderBookings(allBookings);
+  else renderBookings(allBookings.filter(b => (b.status || "pending") === status));
+}
+
+async function loadPatients() {
+  try {
+    const res  = await fetch(`http://localhost:5000/api/nutritionist/bookings/${nutritionistId}`);
+    const data = await res.json();
+    const container = document.getElementById("patientsList");
+    const select    = document.getElementById("patientSelect");
+    container.innerHTML = "";
+    select.innerHTML = `<option value="">-- Choose a patient --</option>`;
+    if (!data || data.length === 0) {
+      container.innerHTML = `<div class="empty-state">No patients yet.</div>`;
+      return;
+    }
+    const unique = [...new Map(data.map(b => [b.userId, b])).values()];
+    unique.forEach(b => {
+      container.innerHTML += `
+        <div class="card p-2 mb-2 d-flex flex-row align-items-center gap-3">
+          <div class="patient-avatar">${getInitials(b.userName)}</div>
+          <div>
+            <strong>${b.userName}</strong><br>
+            <small class="text-muted">📅 ${b.date} ⏰ ${b.time}</small><br>
+            <span class="badge ${
+              b.status === "accepted" ? "bg-success" :
+              b.status === "rejected" ? "bg-danger"  : "bg-warning text-dark"
+            }">${b.status || "pending"}</span>
+          </div>
+        </div>
+      `;
+      select.innerHTML += `<option value="${b.userId}">${b.userName}</option>`;
+    });
+  } catch (err) {
+    document.getElementById("patientsList").innerHTML =
+      `<div class="empty-state text-danger">Failed to load patients.</div>`;
+  }
+}
+
+async function updateStatus(id, status, userName, userId) {
+  try {
+    await fetch(`http://localhost:5000/api/bookings/${id}/status`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status })
+    });
+    showToast(
+      status === "accepted" ? `✅ Accepted for ${userName}` : `❌ Rejected for ${userName}`,
+      status === "accepted" ? "success" : "danger"
+    );
+    loadMyBookings(); loadPatients();
+  } catch (err) { showToast("Server error.", "danger"); }
+}
+
+async function setZoom(id, userName, userId) {
+  const link = document.getElementById(`zoom-${id}`).value.trim();
+  if (!link) { showToast("Please enter a Zoom link first", "danger"); return; }
+  try {
+    await fetch(`http://localhost:5000/api/bookings/${id}/zoom`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ zoomLink: link })
+    });
+    showToast(`🔗 Zoom link sent to ${userName}`, "success");
+    loadMyBookings();
+  } catch (err) { showToast("Failed to send Zoom link", "danger"); }
+}
+
+async function createPlan() {
+  const userId      = document.getElementById("patientSelect").value;
+  const title       = document.getElementById("planTitle").value.trim();
+  const description = document.getElementById("planDescription").value.trim();
+  if (!userId)      { showToast("Please select a patient", "danger"); return; }
+  if (!title)       { showToast("Please enter a plan title", "danger"); return; }
+  if (!description) { showToast("Please enter a plan description", "danger"); return; }
+  try {
+    const res = await fetch("http://localhost:5000/api/plans", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, nutritionistId, title, description })
+    });
+    if (res.ok) {
+      showToast("✅ Plan created successfully!", "success");
+      document.getElementById("planTitle").value       = "";
+      document.getElementById("planDescription").value = "";
+      document.getElementById("patientSelect").value   = "";
+      loadMyPlans();
+    } else {
+      const data = await res.json();
+      showToast(data.message || "Failed", "danger");
+    }
+  } catch (err) { showToast("Server error.", "danger"); }
+}
+
+async function loadMyPlans() {
+  try {
+    const res   = await fetch(`http://localhost:5000/api/nutritionist/plans/${nutritionistId}`);
+    const plans = await res.json();
+    const container = document.getElementById("plansList");
+    container.innerHTML = "";
+    if (!plans || plans.length === 0) {
+      container.innerHTML = `<div class="empty-state">No plans created yet.</div>`;
+      return;
+    }
+    plans.forEach(p => {
+      const statusBadge = p.status === "updated"
+        ? `<span class="badge bg-info">Updated</span>`
+        : `<span class="badge bg-success">Active</span>`;
+      container.innerHTML += `
+        <div class="card p-3 mb-2">
+          <div class="d-flex justify-content-between align-items-start">
+            <h5 class="mb-1"><i class="bi bi-journal-check me-2 text-primary"></i>${p.title}</h5>
+            ${statusBadge}
+          </div>
+          <p class="text-muted mb-1" style="font-size:13px;">Patient ID: ${p.userId}</p>
+          <p class="mb-0">${p.description}</p>
+        </div>
+      `;
+    });
+  } catch (err) {
+    document.getElementById("plansList").innerHTML =
+      `<div class="empty-state text-danger">Failed to load plans.</div>`;
+  }
+}
+
+// ==============================
+// BLOGS
+// ==============================
+function openBlogModal() {
+  document.getElementById("blogModalTitle").innerHTML = `<i class="bi bi-pencil me-2"></i>New Blog Post`;
+  document.getElementById("blogSaveLabel").textContent = "Publish Blog";
+  document.getElementById("blogEditId").value   = "";
+  document.getElementById("blogTitle").value    = "";
+  document.getElementById("blogSummary").value  = "";
+  document.getElementById("blogContent").value  = "";
+  document.getElementById("blogCategory").value = "";
+  document.getElementById("blogImage").value    = "";
+  document.getElementById("blogModal").classList.add("active");
+}
+
+function closeBlogModal() {
+  document.getElementById("blogModal").classList.remove("active");
+}
+
+function editBlog(id, title, summary, content, category, image) {
+  document.getElementById("blogModalTitle").innerHTML = `<i class="bi bi-pencil me-2"></i>Edit Blog Post`;
+  document.getElementById("blogSaveLabel").textContent = "Update Blog";
+  document.getElementById("blogEditId").value   = id;
+  document.getElementById("blogTitle").value    = title;
+  document.getElementById("blogSummary").value  = summary;
+  document.getElementById("blogContent").value  = content;
+  document.getElementById("blogCategory").value = category;
+  document.getElementById("blogImage").value    = image;
+  document.getElementById("blogModal").classList.add("active");
+}
+
+async function saveBlog() {
+  const id       = document.getElementById("blogEditId").value;
+  const title    = document.getElementById("blogTitle").value.trim();
+  const summary  = document.getElementById("blogSummary").value.trim();
+  const content  = document.getElementById("blogContent").value.trim();
+  const category = document.getElementById("blogCategory").value;
+  const image    = document.getElementById("blogImage").value.trim();
+
+  if (!title)   { showToast("Title is required", "danger"); return; }
+  if (!content) { showToast("Content is required", "danger"); return; }
+
+  const payload = { title, summary, content, category, image, author: user.fullName, role: "nutritionist" };
+
+  try {
+    const res = id
+      ? await fetch(`http://localhost:5000/api/blogs/${id}`, {
+          method: "PUT", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        })
+      : await fetch("http://localhost:5000/api/blogs", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+    if (res.ok) {
+      showToast(id ? "✅ Blog updated!" : "✅ Blog published!", "success");
+      closeBlogModal();
+      loadMyBlogs();
+    } else {
+      const data = await res.json();
+      showToast(data.message || "Failed", "danger");
+    }
+  } catch (err) { showToast("Server error", "danger"); }
+}
+
+async function deleteBlog(id) {
+  if (!confirm("Delete this blog post?")) return;
+  try {
+    await fetch(`http://localhost:5000/api/blogs/${id}`, { method: "DELETE" });
+    showToast("🗑 Blog deleted");
+    loadMyBlogs();
+  } catch (err) { showToast("Failed to delete", "danger"); }
+}
+
+async function loadMyBlogs() {
+  try {
+    const res   = await fetch("http://localhost:5000/api/blogs");
+    const blogs = await res.json();
+
+    // فلتر فقط بلوغات هاذا المختص
+    const myBlogs = blogs.filter(b => b.author === user.fullName);
+
+    const container = document.getElementById("myBlogsList");
+    container.innerHTML = "";
+
+    if (!myBlogs.length) {
+      container.innerHTML = `
+        <div class="empty-state">
+          <i class="bi bi-newspaper" style="font-size:36px; display:block; margin-bottom:8px;"></i>
+          No blog posts yet. Write your first article!
+        </div>`;
+      return;
+    }
+
+    myBlogs.forEach(b => {
+      const safeTitle    = (b.title    || "").replace(/`/g, "'").replace(/\\/g, "\\\\");
+      const safeSummary  = (b.summary  || "").replace(/`/g, "'").replace(/\\/g, "\\\\");
+      const safeContent  = (b.content  || "").replace(/`/g, "'").replace(/\\/g, "\\\\");
+      const safeCategory = (b.category || "").replace(/`/g, "'");
+      const safeImage    = b.image || "";
+      const date = new Date(b.createdAt).toLocaleDateString("en-GB");
+
+      container.innerHTML += `
+        <div class="blog-card">
+          ${b.image ? `<img src="${b.image}" alt="${b.title}" onerror="this.style.display='none'">` : ""}
+          <div class="d-flex justify-content-between align-items-start gap-3">
+            <div style="flex:1;">
+              <h5>${b.title}</h5>
+              <p>${b.summary || (b.content?.slice(0, 100) + "...") || ""}</p>
+              <div class="d-flex gap-2 align-items-center flex-wrap">
+                <span class="badge bg-secondary">${b.category || "General"}</span>
+                <small class="text-muted">📅 ${date}</small>
+              </div>
+            </div>
+            <div class="d-flex gap-2 flex-shrink-0">
+              <button class="btn btn-sm btn-outline-primary"
+                onclick="editBlog('${b._id}', \`${safeTitle}\`, \`${safeSummary}\`, \`${safeContent}\`, \`${safeCategory}\`, \`${safeImage}\`)">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger" onclick="deleteBlog('${b._id}')">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  } catch (err) {
+    document.getElementById("myBlogsList").innerHTML =
+      `<div class="empty-state text-danger">Failed to load blogs.</div>`;
+  }
+}
+
+// INIT
+loadMyBookings();
+loadPatients();
+loadMyPlans();
+loadMyBlogs();
+</script>
 </body>
-</html
+</html>

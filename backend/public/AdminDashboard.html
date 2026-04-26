@@ -1,419 +1,728 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/style.css">
-    <title>NutriAI Admin Dashboard</title>
-    <style>
-        .admin-dashboard {
-            padding: 20px;
-            background-color: var(--bg-light);
-            min-height: 100vh;
-        }
-        .dashboard-header {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            padding: 30px;
-            border-radius: var(--border-radius);
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .dashboard-card {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: var(--transition);
-        }
-        .dashboard-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-        }
-        .card-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-        .btn-admin {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: var(--transition);
-        }
-        .btn-admin:hover {
-            background: var(--primary-dark);
-            color: white;
-        }
-        .sidebar {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .sidebar ul {
-            list-style: none;
-            padding: 0;
-        }
-        .sidebar li {
-            margin-bottom: 10px;
-        }
-        .sidebar a {
-            color: var(--text-dark);
-            text-decoration: none;
-            display: block;
-            padding: 10px;
-            border-radius: 8px;
-            transition: var(--transition);
-        }
-        .sidebar a:hover, .sidebar a.active {
-            background: var(--primary);
-            color: white;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/style.css">
+  <title>NutriAI Admin Dashboard</title>
+  <style>
+    .admin-dashboard { padding: 20px; background-color: var(--bg-light); min-height: 100vh; }
+    .dashboard-header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white; padding: 30px; border-radius: var(--border-radius);
+      margin-bottom: 30px; text-align: center;
+    }
+    .dashboard-card {
+      background: white; border-radius: var(--border-radius);
+      padding: 25px; margin-bottom: 20px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: var(--transition);
+    }
+    .dashboard-card:hover { transform: translateY(-3px); box-shadow: 0 8px 15px rgba(0,0,0,0.15); }
+    .card-icon { font-size: 2.5rem; margin-bottom: 10px; color: var(--primary); }
+    .stat-number { font-size: 2rem; font-weight: bold; color: var(--primary); }
+    .btn-admin {
+      background: var(--primary); color: white; border: none;
+      padding: 8px 18px; border-radius: 8px; transition: var(--transition); cursor: pointer;
+    }
+    .btn-admin:hover { background: var(--primary-dark); color: white; }
+    .sidebar {
+      background: white; border-radius: var(--border-radius);
+      padding: 20px; margin-bottom: 20px; position: sticky; top: 20px;
+    }
+    .sidebar ul { list-style: none; padding: 0; }
+    .sidebar li { margin-bottom: 8px; }
+    .sidebar a {
+      color: var(--text-dark); text-decoration: none;
+      display: block; padding: 10px; border-radius: 8px; transition: var(--transition);
+    }
+    .sidebar a:hover { background: var(--primary); color: white; }
+
+    /* TOAST */
+    #adminToast {
+      display: none; position: fixed; top: 20px; right: 20px;
+      z-index: 9999; color: white; padding: 13px 20px;
+      border-radius: 10px; font-size: 14px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2); max-width: 320px;
+    }
+
+    /* USER / NUTRITIONIST CARDS */
+    .person-card {
+      border: 1px solid #e8e8e8; border-radius: 10px;
+      padding: 14px 18px; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 14px;
+      transition: box-shadow 0.2s;
+    }
+    .person-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .person-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--primary); color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 16px; flex-shrink: 0;
+    }
+    .person-info { flex: 1; }
+    .person-info strong { font-size: 15px; display: block; }
+    .person-info small { color: #888; font-size: 12px; }
+    .person-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+    /* BLOG CARD */
+    .blog-admin-card {
+      border: 1px solid #e8e8e8; border-radius: 10px;
+      padding: 16px; margin-bottom: 12px;
+    }
+    .blog-admin-card h5 { font-size: 15px; margin-bottom: 4px; }
+    .blog-admin-card p  { font-size: 13px; color: #666; margin-bottom: 8px; }
+
+    /* STORY CARD */
+    .story-card {
+      border: 1px solid #e8e8e8; border-radius: 10px;
+      padding: 14px; margin-bottom: 10px;
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none; position: fixed;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000; align-items: center; justify-content: center;
+      backdrop-filter: blur(3px);
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-box {
+      background: white; border-radius: 14px;
+      padding: 28px; width: 90%; max-width: 480px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      position: relative;
+    }
+    .modal-box h4 { margin-bottom: 18px; color: var(--primary); }
+    .modal-close {
+      position: absolute; top: 14px; right: 14px;
+      background: #f0f0f0; border: none; border-radius: 50%;
+      width: 30px; height: 30px; cursor: pointer; font-size: 16px;
+    }
+    .form-label-sm { font-size: 12px; font-weight: 600; color: #555; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    .empty-state { text-align: center; padding: 28px; color: #bbb; font-size: 14px; }
+    .empty-state i { font-size: 36px; display: block; margin-bottom: 8px; }
+  </style>
 </head>
 <body>
-    <!-- Admin Navigation -->
-   <nav class="navbar-enhanced">
-        <div class="nav-container">
-            <a href="/" class="logo-modern">
-                <i class="bi bi-heart-pulse-fill"></i> NutriAI
-            </a>
-            <ul class="nav-links">
-               
-            <ul class="auth-links">
-                <li><a href="HomePage.html" class="btn-modern">back to home</a></li>
-                <li><a href="login.html" class="btn-modern">Logout</a></li>
-            </ul>
+
+<div id="adminToast"></div>
+
+<!-- NAV -->
+<nav class="navbar-enhanced">
+  <div class="nav-container">
+    <a href="/" class="logo-modern">
+      <i class="bi bi-heart-pulse-fill"></i> NutriAI
+    </a>
+    <ul class="auth-links">
+      <li>
+        <a href="login.html" class="btn-modern" onclick="localStorage.clear()">
+          <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="admin-dashboard">
+<div class="container-fluid">
+
+  <div class="dashboard-header">
+    <h1><i class="bi bi-speedometer2 me-2"></i>Administrator Dashboard</h1>
+    <p id="adminWelcome">Manage users, nutritionists, content and bookings</p>
+  </div>
+
+  <div class="row">
+
+    <!-- SIDEBAR -->
+    <div class="col-md-3">
+      <div class="sidebar">
+        <h5 class="mb-3">Quick Actions</h5>
+        <ul>
+          <li><a href="#stats"><i class="bi bi-bar-chart me-2"></i>Overview</a></li>
+          <li><a href="#users"><i class="bi bi-people me-2"></i>Users</a></li>
+          <li><a href="#nutritionists"><i class="bi bi-person-badge me-2"></i>Nutritionists</a></li>
+          <li><a href="#bookings"><i class="bi bi-calendar-check me-2"></i>Bookings</a></li>
+          <li><a href="#blogs"><i class="bi bi-newspaper me-2"></i>Blogs</a></li>
+          <li><a href="#stories"><i class="bi bi-chat-quote me-2"></i>Success Stories</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="col-md-9">
+
+      <!-- STATS -->
+      <div id="stats" class="row mb-4">
+        <div class="col-md-4">
+          <div class="dashboard-card text-center">
+            <i class="bi bi-people card-icon"></i>
+            <div class="stat-number" id="statUsers">—</div>
+            <p>Total Users</p>
+          </div>
         </div>
-    </nav>
-    <div class="admin-dashboard">
-        <div class="container-fluid">
-            <div class="dashboard-header">
-                <h1><i class="bi bi-speedometer2"></i> Administrator Dashboard</h1>
-                <p>Manage users, content, and ensure platform reliability</p>
-            </div>
-
-            <div class="row">
-                <!-- Sidebar -->
-                <div class="col-md-3">
-                    <div class="sidebar">
-                        <h5>Quick Actions</h5>
-                        <ul>
-                            <li><a href="#users" class="active"><i class="bi bi-people"></i> User Management</a></li>
-                            <li><a href="#nutritionists"><i class="bi bi-person-badge"></i> Nutritionists</a></li>
-                            <li><a href="#subscriptions"><i class="bi bi-credit-card"></i> Subscriptions</a></li>
-                            <li><a href="#content"><i class="bi bi-newspaper"></i> Content</a></li>
-                           
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Main Content -->
-                <div class="col-md-9">
-                    <!-- Overview Stats -->
-                    <div class="row mb-4">
-                        <div class="col-md-3">
-                            <div class="dashboard-card text-center">
-                                <i class="bi bi-people card-icon"></i>
-                                <div class="stat-number"></div>
-                                <p>Total Users</p>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="dashboard-card text-center">
-                                <i class="bi bi-person-badge card-icon"></i>
-                                <div class="stat-number"> </div>
-                                <p>Active Nutritionists</p>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="dashboard-card text-center">
-                                <i class="bi bi-credit-card card-icon"></i>
-                                <div class="stat-number"> </div>
-                                <p>Active Subscriptions</p>
-                            </div>
-                        </div>
-                        
-                    </div>
-
-                    <!-- User Management Section -->
-                    <div id="users" class="dashboard-card">
-                        <h3><i class="bi bi-people"></i> User Management</h3>
-                        <p>Manage registered users, their profiles, and access levels.</p>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                               <button class="btn btn-admin me-2" onclick="loadUsers()">
-  <i class="bi bi-list"></i> View All Users
-</button>
-<div id="usersList" class="mt-3"></div>
-                               
-                            </div>
-                            <div class="col-md-6 text-end">
-                              
-                            </div>
-                        </div>
-                       
-                    </div>
-
-                    <!-- Nutritionist Management -->
-                    <div id="nutritionists" class="dashboard-card">
-                        <h3><i class="bi bi-person-badge"></i> Nutritionist Management</h3>
-                        <p>Oversee certified nutritionists, their certifications, and client assignments.</p>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <button class="btn btn-admin me-2"><i class="bi bi-list"></i> View Nutritionists</button>
-                                <button class="btn btn-outline-primary"><i class="bi bi-plus-circle"></i> Add Nutritionist</button>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                  </div>
-                        </div>
-                        <div class="mt-3">
-                            <h5>Pending Certifications</h5>
-                            <div class="alert alert-warning">
-
-                                 </div>
-                        </div>
-                    </div>
-
-                    <!-- Subscription Management -->
-                    <div id="subscriptions" class="dashboard-card">
-                        <h3><i class="bi bi-credit-card"></i> Subscription Management</h3>
-                        <p>Monitor subscription plans, payments, and renewals.</p>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <button class="btn btn-admin me-2"><i class="bi bi-list"></i> View Subscriptions</button>
-                               
-                            </div>
-                            <div class="col-md-6 text-end">
-                                  </div>
-                        </div>
-                        <div class="mt-3">
-                           
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="text-center">
-                                        <div class="stat-number"> </div>
-                                       
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="text-center">
-                                        <div class="stat-number"> </div>
-                                       
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="text-center">
-                                        <div class="stat-number"> </div>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Content Management -->
-                    <div id="content" class="dashboard-card">
-                        <h3><i class="bi bi-newspaper"></i> Content Management</h3>
-                        <p>Manage blogs, announcements, and educational content.</p>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <button class="btn btn-admin me-2"><i class="bi bi-list"></i> View Blogs</button>
-                                <button class="btn btn-outline-primary"><i class="bi bi-plus-circle"></i> Create Blog Post</button>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                </div>
-                        </div>
-                       
-                    </div>
-
-                    <!-- User Inquiries 
-                    <div id="inquiries" class="dashboard-card">
-                        <h3><i class="bi bi-chat-dots"></i> User Inquiries</h3>
-                        <p>Handle support tickets, questions, and feedback.</p>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <button class="btn btn-admin me-2"><i class="bi bi-list"></i> View Inquiries</button>
-                                <button class="btn btn-outline-primary"><i class="bi bi-plus-circle"></i> Create Ticket</button>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                <button class="btn btn-warning"><i class="bi bi-clock"></i> Pending (12)</button>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <h5>Recent Inquiries</h5>
-                            <div class="alert alert-info">
-                                <strong>High Priority:</strong> User reporting login issues
-                            </div>
-                            <div class="alert alert-secondary">
-                                <strong>General:</strong> Question about subscription plans
-                            </div>
-                        </div>
-                    </div> -->
-
-                    <!-- Platform Maintenance 
-                    <div id="maintenance" class="dashboard-card">
-                        <h3><i class="bi bi-tools"></i> Platform Maintenance</h3>
-                        <p>Schedule updates, backups, and system maintenance.</p>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <button class="btn btn-admin me-2"><i class="bi bi-calendar"></i> Schedule Maintenance</button>
-                                <button class="btn btn-outline-primary"><i class="bi bi-hdd"></i> Backup Data</button>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                <button class="btn btn-danger"><i class="bi bi-exclamation-triangle"></i> Emergency Shutdown</button>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <h5>Maintenance Schedule</h5>
-                            <ul class="list-group">
-                                <li class="list-group-item">Database optimization: Tomorrow 2:00 AM</li>
-                                <li class="list-group-item">Security patch deployment: Next Monday</li>
-                                <li class="list-group-item">Server maintenance: Monthly</li>
-                            </ul>
-                        </div>
-                    </div>-->
-
-                    <!-- Data Security 
-                    <div id="security" class="dashboard-card">
-                        <h3><i class="bi bi-shield"></i> Data Security</h3>
-                        <p>Monitor security threats, manage permissions, and ensure data protection.</p>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <button class="btn btn-admin me-2"><i class="bi bi-eye"></i> Security Logs</button>
-                                <button class="btn btn-outline-primary"><i class="bi bi-key"></i> Manage Permissions</button>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                <button class="btn btn-success"><i class="bi bi-shield-check"></i> Run Security Scan</button>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <h5>Security Status</h5>
-                            <div class="alert alert-success">
-                                <i class="bi bi-check-circle"></i> All systems secure. Last scan: 2 hours ago
-                            </div>
-                            <div class="alert alert-info">
-                                <i class="bi bi-info-circle"></i> 3 failed login attempts detected today
-                            </div>
-                        </div>
-                    </div> 
-                -->
-                    <!-- System Reliability 
-                    <div id="system" class="dashboard-card">
-                        <h3><i class="bi bi-cpu"></i> System Reliability</h3>
-                        <p>Monitor system performance, uptime, and infrastructure health.</p>
-                        <div class="row mt-3">
-                            <div class="col-md-6">
-                                <button class="btn btn-admin me-2"><i class="bi bi-graph-up"></i> Performance Metrics</button>
-                                <button class="btn btn-outline-primary"><i class="bi bi-server"></i> Server Status</button>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                <button class="btn btn-info"><i class="bi bi-activity"></i> System Logs</button>
-                            </div>
-                        </div>
-                        <div class="mt-3">
-                            <h5>System Health</h5>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="text-center">
-                                        <div class="stat-number text-success">99.9%</div>
-                                        <small>Uptime</small>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="text-center">
-                                        <div class="stat-number text-info">1.2s</div>
-                                        <small>Avg Response Time</small>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="text-center">
-                                        <div class="stat-number text-warning">85%</div>
-                                        <small>Server Load</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="col-md-4">
+          <div class="dashboard-card text-center">
+            <i class="bi bi-person-badge card-icon"></i>
+            <div class="stat-number" id="statNutri">—</div>
+            <p>Nutritionists</p>
+          </div>
         </div>
-    </div>-->
+        <div class="col-md-4">
+          <div class="dashboard-card text-center">
+            <i class="bi bi-calendar-check card-icon"></i>
+            <div class="stat-number" id="statBookings">—</div>
+            <p>Total Bookings</p>
+          </div>
+        </div>
+      </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-       fetch("http://localhost:5000/api/admin/users")
-  .then(res => res.json())
-  .then(users => {
-    console.log(users);
+      <!-- USERS -->
+      <div id="users" class="dashboard-card">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3><i class="bi bi-people me-2 text-primary"></i>User Management</h3>
+        </div>
+        <div id="usersList">
+          <div class="empty-state"><i class="bi bi-hourglass-split"></i>Loading users...</div>
+        </div>
+      </div>
+
+      <!-- NUTRITIONISTS -->
+      <div id="nutritionists" class="dashboard-card">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3><i class="bi bi-person-badge me-2 text-primary"></i>Nutritionist Management</h3>
+          <button class="btn-admin" onclick="openAddNutriModal()">
+            <i class="bi bi-plus-circle me-1"></i> Add Nutritionist
+          </button>
+        </div>
+        <div id="nutriList">
+          <div class="empty-state"><i class="bi bi-hourglass-split"></i>Loading nutritionists...</div>
+        </div>
+      </div>
+
+      <!-- BOOKINGS -->
+      <div id="bookings" class="dashboard-card">
+        <h3><i class="bi bi-calendar-check me-2 text-primary"></i>All Bookings</h3>
+        <div class="mb-3 d-flex gap-2 flex-wrap">
+          <button class="btn btn-sm btn-outline-secondary" onclick="filterAdminBookings('all')">All</button>
+          <button class="btn btn-sm btn-outline-warning"   onclick="filterAdminBookings('pending')">Pending</button>
+          <button class="btn btn-sm btn-outline-success"   onclick="filterAdminBookings('accepted')">Accepted</button>
+          <button class="btn btn-sm btn-outline-danger"    onclick="filterAdminBookings('rejected')">Rejected</button>
+        </div>
+        <div id="bookingsList">
+          <div class="empty-state"><i class="bi bi-hourglass-split"></i>Loading bookings...</div>
+        </div>
+      </div>
+
+      <!-- BLOGS -->
+      <div id="blogs" class="dashboard-card">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3><i class="bi bi-newspaper me-2 text-primary"></i>Blog Management</h3>
+          <button class="btn-admin" onclick="openBlogModal()">
+            <i class="bi bi-plus-circle me-1"></i> New Blog Post
+          </button>
+        </div>
+        <div id="blogsList">
+          <div class="empty-state"><i class="bi bi-hourglass-split"></i>Loading blogs...</div>
+        </div>
+      </div>
+
+      <!-- SUCCESS STORIES -->
+      <div id="stories" class="dashboard-card">
+        <h3><i class="bi bi-chat-quote me-2 text-primary"></i>Success Stories (Pending Approval)</h3>
+        <div id="storiesList">
+          <div class="empty-state"><i class="bi bi-hourglass-split"></i>Loading stories...</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===== MODAL: ADD NUTRITIONIST ===== -->
+<div class="modal-overlay" id="addNutriModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('addNutriModal')">✕</button>
+    <h4><i class="bi bi-person-plus me-2"></i>Add Nutritionist</h4>
+    <label class="form-label-sm">Full Name</label>
+    <input id="nutriName" class="form-control mb-2" placeholder="Dr. Sarah Johnson">
+    <label class="form-label-sm">Email</label>
+    <input id="nutriEmail" class="form-control mb-2" placeholder="sarah@nutriai.com">
+    <label class="form-label-sm">Password</label>
+    <input id="nutriPassword" type="password" class="form-control mb-3" placeholder="Min 8 characters">
+    <button class="btn-admin w-100" onclick="addNutritionist()">
+      <i class="bi bi-check-circle me-1"></i> Add Nutritionist
+    </button>
+  </div>
+</div>
+
+<!-- ===== MODAL: ADD / EDIT BLOG ===== -->
+<div class="modal-overlay" id="blogModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('blogModal')">✕</button>
+    <h4 id="blogModalTitle"><i class="bi bi-pencil me-2"></i>New Blog Post</h4>
+    <input type="hidden" id="blogEditId">
+    <label class="form-label-sm">Title</label>
+    <input id="blogTitle" class="form-control mb-2" placeholder="Blog title">
+    <label class="form-label-sm">Summary</label>
+    <input id="blogSummary" class="form-control mb-2" placeholder="Short summary">
+    <label class="form-label-sm">Content</label>
+    <textarea id="blogContent" class="form-control mb-2" rows="4" placeholder="Full content..."></textarea>
+    <label class="form-label-sm">Category</label>
+    <input id="blogCategory" class="form-control mb-2" placeholder="e.g. Nutrition, Wellness">
+    <label class="form-label-sm">Image URL (optional)</label>
+    <input id="blogImage" class="form-control mb-3" placeholder="https://...">
+    <button class="btn-admin w-100" onclick="saveBlog()">
+      <i class="bi bi-save me-1"></i> Save Blog
+    </button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+
+// ==============================
+// GLOBAL
+// ==============================
+const adminUser = JSON.parse(localStorage.getItem("user"));
+if (!adminUser) window.location.href = "login.html";
+else if (adminUser.role !== "admin") {
+  if (adminUser.role === "nutritionist") window.location.href = "NutritionistDashboard.html";
+  else window.location.href = "UserDashboard.html";
+}
+document.getElementById("adminWelcome").textContent = `Welcome, ${adminUser.fullName}`;
+
+let allAdminBookings = [];
+
+// ==============================
+// TOAST
+// ==============================
+function showToast(msg, type = "success") {
+  const colors = { success: "#198754", danger: "#dc3545", info: "#0d6efd", warning: "#ffc107" };
+  const t = document.getElementById("adminToast");
+  t.textContent = msg;
+  t.style.background = colors[type] || colors.success;
+  t.style.display = "block";
+  setTimeout(() => t.style.display = "none", 3000);
+}
+
+function getInitials(name) {
+  if (!name) return "?";
+  return name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2);
+}
+
+// ==============================
+// MODAL HELPERS
+// ==============================
+function openModal(id)  { document.getElementById(id).classList.add("active"); }
+function closeModal(id) { document.getElementById(id).classList.remove("active"); }
+
+// ==============================
+// 1. LOAD USERS
+// ==============================
+async function loadUsers() {
+  try {
+    const res   = await fetch("http://localhost:5000/api/admin/users");
+    const users = await res.json();
+
+    document.getElementById("statUsers").textContent = users.length;
+
+    const container = document.getElementById("usersList");
+    container.innerHTML = "";
+
+    if (!users.length) {
+      container.innerHTML = `<div class="empty-state"><i class="bi bi-people"></i>No users found.</div>`;
+      return;
+    }
 
     users.forEach(u => {
-      console.log(u.fullName, u.email);
+      container.innerHTML += `
+        <div class="person-card">
+          <div class="person-avatar">${getInitials(u.fullName)}</div>
+          <div class="person-info">
+            <strong>${u.fullName}</strong>
+            <small>${u.email}</small><br>
+            <small class="text-muted">
+              Weight: ${u.weight || "—"} kg &nbsp;|&nbsp;
+              Age: ${u.age || "—"} &nbsp;|&nbsp;
+              Goal: ${formatGoal(u.goal)} &nbsp;|&nbsp;
+              Health: ${u.healthStatus || "—"}
+            </small>
+          </div>
+          <div class="person-actions">
+            <button class="btn btn-sm btn-outline-danger" onclick="deleteUser('${u._id}')">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </div>
+        </div>
+      `;
     });
-  });
-  async function loadUsers() {
-    const container = document.getElementById("usersList");
+  } catch (err) {
+    document.getElementById("usersList").innerHTML =
+      `<div class="empty-state text-danger">❌ Failed to load users.</div>`;
+  }
+}
 
-    container.innerHTML = "<p>Loading users...</p>";
+async function deleteUser(id) {
+  if (!confirm("Delete this user?")) return;
+  await fetch(`http://localhost:5000/api/admin/users/${id}`, { method: "DELETE" });
+  showToast("✅ User deleted");
+  loadUsers();
+}
 
-    try {
-        const res = await fetch("http://localhost:5000/api/admin/users");
-        const users = await res.json();
+// ==============================
+// 2. LOAD NUTRITIONISTS
+// ==============================
+async function loadNutritionists() {
+  try {
+    const res   = await fetch("http://localhost:5000/api/admin/nutritionists");
+    const nutri = await res.json();
 
-        container.innerHTML = "";
+    document.getElementById("statNutri").textContent = nutri.length;
 
-        users.forEach(user => {
-            container.innerHTML += `
-                <div class="card p-3 mb-2">
-                    <h5>${user.fullName}</h5>
-                    <p>${user.email}</p>
-                    <p>Role: ${user.role}</p>
+    const container = document.getElementById("nutriList");
+    container.innerHTML = "";
 
-                    <button onclick="deleteUser('${user._id}')" class="btn btn-danger btn-sm">
-                        Delete
-                    </button>
-                </div>
-            `;
-        });
-
-    } catch (err) {
-        container.innerHTML = "<p>Error loading users</p>";
-        console.error(err);
+    if (!nutri.length) {
+      container.innerHTML = `<div class="empty-state"><i class="bi bi-person-badge"></i>No nutritionists yet.</div>`;
+      return;
     }
+
+    nutri.forEach(n => {
+      container.innerHTML += `
+        <div class="person-card">
+          <div class="person-avatar" style="background:#1976d2;">${getInitials(n.fullName)}</div>
+          <div class="person-info">
+            <strong>${n.fullName}</strong>
+            <small>${n.email}</small>
+          </div>
+          <div class="person-actions">
+            <button class="btn btn-sm btn-outline-danger" onclick="deleteNutritionist('${n._id}')">
+              <i class="bi bi-trash"></i> Remove
+            </button>
+          </div>
+        </div>
+      `;
+    });
+  } catch (err) {
+    document.getElementById("nutriList").innerHTML =
+      `<div class="empty-state text-danger">❌ Failed to load nutritionists.</div>`;
+  }
 }
-  function deleteUser(id) {
-  fetch(`http://localhost:5000/api/admin/users/${id}`, {
-    method: "DELETE"
-  })
-  .then(res => res.json())
-  .then(data => {
-    console.log(data);
-    location.reload();
-    loadUsers();
+
+function openAddNutriModal() { openModal("addNutriModal"); }
+
+async function addNutritionist() {
+  const fullName = document.getElementById("nutriName").value.trim();
+  const email    = document.getElementById("nutriEmail").value.trim();
+  const password = document.getElementById("nutriPassword").value.trim();
+
+  if (!fullName || !email || !password) {
+    showToast("Please fill all fields", "danger"); return;
+  }
+
+  const res = await fetch("http://localhost:5000/api/admin/nutritionists", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ fullName, email, password })
   });
+
+  if (res.ok) {
+    showToast("✅ Nutritionist added!");
+    closeModal("addNutriModal");
+    document.getElementById("nutriName").value     = "";
+    document.getElementById("nutriEmail").value    = "";
+    document.getElementById("nutriPassword").value = "";
+    loadNutritionists();
+  } else {
+    const data = await res.json();
+    showToast(data.message || "Failed", "danger");
+  }
 }
-function approveNutritionist(id) {
-  fetch(`http://localhost:5000/api/admin/approve-nutritionist/${id}`, {
-    method: "PUT"
-  })
-  .then(res => res.json())
-  .then(data => {
-    console.log("approved", data);
+
+async function deleteNutritionist(id) {
+  if (!confirm("Remove this nutritionist?")) return;
+  await fetch(`http://localhost:5000/api/admin/nutritionists/${id}`, { method: "DELETE" });
+  showToast("✅ Nutritionist removed");
+  loadNutritionists();
+}
+
+// ==============================
+// 3. BOOKINGS
+// ==============================
+async function loadAllBookings() {
+  try {
+    const res  = await fetch("http://localhost:5000/api/admin/bookings");
+    allAdminBookings = await res.json();
+    document.getElementById("statBookings").textContent = allAdminBookings.length;
+    renderAdminBookings(allAdminBookings);
+  } catch (err) {
+    document.getElementById("bookingsList").innerHTML =
+      `<div class="empty-state text-danger">❌ Failed to load bookings.</div>`;
+  }
+}
+
+function renderAdminBookings(list) {
+  const container = document.getElementById("bookingsList");
+  container.innerHTML = "";
+
+  if (!list.length) {
+    container.innerHTML = `<div class="empty-state"><i class="bi bi-calendar-x"></i>No bookings found.</div>`;
+    return;
+  }
+
+  list.forEach(b => {
+    const statusColor = b.status === "accepted" ? "success"
+                      : b.status === "rejected"  ? "danger" : "warning";
+
+    container.innerHTML += `
+      <div class="person-card" style="align-items:flex-start; flex-direction:column; gap:8px;">
+        <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
+          <div>
+            <strong>👤 ${b.userName}</strong>
+            <span class="badge bg-${statusColor} ms-2">${b.status || "pending"}</span>
+          </div>
+          <small class="text-muted">📅 ${b.date} ⏰ ${b.time}</small>
+        </div>
+        <small class="text-muted">Nutritionist ID: ${b.nutritionistId}</small>
+        ${b.zoomLink ? `<small>🔗 <a href="${b.zoomLink}" target="_blank">Zoom Link</a></small>` : ""}
+        <div class="d-flex gap-2 flex-wrap">
+          ${b.status === "pending" ? `
+            <button class="btn btn-sm btn-success" onclick="updateBookingStatus('${b._id}', 'accepted')">✅ Accept</button>
+            <button class="btn btn-sm btn-danger"  onclick="updateBookingStatus('${b._id}', 'rejected')">❌ Reject</button>
+          ` : `<span class="text-muted small">Status: ${b.status}</span>`}
+          <button class="btn btn-sm btn-outline-danger" onclick="deleteBooking('${b._id}')">🗑 Delete</button>
+        </div>
+      </div>
+    `;
   });
 }
 
+function filterAdminBookings(status) {
+  if (status === "all") renderAdminBookings(allAdminBookings);
+  else renderAdminBookings(allAdminBookings.filter(b => (b.status || "pending") === status));
+}
 
-    </script>
+async function updateBookingStatus(id, status) {
+  await fetch(`http://localhost:5000/api/bookings/${id}/status`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ status })
+  });
+  showToast(`✅ Booking ${status}`);
+  loadAllBookings();
+}
+
+async function deleteBooking(id) {
+  if (!confirm("Delete this booking?")) return;
+  await fetch(`http://localhost:5000/api/admin/bookings/${id}`, { method: "DELETE" });
+  showToast("✅ Booking deleted");
+  loadAllBookings();
+}
+
+// ==============================
+// 4. BLOGS
+// ==============================
+async function loadBlogs() {
+  try {
+    const res   = await fetch("http://localhost:5000/api/blogs");
+    const blogs = await res.json();
+
+    const container = document.getElementById("blogsList");
+    container.innerHTML = "";
+
+    if (!blogs.length) {
+      container.innerHTML = `<div class="empty-state"><i class="bi bi-newspaper"></i>No blogs yet.</div>`;
+      return;
+    }
+
+    blogs.forEach(b => {
+      container.innerHTML += `
+        <div class="blog-admin-card">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <h5>${b.title}</h5>
+              <p>${b.summary || ""}</p>
+              <small class="text-muted">
+                <i class="bi bi-person me-1"></i>${b.author || "Admin"}
+                &nbsp;|&nbsp;
+                <span class="badge bg-secondary">${b.category || "General"}</span>
+              </small>
+            </div>
+            <div class="d-flex gap-2 ms-3">
+              <button class="btn btn-sm btn-outline-primary" onclick="editBlog('${b._id}', \`${b.title.replace(/`/g,"'")}\`, \`${b.summary?.replace(/`/g,"'")}\`, \`${b.content?.replace(/`/g,"'")}\`, \`${b.category?.replace(/`/g,"'")}\`, \`${b.image || ""}\`)">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger" onclick="deleteBlog('${b._id}')">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  } catch (err) {
+    document.getElementById("blogsList").innerHTML =
+      `<div class="empty-state text-danger">❌ Failed to load blogs.</div>`;
+  }
+}
+
+function openBlogModal() {
+  document.getElementById("blogModalTitle").innerHTML = `<i class="bi bi-pencil me-2"></i>New Blog Post`;
+  document.getElementById("blogEditId").value   = "";
+  document.getElementById("blogTitle").value    = "";
+  document.getElementById("blogSummary").value  = "";
+  document.getElementById("blogContent").value  = "";
+  document.getElementById("blogCategory").value = "";
+  document.getElementById("blogImage").value    = "";
+  openModal("blogModal");
+}
+
+function editBlog(id, title, summary, content, category, image) {
+  document.getElementById("blogModalTitle").innerHTML = `<i class="bi bi-pencil me-2"></i>Edit Blog Post`;
+  document.getElementById("blogEditId").value   = id;
+  document.getElementById("blogTitle").value    = title;
+  document.getElementById("blogSummary").value  = summary;
+  document.getElementById("blogContent").value  = content;
+  document.getElementById("blogCategory").value = category;
+  document.getElementById("blogImage").value    = image;
+  openModal("blogModal");
+}
+
+async function saveBlog() {
+  const id       = document.getElementById("blogEditId").value;
+  const title    = document.getElementById("blogTitle").value.trim();
+  const summary  = document.getElementById("blogSummary").value.trim();
+  const content  = document.getElementById("blogContent").value.trim();
+  const category = document.getElementById("blogCategory").value.trim();
+  const image    = document.getElementById("blogImage").value.trim();
+
+  if (!title || !content) { showToast("Title and content are required", "danger"); return; }
+
+  const payload = {
+    title, summary, content, category, image,
+    author: adminUser.fullName,
+    role:   "admin"
+  };
+
+  let res;
+  if (id) {
+    // EDIT
+    res = await fetch(`http://localhost:5000/api/blogs/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+  } else {
+    // CREATE
+    res = await fetch("http://localhost:5000/api/blogs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+  }
+
+  if (res.ok) {
+    showToast(id ? "✅ Blog updated!" : "✅ Blog created!");
+    closeModal("blogModal");
+    loadBlogs();
+  } else {
+    const data = await res.json();
+    showToast(data.message || "Failed", "danger");
+  }
+}
+
+async function deleteBlog(id) {
+  if (!confirm("Delete this blog post?")) return;
+  await fetch(`http://localhost:5000/api/blogs/${id}`, { method: "DELETE" });
+  showToast("✅ Blog deleted");
+  loadBlogs();
+}
+
+// ==============================
+// 5. SUCCESS STORIES
+// ==============================
+async function loadStories() {
+  try {
+    const res     = await fetch("http://localhost:5000/api/stories/pending");
+    const stories = await res.json();
+
+    const container = document.getElementById("storiesList");
+    container.innerHTML = "";
+
+    if (!stories.length) {
+      container.innerHTML = `<div class="empty-state"><i class="bi bi-chat-quote"></i>No pending stories.</div>`;
+      return;
+    }
+
+    stories.forEach(s => {
+      container.innerHTML += `
+        <div class="story-card">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <strong>${s.name}</strong>
+              <span class="badge bg-warning text-dark ms-2">Pending</span><br>
+              <p class="mt-2 mb-1" style="font-size:13px;">${s.content}</p>
+              <small class="text-muted">Result: ${s.result || "—"}</small>
+            </div>
+            <div class="d-flex gap-2 ms-3">
+              <button class="btn btn-sm btn-success" onclick="approveStory('${s._id}')">
+                <i class="bi bi-check-circle"></i> Approve
+              </button>
+              <button class="btn btn-sm btn-outline-danger" onclick="deleteStory('${s._id}')">
+                <i class="bi bi-trash"></i> Reject
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  } catch (err) {
+    document.getElementById("storiesList").innerHTML =
+      `<div class="empty-state text-danger">❌ Failed to load stories.</div>`;
+  }
+}
+
+async function approveStory(id) {
+  await fetch(`http://localhost:5000/api/stories/${id}/approve`, { method: "PUT" });
+  showToast("✅ Story approved!");
+  loadStories();
+}
+
+async function deleteStory(id) {
+  await fetch(`http://localhost:5000/api/stories/${id}`, { method: "DELETE" });
+  showToast("🗑 Story rejected & deleted");
+  loadStories();
+}
+
+// ==============================
+// FORMAT GOAL
+// ==============================
+function formatGoal(goal) {
+  const goals = {
+    lose_weight:     "🔥 Lose Weight",
+    gain_weight:     "💪 Gain Weight",
+    maintain_weight: "⚖️ Maintain",
+    build_muscle:    "🏋️ Build Muscle",
+    improve_fitness: "🏃 Fitness",
+    eat_healthier:   "🥗 Healthier"
+  };
+  return goals[goal] || goal || "—";
+}
+
+// ==============================
+// INIT
+// ==============================
+loadUsers();
+loadNutritionists();
+loadAllBookings();
+loadBlogs();
+loadStories();
+
+</script>
 </body>
 </html>

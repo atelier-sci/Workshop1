@@ -36,6 +36,18 @@ const userSchema = new mongoose.Schema(
       enum: ["user", "admin", "nutritionist"],
       default: "user",
     },
+
+    // ✅ زيدهم هنا
+    healthStatus: {
+      type: String,
+      default: "",
+    },
+    goal: {
+      type: String,
+      enum: ["lose_weight", "gain_weight", "maintain_weight", "build_muscle", "improve_fitness", "eat_healthier", ""],
+      default: "",
+    },
+
   },
   {
     timestamps: true,
