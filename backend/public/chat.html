@@ -1,1050 +1,845 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NutriChat – Live Consultation</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --bg:        #f5f7fa;
-      --surface:   #ffffff;
-      --surface2:  #f5f7fa;
-      --border:    #e0e0e0;
-      --accent:    #4A7337;
-      --accent2:   #2d4a23;
-      --text:      #222222;
-      --muted:     #888888;
-      --user-msg:  #e8f1e4;
-      --nutri-msg: #f5f7fa;
-      --badge:     #4A7337;
-      --danger:    #dc3545;
-      --radius:    14px;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat & Contact - NutriAI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/style.css">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background: #f5f7fa; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        /* ── Page Layout ── */
+        .chat-page {
+            min-height: calc(100vh - 70px);
+            padding: 40px 5%;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 28px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
+        /* ── Left Sidebar ── */
+        .chat-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
 
-    /* ── TOP BAR ── */
-    header {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 0 24px;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-shrink: 0;
-      position: relative;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-    }
+        /* Info card */
+        .info-card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px 24px;
+            border: 1px solid rgba(74,115,55,0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
 
-    .header-back {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      text-decoration: none;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 500;
-      transition: color .2s;
-    }
-    .header-back:hover { color: var(--accent); }
-    .header-back svg { width: 16px; height: 16px; }
+        .info-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    .header-center {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+        .info-card h3 i { color: var(--primary); }
 
-    .nutri-avatar {
-      width: 38px; height: 38px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #4A7337, #2d4a23);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-      position: relative;
-    }
-    .nutri-avatar::after {
-      content: '';
-      position: absolute;
-      bottom: 1px; right: 1px;
-      width: 9px; height: 9px;
-      background: #4A7337;
-      border-radius: 50%;
-      border: 2px solid var(--surface);
-    }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+            color: var(--text-light);
+        }
 
-    .nutri-info h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 15px;
-      font-weight: 500;
-      line-height: 1.2;
-      color: var(--text);
-    }
-    .nutri-info span {
-      font-size: 11px;
-      color: var(--accent);
-      font-weight: 600;
-    }
+        .contact-item:last-child { border-bottom: none; }
 
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+        .contact-icon {
+            width: 36px; height: 36px;
+            border-radius: 10px;
+            background: rgba(74,115,55,0.08);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--primary);
+            font-size: 16px;
+            flex-shrink: 0;
+        }
 
-    .icon-btn {
-      width: 36px; height: 36px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all .2s;
-    }
-    .icon-btn:hover { background: #f0f0f0; color: var(--accent); }
-    .icon-btn svg { width: 16px; height: 16px; }
+        .contact-item strong { display: block; color: var(--text-dark); font-size: 13px; margin-bottom: 1px; }
 
-    /* ── SESSION BANNER ── */
-    .session-banner {
-      background: linear-gradient(135deg, #4A7337, #2d4a23);
-      border-bottom: 1px solid #2d4a23;
-      padding: 8px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 12px;
-      flex-shrink: 0;
-    }
-    .session-banner .session-left {
-      display: flex; align-items: center; gap: 20px;
-      color: rgba(255,255,255,0.75);
-    }
-    .session-banner .session-left strong { color: #ffffff; }
-    .session-pill {
-      background: rgba(255,255,255,.2);
-      color: #ffffff;
-      border: 1px solid rgba(255,255,255,.35);
-      border-radius: 100px;
-      padding: 2px 10px;
-      font-size: 11px;
-      font-weight: 600;
-      display: flex; align-items: center; gap: 5px;
-    }
-    .session-pill::before {
-      content:'';
-      width:6px;height:6px;
-      background:#fff;
-      border-radius:50%;
-      animation: pulse 1.4s infinite;
-    }
-    @keyframes pulse {
-      0%,100%{opacity:1;transform:scale(1);}
-      50%{opacity:.4;transform:scale(.8);}
-    }
+        /* FAQ card */
+        .faq-item {
+            padding: 14px 0;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+        }
 
-    /* ── CHAT LAYOUT ── */
-    .chat-wrapper {
-      flex: 1;
-      display: flex;
-      overflow: hidden;
-    }
+        .faq-item:last-child { border-bottom: none; }
 
-    /* sidebar */
-    .sidebar {
-      width: 240px;
-      background: var(--surface);
-      border-right: 1px solid var(--border);
-      padding: 20px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      flex-shrink: 0;
-      overflow-y: auto;
-    }
+        .faq-question {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .sidebar-section h4 {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      color: var(--muted);
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
+        .faq-question i { color: var(--primary); font-size: 14px; flex-shrink: 0; transition: transform 0.3s; }
+        .faq-item.open .faq-question i { transform: rotate(45deg); }
 
-    .plan-card {
-      background: linear-gradient(135deg, #4A7337, #2d4a23);
-      border: none;
-      border-radius: var(--radius);
-      padding: 14px;
-    }
-    .plan-card .plan-name {
-      font-size: 12px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 4px;
-    }
-    .plan-card p {
-      font-size: 11px;
-      color: rgba(255,255,255,0.75);
-      line-height: 1.5;
-    }
+        .faq-answer {
+            font-size: 12px;
+            color: var(--text-light);
+            line-height: 1.6;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease, margin 0.3s ease;
+        }
 
-    .quick-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: #f5f7fa;
-      border: 1px solid #e0e0e0;
-      border-radius: 8px;
-      padding: 6px 10px;
-      font-size: 11px;
-      color: #555;
-      cursor: pointer;
-      transition: all .15s;
-      margin: 3px 2px;
-    }
-    .quick-tag:hover { border-color: #4A7337; color: #4A7337; background: #e8f1e4; }
+        .faq-item.open .faq-answer {
+            max-height: 200px;
+            margin-top: 8px;
+        }
 
-    .files-btn {
-      width: 100%;
-      background: transparent;
-      border: 1px dashed #ccc;
-      border-radius: 10px;
-      padding: 12px;
-      color: var(--muted);
-      font-size: 12px;
-      font-family: 'DM Sans', sans-serif;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 7px;
-      transition: all .2s;
-    }
-    .files-btn:hover { border-color: #4A7337; color: #4A7337; }
+        /* Status badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(74,115,55,0.08);
+            border: 1px solid rgba(74,115,55,0.2);
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 20px;
+        }
 
-    /* main chat */
-    .chat-main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
+        .status-dot {
+            width: 7px; height: 7px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
 
-    .messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 24px 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      scroll-behavior: smooth;
-    }
-    .messages::-webkit-scrollbar { width: 4px; }
-    .messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50%       { opacity: 0.6; transform: scale(1.3); }
+        }
 
-    /* date divider */
-    .date-divider {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 11px;
-      color: var(--muted);
-      font-weight: 500;
-    }
-    .date-divider::before, .date-divider::after {
-      content:''; flex:1; height:1px; background:var(--border);
-    }
+        /* ── Right: Chat + Email Tabs ── */
+        .chat-main {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid rgba(74,115,55,0.1);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
 
-    /* message */
-    .msg {
-      display: flex;
-      gap: 10px;
-      max-width: 75%;
-      animation: fadeUp .3s ease forwards;
-    }
-    @keyframes fadeUp {
-      from{opacity:0;transform:translateY(8px);}
-      to{opacity:1;transform:translateY(0);}
-    }
-    .msg.user { align-self: flex-end; flex-direction: row-reverse; }
-    .msg.nutri { align-self: flex-start; }
+        /* ── Tab Bar ── */
+        .chat-tabs {
+            display: flex;
+            border-bottom: 2px solid #f0f0f0;
+            background: #fafafa;
+        }
 
-    .msg-avatar {
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 12px;
-      font-weight: 700;
-      color: #fff;
-      margin-top: 2px;
-    }
-    .msg.nutri .msg-avatar { background: linear-gradient(135deg, #22c55e, #166534); }
-    .msg.user  .msg-avatar { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .chat-tab {
+            flex: 1;
+            padding: 16px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Montserrat', sans-serif;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
 
-    .msg-body {}
-    .msg-name {
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--muted);
-      margin-bottom: 4px;
-      padding: 0 4px;
-    }
-    .msg.user .msg-name { text-align: right; }
+        .chat-tab:hover { color: var(--primary); background: rgba(74,115,55,0.04); }
 
-    .bubble {
-      padding: 12px 16px;
-      border-radius: 14px;
-      font-size: 13.5px;
-      line-height: 1.65;
-      word-break: break-word;
-    }
-    .msg.nutri .bubble {
-      background: #f5f7fa;
-      border: 1px solid #e0e0e0;
-      border-top-left-radius: 4px;
-      color: #222;
-    }
-    .msg.user .bubble {
-      background: #e8f1e4;
-      border: 1px solid rgba(74,115,55,.25);
-      border-top-right-radius: 4px;
-      color: #222;
-    }
+        .chat-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: white;
+        }
 
-    .msg-meta {
-      font-size: 10px;
-      color: var(--muted);
-      margin-top: 4px;
-      padding: 0 4px;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .msg.user .msg-meta { justify-content: flex-end; }
-    .read-tick { color: #4A7337; font-size: 11px; }
+        /* ── Tab Panels ── */
+        .tab-panel { display: none; flex: 1; flex-direction: column; }
+        .tab-panel.active { display: flex; }
 
-    /* typing indicator */
-    .typing-indicator {
-      display: flex; align-items: center; gap: 10px;
-      align-self: flex-start;
-    }
-    .typing-dots {
-      display: flex; gap: 4px;
-      background: #f5f7fa;
-      border: 1px solid #e0e0e0;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border-top-left-radius: 4px;
-    }
-    .typing-dots span {
-      width: 6px; height: 6px;
-      background: #4A7337;
-      border-radius: 50%;
-      animation: bounce .9s infinite;
-    }
-    .typing-dots span:nth-child(2) { animation-delay: .15s; }
-    .typing-dots span:nth-child(3) { animation-delay: .3s; }
-    @keyframes bounce {
-      0%,80%,100%{transform:translateY(0);}
-      40%{transform:translateY(-6px);}
-    }
+        /* ════════════════════════
+           CHAT PANEL
+        ════════════════════════ */
+        .chat-messages {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            min-height: 400px;
+            max-height: 500px;
+            background: #fafafa;
+        }
 
-    /* ── INPUT AREA ── */
-    .input-area {
-      border-top: 1px solid var(--border);
-      background: var(--surface);
-      padding: 16px 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+        /* ── Message Bubbles ── */
+        .msg {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            animation: msgIn 0.3s ease;
+        }
 
-    .input-row {
-      display: flex;
-      align-items: flex-end;
-      gap: 10px;
-    }
+        @keyframes msgIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
-    .input-box {
-      flex: 1;
-      background: #f5f7fa;
-      border: 1px solid #ddd;
-      border-radius: 12px;
-      padding: 12px 16px;
-      color: #222;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13.5px;
-      resize: none;
-      outline: none;
-      min-height: 44px;
-      max-height: 120px;
-      line-height: 1.5;
-      transition: border-color .2s, box-shadow .2s;
-    }
-    .input-box::placeholder { color: #aaa; }
-    .input-box:focus { border-color: #4A7337; box-shadow: 0 0 0 3px rgba(74,115,55,.12); }
+        .msg.user { flex-direction: row-reverse; }
 
-    .send-btn {
-      width: 44px; height: 44px;
-      border-radius: 11px;
-      background: #4A7337;
-      border: none;
-      color: #fff;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      transition: background .2s, transform .1s;
-    }
-    .send-btn:hover { background: #2d4a23; }
-    .send-btn:active { transform: scale(.95); }
-    .send-btn svg { width: 18px; height: 18px; }
+        .msg-avatar {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
 
-    .input-tools {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-    }
-    .tool-btn {
-      background: transparent;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      display: flex; align-items: center; gap: 4px;
-      font-size: 11px;
-      font-family: 'DM Sans', sans-serif;
-      padding: 4px 8px;
-      border-radius: 6px;
-      transition: all .15s;
-    }
-    .tool-btn:hover { background: #f0f0f0; color: #4A7337; }
-    .tool-btn svg { width: 13px; height: 13px; }
-    .char-count {
-      margin-left: auto;
-      font-size: 10px;
-      color: var(--muted);
-    }
+        .msg-avatar.admin-av { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; }
+        .msg-avatar.user-av  { background: linear-gradient(135deg, #64748b, #475569); color: white; }
 
-    /* ── SCROLLBAR ── */
-    .sidebar::-webkit-scrollbar { width: 3px; }
-    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+        .msg-bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
 
-    /* ── MODALS / TOAST ── */
-    .toast {
-      position: fixed;
-      bottom: 24px; right: 24px;
-      background: #4A7337;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 500;
-      display: flex; align-items: center; gap: 8px;
-      box-shadow: 0 6px 20px rgba(74,115,55,.3);
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all .3s;
-      pointer-events: none;
-    }
-    .toast.show { opacity: 1; transform: translateY(0); }
+        .msg.admin .msg-bubble {
+            background: white;
+            color: var(--text-dark);
+            border: 1px solid #e8e8e8;
+            border-bottom-left-radius: 4px;
+        }
 
-    @media (max-width: 640px) {
-      .sidebar { display: none; }
-      .header-back span { display: none; }
-    }
+        .msg.user .msg-bubble {
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
 
-    /* ── TELEGRAM-STYLE EMOJI PANEL ── */
+        .msg-time {
+            font-size: 10px;
+            color: #bbb;
+            margin-top: 4px;
+            text-align: right;
+        }
 
-    /* Panel lives in .chat-main flex column, above input-area */
-    .emoji-panel {
-      background: #ffffff;
-      border-top: 1px solid #e0e0e0;
-      z-index: 10;
-      overflow: hidden;
-      max-height: 0;
-      transition: max-height .22s cubic-bezier(.4,0,.2,1);
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-    }
-    .emoji-panel.open { max-height: 320px; }
+        .msg.admin .msg-time { text-align: left; }
 
-    /* Search bar at the top */
-    .ep-searchbar {
-      padding: 10px 14px 8px;
-      border-bottom: 1px solid #e0e0e0;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #f5f7fa;
-    }
-    .ep-searchbar svg { width:14px;height:14px;color:#888;flex-shrink:0; }
-    .ep-searchbar input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: #222;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-    }
-    .ep-searchbar input::placeholder { color: #aaa; }
+        /* Typing indicator */
+        .typing-indicator {
+            display: none;
+            align-items: flex-end;
+            gap: 10px;
+        }
 
-    .ep-body {
-      flex: 1;
-      overflow-y: auto;
-      padding: 8px 10px 4px;
-      background: #fff;
-    }
-    .ep-body::-webkit-scrollbar { width: 4px; }
-    .ep-body::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+        .typing-indicator.show { display: flex; }
 
-    .ep-section-label {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: .1em;
-      color: #888;
-      font-weight: 700;
-      padding: 6px 4px 4px;
-    }
+        .typing-dots {
+            background: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 18px;
+            border-bottom-left-radius: 4px;
+            padding: 12px 16px;
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
 
-    .ep-grid {
-      display: grid;
-      grid-template-columns: repeat(8, 1fr);
-      gap: 0;
-    }
-    .ep-emoji {
-      font-size: 24px;
-      text-align: center;
-      padding: 6px 2px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background .12s, transform .12s;
-      line-height: 1;
-      user-select: none;
-    }
-    .ep-emoji:hover {
-      background: #e8f1e4;
-      transform: scale(1.3);
-    }
-    .ep-emoji:active { transform: scale(1.1); }
+        .typing-dots span {
+            width: 7px; height: 7px;
+            background: #bbb;
+            border-radius: 50%;
+            animation: typing 1.2s infinite;
+        }
 
-    .ep-catbar {
-      display: flex;
-      align-items: center;
-      border-top: 1px solid #e0e0e0;
-      background: #f5f7fa;
-      flex-shrink: 0;
-      overflow-x: auto;
-      padding: 0 6px;
-    }
-    .ep-catbar::-webkit-scrollbar { display: none; }
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
 
-    .ep-cat-btn {
-      flex-shrink: 0;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 20px;
-      width: 40px; height: 40px;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      opacity: .45;
-      transition: opacity .15s, background .15s;
-      position: relative;
-    }
-    .ep-cat-btn:hover { opacity: .75; background: rgba(74,115,55,.08); }
-    .ep-cat-btn.active { opacity: 1; }
-    .ep-cat-btn.active::after {
-      content: '';
-      position: absolute;
-      bottom: 4px; left: 50%;
-      transform: translateX(-50%);
-      width: 18px; height: 2px;
-      background: #4A7337;
-      border-radius: 2px;
-    }
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+            30%            { transform: translateY(-6px); opacity: 1; }
+        }
 
-    .ep-cat-btn.recent-btn svg { width:18px;height:18px;stroke:#555; }
+        /* ── Chat Input ── */
+        .chat-input-area {
+            padding: 16px 20px;
+            border-top: 1px solid #f0f0f0;
+            background: white;
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
 
-    .input-area { position: relative; }
-  </style>
+        .chat-input {
+            flex: 1;
+            border: 2px solid #e0e0e0;
+            border-radius: 14px;
+            padding: 12px 16px;
+            font-size: 13px;
+            font-family: 'Montserrat', sans-serif;
+            resize: none;
+            outline: none;
+            max-height: 120px;
+            transition: border-color 0.2s;
+            line-height: 1.5;
+        }
+
+        .chat-input:focus { border-color: var(--primary); }
+
+        .chat-send-btn {
+            width: 44px; height: 44px;
+            border-radius: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .chat-send-btn:hover { background: var(--primary-dark); transform: scale(1.05); }
+        .chat-send-btn:active { transform: scale(0.97); }
+
+        /* Quick questions */
+        .quick-questions {
+            padding: 12px 20px 0;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            background: white;
+        }
+
+        .quick-q {
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(74,115,55,0.25);
+            background: rgba(74,115,55,0.04);
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .quick-q:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* ════════════════════════
+           EMAIL PANEL
+        ════════════════════════ */
+        .email-panel-inner {
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .email-panel-inner h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .email-panel-inner p {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .form-group-email {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group-email label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .form-group-email input,
+        .form-group-email select,
+        .form-group-email textarea {
+            padding: 12px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 13px;
+            font-family: 'Montserrat', sans-serif;
+            outline: none;
+            transition: border-color 0.2s;
+            color: var(--text-dark);
+            background: white;
+        }
+
+        .form-group-email input:focus,
+        .form-group-email select:focus,
+        .form-group-email textarea:focus { border-color: var(--primary); }
+
+        .form-group-email textarea { resize: vertical; min-height: 130px; }
+
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+        /* ── Success state ── */
+        .email-success {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .email-success.show { display: flex; }
+
+        .success-circle {
+            width: 72px; height: 72px;
+            border-radius: 50%;
+            background: rgba(74,115,55,0.1);
+            border: 2px solid rgba(74,115,55,0.3);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem;
+            color: var(--primary);
+            animation: popIn 0.4s ease;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.7); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+
+        .email-success h4 { font-size: 18px; font-weight: 700; color: var(--text-dark); }
+        .email-success p  { font-size: 13px; color: var(--text-light); }
+
+        /* ── Toast ── */
+        .chat-toast {
+            position: fixed;
+            bottom: 24px; right: 24px;
+            background: var(--primary);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 6px 20px rgba(74,115,55,0.3);
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 9999;
+        }
+
+        .chat-toast.show { transform: translateY(0); opacity: 1; }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .chat-page { grid-template-columns: 1fr; }
+            .chat-sidebar { order: 2; }
+            .chat-main { order: 1; }
+        }
+
+        @media (max-width: 480px) {
+            .chat-page { padding: 16px; gap: 16px; }
+            .form-row { grid-template-columns: 1fr; }
+            .email-panel-inner { padding: 20px; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <!-- Back link changes based on role; default to user dashboard -->
-  <a class="header-back" href="UserDashboard.html" id="backLink">
-    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-    </svg>
-    <span id="backLabel">My Dashboard</span>
-  </a>
-
-  <div class="header-center">
-    <div class="nutri-avatar" id="nutri-avatar-hdr">SL</div>
-    <div class="nutri-info">
-      <h2 id="nutri-name-hdr">Dr. Sara Lamine</h2>
-      <span id="status-label">● Online now</span>
-    </div>
-  </div>
-
-  <div class="header-actions">
-    <button class="icon-btn" title="Search messages" onclick="showToast('Search coming soon')">
-      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/>
-      </svg>
-    </button>
-    <button class="icon-btn" title="More options" onclick="showToast('Options menu')">
-      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="5" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="12" cy="19" r="1.2" fill="currentColor"/>
-      </svg>
-    </button>
-  </div>
-</header>
-
-<!-- SESSION BANNER -->
-<div class="session-banner">
-  <div class="session-left">
-    <span>Session: <strong id="session-id">NTR-20260418</strong></span>
-    <span>Plan: <strong id="plan-label">Premium Nutrition</strong></span>
-  </div>
-  <div class="session-pill">Active session</div>
-</div>
-
-<!-- MAIN -->
-<div class="chat-wrapper">
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-section">
-      <h4>Your Plan</h4>
-      <div class="plan-card">
-        <div class="plan-name" id="sidebar-plan">Premium Nutrition</div>
-        <p>Unlimited messaging · 4 video sessions / mo · Meal planning included</p>
-      </div>
-    </div>
-
-    <div class="sidebar-section">
-      <h4>Quick Topics</h4>
-      <div>
-        <span class="quick-tag" onclick="insertQuick('My meal plan for this week')">🥗 Meal plan</span>
-        <span class="quick-tag" onclick="insertQuick('Water intake advice')">💧 Hydration</span>
-        <span class="quick-tag" onclick="insertQuick('Calorie target help')">🔥 Calories</span>
-        <span class="quick-tag" onclick="insertQuick('Supplement recommendations')">💊 Supplements</span>
-        <span class="quick-tag" onclick="insertQuick('Progress check-in')">📊 Progress</span>
-        <span class="quick-tag" onclick="insertQuick('Allergy-safe alternatives')">⚠️ Allergies</span>
-      </div>
-    </div>
-
-    <div class="sidebar-section">
-      <h4>Attachments</h4>
-      <button class="files-btn" onclick="showToast('File upload coming soon')">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="width:14px;height:14px">
-          <path stroke-linecap="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/>
-        </svg>
-        Attach file / photo
-      </button>
-    </div>
-  </aside>
-
-  <!-- CHAT MAIN -->
-  <div class="chat-main">
-
-    <!-- MESSAGES -->
-    <div class="messages" id="messages">
-
-      <div class="date-divider">Today · Apr 18, 2026</div>
-
-      <!-- Nutritionist welcome -->
-      <div class="msg nutri">
-        <div class="msg-avatar">SL</div>
-        <div class="msg-body">
-          <div class="msg-name">Dr. Sara Lamine · Nutritionist</div>
-          <div class="bubble">
-            Hello! 👋 Welcome to your first consultation session. I'm Dr. Sara, your dedicated nutritionist.<br><br>
-            I've reviewed your intake form. To get started, could you tell me about your main nutrition goal — is it weight loss, muscle gain, managing a health condition, or something else?
-          </div>
-          <div class="msg-meta">09:02 AM</div>
+    <!-- Navbar -->
+    <nav class="navbar-enhanced">
+        <div class="nav-container">
+            <a href="HomePage.html" class="logo-modern">
+                <i class="bi bi-heart-pulse-fill"></i> NutriAI
+            </a>
+            <ul class="auth-links">
+                <li><a href="HomePage.html" class="btn-modern">Home</a></li>
+            </ul>
         </div>
-      </div>
+    </nav>
 
-      <!-- User reply -->
-      <div class="msg user">
-        <div class="msg-avatar">ME</div>
-        <div class="msg-body">
-          <div class="msg-name">You</div>
-          <div class="bubble">Hi Dr. Sara! I'm mainly looking to lose about 8kg while keeping my energy up for my workouts. I also have a mild lactose intolerance.</div>
-          <div class="msg-meta">09:05 AM <span class="read-tick">✓✓</span></div>
+    <!-- Hero strip -->
+    <div style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); padding: 40px 5%; text-align: center; color: white;">
+        <span style="background:rgba(255,255,255,0.15); padding:5px 16px; border-radius:20px; font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase;">Support Center</span>
+        <h1 style="font-size:32px; font-weight:800; margin: 14px 0 8px;">How Can We Help You?</h1>
+        <p style="font-size:15px; opacity:0.85; margin:0;">Chat with us in real time or send an email — we'll get back to you fast.</p>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="chat-page">
+
+        <!-- ── Sidebar ── -->
+        <aside class="chat-sidebar">
+
+            <!-- Online Status -->
+            <div class="info-card" style="text-align:center; padding: 20px;">
+                <div class="status-badge" style="margin-bottom:12px;">
+                    <span class="status-dot"></span> Support Online
+                </div>
+                <p style="font-size:12px; color:var(--text-light); margin:0;">Average response time: <strong style="color:var(--primary)">under 5 minutes</strong></p>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="info-card">
+                <h3><i class="bi bi-telephone"></i> Contact Info</h3>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="bi bi-envelope-fill"></i></div>
+                    <div><strong>Email</strong>support@nutriai.dz</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="bi bi-telephone-fill"></i></div>
+                    <div><strong>Phone</strong>+213 550 000 000</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="bi bi-clock-fill"></i></div>
+                    <div><strong>Hours</strong>Sun – Thu, 8 AM – 8 PM</div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon"><i class="bi bi-geo-alt-fill"></i></div>
+                    <div><strong>Location</strong>Algiers, Algeria</div>
+                </div>
+            </div>
+
+            <!-- FAQ -->
+            <div class="info-card">
+                <h3><i class="bi bi-question-circle"></i> Quick Answers</h3>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">How do I get a meal plan? <i class="bi bi-plus-lg"></i></div>
+                    <div class="faq-answer">Sign up, complete your health profile, then book a consultation with one of our certified nutritionists. Your personalized plan will be ready within 24 hours.</div>
+                </div>
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">Are the nutritionists certified? <i class="bi bi-plus-lg"></i></div>
+                    <div class="faq-answer">Yes — every nutritionist on NutriAI is verified with their professional certificate before their profile goes live.</div>
+                </div>
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">How does the AI food analyzer work? <i class="bi bi-plus-lg"></i></div>
+                    <div class="faq-answer">Take a photo of your meal and our AI detects each food item, estimates portion size, and calculates calories and macronutrients instantly.</div>
+                </div>
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">Can I cancel my plan? <i class="bi bi-plus-lg"></i></div>
+                    <div class="faq-answer">Yes, you can cancel or change your plan anytime from your dashboard settings. Refunds are handled within 3 business days.</div>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- ── Main Chat Area ── -->
+        <div class="chat-main">
+
+            <!-- Tabs -->
+            <div class="chat-tabs">
+                <button class="chat-tab active" onclick="switchTab('chat', this)">
+                    <i class="bi bi-chat-dots-fill"></i> Live Chat
+                </button>
+                <button class="chat-tab" onclick="switchTab('email', this)">
+                    <i class="bi bi-envelope-fill"></i> Send Email
+                </button>
+            </div>
+
+            <!-- ══ CHAT TAB ══ -->
+            <div class="tab-panel active" id="tab-chat">
+
+                <!-- Quick Questions -->
+                <div class="quick-questions">
+                    <button class="quick-q" onclick="sendQuick('How do I get a meal plan?')">🥗 Get a meal plan</button>
+                    <button class="quick-q" onclick="sendQuick('What are your seasonal offers?')">🌙 Seasonal offers</button>
+                    <button class="quick-q" onclick="sendQuick('How does the AI analyzer work?')">📷 AI analyzer</button>
+                    <button class="quick-q" onclick="sendQuick('I want to become a nutritionist')">🏥 Join as nutritionist</button>
+                </div>
+
+                <!-- Messages -->
+                <div class="chat-messages" id="chatMessages">
+
+                    <!-- Welcome message -->
+                    <div class="msg admin">
+                        <div class="msg-avatar admin-av"><i class="bi bi-heart-pulse-fill"></i></div>
+                        <div>
+                            <div class="msg-bubble">
+                                👋 Hello! Welcome to <strong>NutriAI Support</strong>.<br><br>
+                                I'm here to help you with meal plans, AI food analysis, consultations, or anything else. How can I assist you today?
+                            </div>
+                            <div class="msg-time">Just now</div>
+                        </div>
+                    </div>
+
+                    <!-- Typing indicator -->
+                    <div class="typing-indicator" id="typingIndicator">
+                        <div class="msg-avatar admin-av"><i class="bi bi-heart-pulse-fill"></i></div>
+                        <div class="typing-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Input -->
+                <div class="chat-input-area">
+                    <textarea class="chat-input" id="chatInput" placeholder="Type your message…" rows="1" onkeydown="handleChatKey(event)" oninput="autoResize(this)"></textarea>
+                    <button class="chat-send-btn" onclick="sendMessage()">
+                        <i class="bi bi-send-fill"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ══ EMAIL TAB ══ -->
+            <div class="tab-panel" id="tab-email">
+                <div class="email-panel-inner" id="emailForm">
+                    <div>
+                        <h3>Send Us a Message</h3>
+                        <p>Fill in the form below and our team will reply within 24 hours.</p>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group-email">
+                            <label>Your Name</label>
+                            <input type="text" id="emailName" placeholder="Full name">
+                        </div>
+                        <div class="form-group-email">
+                            <label>Email Address</label>
+                            <input type="email" id="emailAddr" placeholder="you@example.com">
+                        </div>
+                    </div>
+
+                    <div class="form-group-email">
+                        <label>Subject</label>
+                        <select id="emailSubject">
+                            <option value="">Select a topic…</option>
+                            <option value="meal_plan">Meal Plan Question</option>
+                            <option value="consultation">Book a Consultation</option>
+                            <option value="ai">AI Food Analyzer</option>
+                            <option value="seasonal">Seasonal Plans & Pricing</option>
+                            <option value="nutritionist">Become a Nutritionist</option>
+                            <option value="billing">Billing & Payment</option>
+                            <option value="technical">Technical Issue</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group-email">
+                        <label>Message</label>
+                        <textarea id="emailMessage" placeholder="Describe your question or issue in detail…"></textarea>
+                    </div>
+
+                    <button class="btn-auth-submit" onclick="sendEmail()">
+                        <i class="bi bi-send me-2"></i> Send Message
+                    </button>
+                </div>
+
+                <!-- Success state -->
+                <div class="email-success" id="emailSuccess">
+                    <div class="success-circle"><i class="bi bi-check-lg"></i></div>
+                    <h4>Message Sent!</h4>
+                    <p>Thank you for reaching out. Our team will reply to <strong id="confirmedEmail"></strong> within 24 hours.</p>
+                    <button class="btn-auth-submit" style="width:auto; padding:10px 28px;" onclick="resetEmailForm()">
+                        Send Another Message
+                    </button>
+                </div>
+            </div>
+
         </div>
-      </div>
-
-      <!-- Nutritionist -->
-      <div class="msg nutri">
-        <div class="msg-avatar">SL</div>
-        <div class="msg-body">
-          <div class="msg-name">Dr. Sara Lamine · Nutritionist</div>
-          <div class="bubble">
-            Great goals! Losing 8kg while maintaining workout performance is absolutely achievable. 💪<br><br>
-            Regarding lactose intolerance — we'll make sure your plan is fully dairy-free or uses well-tolerated alternatives like lactose-free dairy or plant-based options.<br><br>
-            Can you share a typical day of eating for you? Breakfast, lunch, dinner, and any snacks?
-          </div>
-          <div class="msg-meta">09:07 AM</div>
-        </div>
-      </div>
-
     </div>
 
-    <!-- TELEGRAM-STYLE EMOJI PANEL -->
-    <div class="emoji-panel" id="emojiPanel">
-      <div class="ep-searchbar">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M21 21l-4.35-4.35"/></svg>
-        <input type="text" id="epSearch" placeholder="Search emoji" oninput="epFilter(this.value)" autocomplete="off" spellcheck="false"/>
-      </div>
-      <div class="ep-body" id="epBody"></div>
-      <div class="ep-catbar" id="epCatbar">
-        <button class="ep-cat-btn recent-btn" id="epRecentBtn" title="Recently used" onclick="epShowRecent()">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 7v5l3 3"/></svg>
-        </button>
-      </div>
+    <!-- Toast -->
+    <div class="chat-toast" id="chatToast">
+        <i class="bi bi-check-circle-fill"></i> <span id="toastMsg">Sent!</span>
     </div>
 
-    <!-- INPUT -->
-    <div class="input-area">
-      <div class="input-row">
-        <textarea
-          class="input-box"
-          id="msgInput"
-          placeholder="Type your message…"
-          rows="1"
-          maxlength="1000"
-          oninput="autoResize(this); updateCount(this)"
-          onkeydown="handleKey(event)"
-        ></textarea>
-        <button class="send-btn" onclick="sendMessage()">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
-          </svg>
-        </button>
-      </div>
-      <div class="input-tools">
-        <button class="tool-btn" id="emojiToggleBtn" onclick="togglePicker(event)">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
-          Emoji
-        </button>
-        <button class="tool-btn" onclick="showToast('File upload coming soon')">
-          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486"/></svg>
-          Attach
-        </button>
-        <span class="char-count" id="charCount">0 / 1000</span>
-      </div>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ── Auto-fill name/email from localStorage if logged in ──
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        if (user) {
+            if (document.getElementById('emailName')) document.getElementById('emailName').value = user.fullName || '';
+            if (document.getElementById('emailAddr')) document.getElementById('emailAddr').value = user.email || '';
+        }
 
-  </div><!-- .chat-main -->
+        // ── Tab Switcher ──
+        function switchTab(tab, btn) {
+            document.querySelectorAll('.chat-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('tab-' + tab).classList.add('active');
+        }
 
-</div><!-- .chat-wrapper -->
+        // ── FAQ Toggle ──
+        function toggleFaq(el) {
+            el.classList.toggle('open');
+        }
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
+        // ── Toast ──
+        function showToast(msg) {
+            const toast = document.getElementById('chatToast');
+            document.getElementById('toastMsg').textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
 
-<script>
-  /* ── Role detection ─────────────────────────────────────────── */
-  // Read ?role=nutritionist or ?role=user from URL
-  const params = new URLSearchParams(location.search);
-  const role   = params.get('role') || 'user';
+        // ── Chat ──
+        function getTime() {
+            return new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        }
 
-  if (role === 'nutritionist') {
-    document.getElementById('backLink').href       = 'NutritionistPanel.html';
-    document.getElementById('backLabel').textContent = 'My Panel';
-    // Flip "ME" avatar for nutritionist side
-    document.querySelectorAll('.msg.user .msg-avatar').forEach(el => el.textContent = 'PT');
-    document.querySelectorAll('.msg.user .msg-name').forEach(el => el.textContent = 'Patient');
-  }
+        function appendMessage(text, role) {
+            const container = document.getElementById('chatMessages');
+            const typing    = document.getElementById('typingIndicator');
 
-  /* ── Auto-resize textarea ────────────────────────────────────── */
-  function autoResize(el) {
-    el.style.height = 'auto';
-    el.style.height = Math.min(el.scrollHeight, 120) + 'px';
-  }
+            const div = document.createElement('div');
+            div.className = `msg ${role}`;
 
-  function updateCount(el) {
-    document.getElementById('charCount').textContent = el.value.length + ' / 1000';
-  }
+            const avatarIcon = role === 'admin' ? 'bi-heart-pulse-fill' : 'bi-person-fill';
+            const avatarClass = role === 'admin' ? 'admin-av' : 'user-av';
 
-  /* ── Key handler ─────────────────────────────────────────────── */
-  function handleKey(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  }
+            div.innerHTML = `
+                <div class="msg-avatar ${avatarClass}"><i class="bi ${avatarIcon}"></i></div>
+                <div>
+                    <div class="msg-bubble">${text}</div>
+                    <div class="msg-time">${getTime()}</div>
+                </div>
+            `;
 
-  /* ── Send message ─────────────────────────────────────────────── */
-  function sendMessage() {
-    const input = document.getElementById('msgInput');
-    const text  = input.value.trim();
-    if (!text) return;
+            container.insertBefore(div, typing);
+            container.scrollTop = container.scrollHeight;
+        }
 
-    const messagesEl = document.getElementById('messages');
+        // Auto-reply logic
+        const autoReplies = [
+            { keywords: ['meal plan','plan','diet','nutrition'], reply: '🥗 Great question! To get your personalized meal plan, simply <a href="signup.html" style="color:var(--primary);font-weight:600;">create an account</a> and book a consultation with one of our certified nutritionists. Your custom plan will be ready within 24 hours!' },
+            { keywords: ['ramadan','suhoor','iftar','fasting'], reply: '🌙 We have special <strong>Ramadan nutrition plans</strong> available at up to 50% off! They include personalized Suhoor & Iftar meal schedules. You can find them in our <a href="HomePage.html#seasonal-plans" style="color:var(--primary);font-weight:600;">Seasonal Plans</a> section.' },
+            { keywords: ['price','cost','pricing','how much','cheap','offer','discount'], reply: '💰 We offer seasonal plans starting from <strong>990 DA</strong> with discounts up to 50%! Check our <a href="HomePage.html#seasonal-plans" style="color:var(--primary);font-weight:600;">Special Seasonal Plans</a> for current offers.' },
+            { keywords: ['ai','camera','photo','food','calorie','detect','analyze'], reply: '📷 Our <strong>AI Food Analyzer</strong> lets you take a photo of any meal and instantly get calorie counts and full nutritional breakdown. <a href="AIAnalyzer.html" style="color:var(--primary);font-weight:600;">Try it here →</a>' },
+            { keywords: ['nutritionist','expert','doctor','specialist','certified'], reply: '👨‍⚕️ All our nutritionists are professionally certified and verified. You can <a href="ChooseNutritionist.html" style="color:var(--primary);font-weight:600;">browse our experts</a> and book a consultation directly from your dashboard.' },
+            { keywords: ['become','join','register','sign up as nutritionist'], reply: '🏥 Interested in joining as a Nutritionist? Visit our <a href="BecomeNutritionist.html" style="color:var(--primary);font-weight:600;">Become a Nutritionist</a> page to learn about the benefits and start your registration.' },
+            { keywords: ['summer','winter','seasonal'], reply: '☀️❄️ We have <strong>Summer</strong> and <strong>Winter</strong> seasonal plans as well as our popular <strong>Ramadan program</strong>! All plans come with significant discounts. <a href="HomePage.html#seasonal-plans" style="color:var(--primary);font-weight:600;">See all seasonal offers →</a>' },
+            { keywords: ['hello','hi','hey','bonjour','salam'], reply: '👋 Hello! Great to have you here. I can help you with meal plans, AI food analysis, nutritionist consultations, seasonal offers, and more. What would you like to know?' },
+            { keywords: ['cancel','refund','payment','billing'], reply: '💳 For billing or refund questions, you can cancel your plan anytime from your dashboard. Refunds are processed within 3 business days. Need more help? Send us an email using the <strong>Send Email</strong> tab above.' },
+            { keywords: ['contact','email','phone','support'], reply: '📬 You can reach us at <strong>support@nutriai.dz</strong> or call <strong>+213 550 000 000</strong>. Our team is available Sunday to Thursday, 8 AM – 8 PM. Or use the <strong>Send Email</strong> tab for a detailed enquiry.' },
+        ];
 
-    // Determine sender labels
-    const isNutri    = role === 'nutritionist';
-    const senderClass = isNutri ? 'nutri' : 'user';
-    const avatar      = isNutri ? 'SL'   : 'ME';
-    const senderName  = isNutri ? 'Dr. Sara Lamine · Nutritionist' : 'You';
+        function getAutoReply(text) {
+            const lower = text.toLowerCase();
+            for (const r of autoReplies) {
+                if (r.keywords.some(k => lower.includes(k))) return r.reply;
+            }
+            return "Thank you for your message! 😊 Our support team will get back to you shortly. In the meantime, feel free to browse our <a href='HomePage.html' style='color:var(--primary);font-weight:600;'>homepage</a> or check the quick answers on the left.";
+        }
 
-    const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
 
-    const msgEl = document.createElement('div');
-    msgEl.className = `msg ${senderClass}`;
-    msgEl.innerHTML = `
-      <div class="msg-avatar">${avatar}</div>
-      <div class="msg-body">
-        <div class="msg-name">${senderName}</div>
-        <div class="bubble">${escapeHtml(text)}</div>
-        <div class="msg-meta">${now}${!isNutri ? ' <span class="read-tick">✓</span>' : ''}</div>
-      </div>`;
-    messagesEl.appendChild(msgEl);
+            appendMessage(text, 'user');
+            input.value = '';
+            input.style.height = 'auto';
 
-    input.value = '';
-    input.style.height = 'auto';
-    document.getElementById('charCount').textContent = '0 / 1000';
+            // Show typing
+            const typing = document.getElementById('typingIndicator');
+            typing.classList.add('show');
+            document.getElementById('chatMessages').scrollTop = 99999;
 
-    messagesEl.scrollTop = messagesEl.scrollHeight;
+            // Send to backend (fire and forget)
+            fetch('http://localhost:5000/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text, email: user?.email || 'guest' })
+            }).catch(() => {});
 
-    // Simulate reply only when user sends
-    if (!isNutri) simulateTyping();
-  }
+            // Auto reply after delay
+            setTimeout(() => {
+                typing.classList.remove('show');
+                appendMessage(getAutoReply(text), 'admin');
+            }, 1200 + Math.random() * 800);
+        }
 
-  /* ── Simulate nutritionist typing ─────────────────────────────── */
-  const autoReplies = [
-    "That's really helpful — thank you! Let me put together some recommendations for you. 📋",
-    "Great question! I'd suggest increasing your protein intake slightly and focusing on complex carbs before workouts.",
-    "I'll include that in your meal plan. Would you prefer 3 main meals or 5 smaller meals throughout the day?",
-    "Noted! I'll make sure all your recommendations avoid dairy triggers while keeping nutrition balanced.",
-    "You're on the right track! Consistency is key — keep logging your meals and we'll review together.",
-  ];
-  let replyIdx = 0;
+        function sendQuick(text) {
+            document.getElementById('chatInput').value = text;
+            sendMessage();
+        }
 
-  function simulateTyping() {
-    const messagesEl = document.getElementById('messages');
-    const typingEl   = document.createElement('div');
-    typingEl.className = 'typing-indicator';
-    typingEl.id = 'typing';
-    typingEl.innerHTML = `
-      <div class="msg-avatar" style="background:linear-gradient(135deg,#4A7337,#2d4a23);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff">SL</div>
-      <div class="typing-dots"><span></span><span></span><span></span></div>`;
-    messagesEl.appendChild(typingEl);
-    messagesEl.scrollTop = messagesEl.scrollHeight;
+        function handleChatKey(e) {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+        }
 
-    const delay = 1500 + Math.random() * 1200;
-    setTimeout(() => {
-      typingEl.remove();
+        function autoResize(el) {
+            el.style.height = 'auto';
+            el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+        }
 
-      const reply = autoReplies[replyIdx % autoReplies.length];
-      replyIdx++;
+        // ── Email ──
+        function sendEmail() {
+            const name    = document.getElementById('emailName').value.trim();
+            const email   = document.getElementById('emailAddr').value.trim();
+            const subject = document.getElementById('emailSubject').value;
+            const message = document.getElementById('emailMessage').value.trim();
 
-      const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const replyEl = document.createElement('div');
-      replyEl.className = 'msg nutri';
-      replyEl.innerHTML = `
-        <div class="msg-avatar" style="background:linear-gradient(135deg,#4A7337,#2d4a23);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff">SL</div>
-        <div class="msg-body">
-          <div class="msg-name">Dr. Sara Lamine · Nutritionist</div>
-          <div class="bubble">${reply}</div>
-          <div class="msg-meta">${now}</div>
-        </div>`;
-      messagesEl.appendChild(replyEl);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
-    }, delay);
-  }
+            if (!name)    { alert('Please enter your name.'); return; }
+            if (!email || !email.includes('@')) { alert('Please enter a valid email address.'); return; }
+            if (!subject) { alert('Please select a subject.'); return; }
+            if (!message) { alert('Please write your message.'); return; }
 
-  /* ── Quick topic insert ─────────────────────────────────────────── */
-  function insertQuick(text) {
-    const input = document.getElementById('msgInput');
-    input.value = text;
-    input.focus();
-    updateCount(input);
-    autoResize(input);
-  }
+            // Send to backend
+            fetch('http://localhost:5000/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, subject, message })
+            }).catch(() => {});
 
-  /* ── Toast ──────────────────────────────────────────────────────── */
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2500);
-  }
+            // Show success
+            document.getElementById('emailForm').style.display = 'none';
+            document.getElementById('confirmedEmail').textContent = email;
+            document.getElementById('emailSuccess').classList.add('show');
+            showToast('Email sent successfully!');
+        }
 
-  /* ── Escape HTML ─────────────────────────────────────────────────── */
-  function escapeHtml(str) {
-    return str
-      .replace(/&/g,'&amp;')
-      .replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;')
-      .replace(/\n/g,'<br>');
-  }
-
-  /* ════════════════════════════════════════════
-     TELEGRAM-STYLE EMOJI PANEL
-  ════════════════════════════════════════════ */
-  const EMOJI_CATEGORIES = [
-    { label:'😀', name:'Smileys & Emotion', emojis:['😀','😃','😄','😁','😆','😅','🤣','😂','🙂','🙃','😉','😊','😇','🥰','😍','🤩','😘','😗','😚','😙','🥲','😋','😛','😜','🤪','😝','🤑','🤗','🤭','🤫','🤔','🤐','🤨','😐','😑','😶','😏','😒','🙄','😬','🤥','😌','😔','😪','🤤','😴','😷','🤒','🤕','🤢','🤮','🤧','🥵','🥶','🥴','😵','🤯','🤠','🥳','🥸','😎','🤓','🧐','😕','😟','🙁','☹️','😮','😯','😲','😳','🥺','😦','😧','😨','😰','😥','😢','😭','😱','😖','😣','😞','😓','😩','😫','🥱','😤','😡','😠','🤬','😈','👿','💀','☠️','💩','🤡','👹','👺','👻','👽','👾','🤖'] },
-    { label:'👋', name:'People & Body',      emojis:['👋','🤚','🖐','✋','🖖','👌','🤌','🤏','✌️','🤞','🤟','🤘','🤙','👈','👉','👆','👇','☝️','👍','👎','✊','👊','🤛','🤜','👏','🙌','👐','🤲','🤝','🙏','💅','🤳','💪','🦾','🦵','🦶','👂','🦻','👃','👀','👁','👅','👄','👶','🧒','👦','👧','🧑','👱','👨','🧔','👩','🧓','👴','👵','🙍','🙎','🙅','🙆','💁','🙋','🧏','🙇','🤦','🤷','💆','💇','🚶','🏃','💃','🕺','👯','🧖','🧘'] },
-    { label:'🐶', name:'Animals & Nature',   emojis:['🐶','🐱','🐭','🐹','🐰','🦊','🐻','🐼','🐨','🐯','🦁','🐮','🐷','🐸','🐵','🙈','🙉','🙊','🐒','🐔','🐧','🐦','🐤','🦆','🦅','🦉','🦇','🐺','🐗','🐴','🦄','🐝','🐛','🦋','🐌','🐞','🐜','🦟','🦗','🐢','🐍','🦎','🐙','🦑','🦐','🦞','🦀','🐡','🐠','🐟','🐬','🐳','🐋','🦈','🐊','🦓','🦍','🐘','🦛','🦏','🐪','🐫','🦒','🦘','🐃','🐂','🐄','🐎','🐖','🐑','🦙','🐐','🦌','🐕','🐩','🦮','🐈','🐈‍⬛','🦔','🌸','🌹','🌺','🌻','🌼','🌷','🌱','🌿','☘️','🍀','🍁','🍂','🍃'] },
-    { label:'🍎', name:'Food & Drink',        emojis:['🍏','🍎','🍐','🍊','🍋','🍌','🍉','🍇','🍓','🫐','🍈','🍒','🍑','🥭','🍍','🥥','🥝','🍅','🥑','🍆','🥕','🌽','🌶','🥒','🥦','🧄','🧅','🍄','🥜','🍞','🥐','🥖','🧀','🥚','🍳','🥞','🧇','🥓','🥩','🍗','🍖','🌭','🍔','🍟','🍕','🌮','🌯','🥗','🥘','🥫','🍱','🍣','🍤','🍜','🍝','🍛','🍦','🍧','🍨','🍩','🍪','🎂','🍰','🧁','🍫','🍬','🍭','🍮','🍯','🥛','☕','🍵','🧃','🥤','🧋','🍺','🍻','🥂','🍷','🥃','🍸','🍹','🧉','🍾'] },
-    { label:'⚽', name:'Activities',           emojis:['⚽','🏀','🏈','⚾','🥎','🎾','🏐','🏉','🎱','🏓','🏸','🏒','🥍','🏑','🏏','⛳','🎣','🤿','🥊','🥋','🎽','🛹','🛷','⛸','🎿','🏂','🪂','🏋','🤸','🤺','🤾','🏊','🚴','🧘','🎖','🏆','🥇','🥈','🥉','🏅','🎭','🎨','🎬','🎤','🎧','🎼','🎹','🥁','🎷','🎺','🎸','🎻','🎲','♟','🎯','🎳','🎮','🎰','🧩','🎪','🤹'] },
-    { label:'🚗', name:'Travel & Places',      emojis:['🚗','🚕','🚙','🚌','🏎','🚓','🚑','🚒','🚐','🛻','🚚','🚜','🏍','🛵','🚲','🛴','🚏','⛽','🚨','🚥','🚦','🛑','⚓','⛵','🚤','🛥','🚢','✈','🛩','🛫','🛬','💺','🚁','🛰','🚀','🛸','🪐','🌍','🌎','🌏','🗺','🧭','🏔','⛰','🌋','🗻','🏕','🏖','🏜','🏝','🏞','🏛','🏠','🏡','🏢','🏣','🏤','🏥','🏦','🏨','🏩','🏪','🏫','🏬','🏭','🏯','🏰','💒','🗼','🗽','⛪','🕌','🛕','🕍','⛩','🕋'] },
-    { label:'💡', name:'Objects',              emojis:['⌚','📱','💻','⌨','🖥','🖱','💽','💾','💿','📀','🧮','📷','📸','📹','🎥','📽','📞','☎','📺','📻','🧭','⏱','⏰','🕰','⌛','⏳','📡','🔋','🔌','💡','🔦','🕯','🛢','💰','💳','💎','⚖','🧲','🔧','🔨','⚒','🛠','⛏','🔩','⚙','🗜','🧰','🗝','🔑','🔒','🔓','🚪','🛋','🛏','🚿','🛁','🪞','🧴','🧷','🧹','🧺','🧻','🧼','🪥','🧽','🛒','🔮','🪄','🧸','🪅','🎨','🧵','🧶'] },
-    { label:'❤️', name:'Symbols & Flags',      emojis:['❤️','🧡','💛','💚','💙','💜','🖤','🤍','🤎','💔','❣️','💕','💞','💓','💗','💖','💘','💝','💟','☮','✝','☪','🕉','☸','✡','🛐','⛎','♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓','✅','❌','❎','💯','💢','♻️','🔰','⚜','🔱','📛','🚫','💤','🔕','❗','❕','❓','❔','‼','⁉','🔅','🔆','📶','🏧','🚾','♿','🅿','🈳','🈂','🆘','🆔','🆕','🆙','🆒','🆓','🆗','🆖','🅰','🅱','🅾','🆎'] },
-  ];
-
-  let epCurrentCat  = 0;
-  let epSearchMode  = false;
-  let recentEmojis  = [];
-  try { recentEmojis = JSON.parse(localStorage.getItem('ep_recents') || '[]'); } catch(e){}
-
-  function buildEmojiPanel() {
-    const catbar = document.getElementById('epCatbar');
-    EMOJI_CATEGORIES.forEach((cat, i) => {
-      const btn = document.createElement('button');
-      btn.className = 'ep-cat-btn' + (i === 0 ? ' active' : '');
-      btn.textContent = cat.label;
-      btn.title = cat.name;
-      btn.dataset.idx = i;
-      btn.onclick = () => epSelectCat(i);
-      catbar.appendChild(btn);
-    });
-    epRenderCategory(0);
-  }
-
-  function epSelectCat(idx) {
-    epCurrentCat = idx;
-    epSearchMode = false;
-    document.getElementById('epSearch').value = '';
-    document.querySelectorAll('.ep-cat-btn').forEach((b,i) => {
-      b.classList.toggle('active', parseInt(b.dataset.idx) === idx);
-    });
-    document.getElementById('epRecentBtn').classList.remove('active');
-    epRenderCategory(idx);
-  }
-
-  function epShowRecent() {
-    epSearchMode = false;
-    document.getElementById('epSearch').value = '';
-    document.querySelectorAll('.ep-cat-btn[data-idx]').forEach(b => b.classList.remove('active'));
-    document.getElementById('epRecentBtn').classList.add('active');
-    const body = document.getElementById('epBody');
-    body.innerHTML = '';
-    if (!recentEmojis.length) {
-      body.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:20px;text-align:center">No recently used emoji</div>';
-      return;
-    }
-    const label = document.createElement('div');
-    label.className = 'ep-section-label';
-    label.textContent = 'Recently Used';
-    const grid = document.createElement('div');
-    grid.className = 'ep-grid';
-    recentEmojis.forEach(em => grid.appendChild(makeEmojiEl(em)));
-    body.appendChild(label);
-    body.appendChild(grid);
-  }
-
-  function epRenderCategory(idx) {
-    const body = document.getElementById('epBody');
-    body.innerHTML = '';
-    const cat = EMOJI_CATEGORIES[idx];
-    const label = document.createElement('div');
-    label.className = 'ep-section-label';
-    label.textContent = cat.name;
-    const grid = document.createElement('div');
-    grid.className = 'ep-grid';
-    cat.emojis.forEach(em => grid.appendChild(makeEmojiEl(em)));
-    body.appendChild(label);
-    body.appendChild(grid);
-    body.scrollTop = 0;
-  }
-
-  function epFilter(q) {
-    epSearchMode = !!q.trim();
-    const body = document.getElementById('epBody');
-    if (!epSearchMode) {
-      epRenderCategory(epCurrentCat);
-      return;
-    }
-    const ql = q.toLowerCase();
-    // Simple: show emojis from matching category names + all
-    const all = EMOJI_CATEGORIES.flatMap(c =>
-      c.name.toLowerCase().includes(ql) ? c.emojis : c.emojis.slice(0, 8)
-    );
-    body.innerHTML = '';
-    const label = document.createElement('div');
-    label.className = 'ep-section-label';
-    label.textContent = 'Search Results';
-    const grid = document.createElement('div');
-    grid.className = 'ep-grid';
-    all.slice(0, 80).forEach(em => grid.appendChild(makeEmojiEl(em)));
-    body.appendChild(label);
-    body.appendChild(grid);
-  }
-
-  function makeEmojiEl(em) {
-    const el = document.createElement('div');
-    el.className = 'ep-emoji';
-    el.textContent = em;
-    el.onclick = () => epInsert(em);
-    return el;
-  }
-
-  function epInsert(em) {
-    const input = document.getElementById('msgInput');
-    const s = input.selectionStart, e = input.selectionEnd;
-    input.value = input.value.slice(0, s) + em + input.value.slice(e);
-    input.selectionStart = input.selectionEnd = s + em.length;
-    input.focus();
-    autoResize(input);
-    updateCount(input);
-    // save recent
-    recentEmojis = [em, ...recentEmojis.filter(x => x !== em)].slice(0, 24);
-    try { localStorage.setItem('ep_recents', JSON.stringify(recentEmojis)); } catch(x){}
-  }
-
-  function togglePicker(e) {
-    e.stopPropagation();
-    const panel = document.getElementById('emojiPanel');
-    panel.classList.toggle('open');
-    if (panel.classList.contains('open')) {
-      setTimeout(() => document.getElementById('epSearch').focus(), 50);
-    }
-  }
-
-  document.addEventListener('click', (e) => {
-    const panel = document.getElementById('emojiPanel');
-    const btn   = document.getElementById('emojiToggleBtn');
-    if (!panel.contains(e.target) && !btn.contains(e.target)) {
-      panel.classList.remove('open');
-    }
-  });
-
-  buildEmojiPanel();
-</script>
+        function resetEmailForm() {
+            document.getElementById('emailForm').style.display = 'flex';
+            document.getElementById('emailSuccess').classList.remove('show');
+            document.getElementById('emailMessage').value = '';
+            document.getElementById('emailSubject').value = '';
+        }
+    </script>
 </body>
 </html>
