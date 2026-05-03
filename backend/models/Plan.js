@@ -1,15 +1,13 @@
+// models/Plan.js
 const mongoose = require("mongoose");
-const planSchema = new mongoose.Schema({
-  nutritionistId: String,
-  nutritionistName: String,
 
-  userId: String,
-  userName: String,
+const PlanSchema = new mongoose.Schema({
+  userId:         { type: String, required: true },
+  nutritionistId: { type: String, required: true }, // ✅ String مش ObjectId
+  title:          { type: String, required: true },
+  description:    { type: String, default: "" },
+  price:          { type: String, default: "" },
+  status:         { type: String, default: "active" }
+}, { timestamps: true });
 
-  title: String,
-  description: String,
-
-  status: { type: String, default: "active" }
-});
-
-module.exports = mongoose.model("Plan", planSchema);
+module.exports = mongoose.model("Plan", PlanSchema);

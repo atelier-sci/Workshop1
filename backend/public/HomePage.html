@@ -456,19 +456,107 @@
             .sp-banner { flex-direction: column; align-items: flex-start; }
             .sp-discount-badge { margin-left: 0; }
         }
+.purchase-modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.purchase-modal-overlay.active { display: flex; }
+.purchase-modal-box {
+  background: white;
+  border-radius: 16px;
+  padding: 28px;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  animation: modalPop 0.25s ease;
+}
+@keyframes modalPop {
+  from { opacity:0; transform: scale(0.95) translateY(10px); }
+  to   { opacity:1; transform: scale(1) translateY(0); }
+}
+.plan-modal-header {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+}
+.plan-modal-icon {
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; flex-shrink: 0;
+}
+.plan-modal-features {
+  background: #f8f9fa; border-radius: 10px;
+  padding: 14px; margin-bottom: 14px;
+}
+.plan-modal-feature-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: #555; margin-bottom: 6px;
+}
+.plan-modal-feature-item:last-child { margin-bottom: 0; }
+.plan-modal-feature-item span.check { color: #4A7337; font-size: 15px; }
+.plan-modal-info {
+  background: #e8f1e4; border-radius: 10px;
+  padding: 10px 14px; margin-bottom: 20px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: #2d4a23;
+}
+.plan-modal-pricing {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 16px;
+}
+.plan-modal-price-old {
+  font-size: 13px; color: #aaa; text-decoration: line-through;
+}
+.plan-modal-price-new {
+  font-size: 22px; font-weight: 700; color: #4A7337;
+}
+.plan-modal-discount {
+  background: #e8f1e4; color: #4A7337;
+  font-size: 12px; font-weight: 600;
+  padding: 3px 10px; border-radius: 20px;
+}
+.plan-modal-buttons {
+  display: flex; gap: 10px;
+}
+.plan-modal-btn-cancel {
+  flex: 1; padding: 11px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: white; color: #666;
+  font-size: 14px; cursor: pointer;
+  transition: background 0.2s;
+}
+.plan-modal-btn-cancel:hover { background: #f0f0f0; }
+.plan-modal-btn-confirm {
+  flex: 2; padding: 11px;
+  border-radius: 10px; border: none;
+  background: #4A7337; color: white;
+  font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: background 0.2s;
+}
+.plan-modal-btn-confirm:hover { background: #2d4a23; }
+.plan-modal-btn-confirm:disabled {
+  background: #aaa; cursor: not-allowed;
+}
+
 
         </style>
 </head>
+
 <body>
     <!-- Enhanced Navigation -->
     <nav class="navbar-enhanced">
         <div class="nav-container">
             <a href="HomePage.html" class="logo-modern">
-                <i class="bi bi-heart-pulse-fill"></i> NutriAI
+                <i class="bi bi-heart-pulse-fill"></i> Viora
             </a>
             <ul class="nav-links">
                 <li><a href="HomePage.html" class="nav-link-animated">Home</a></li>
-                <li><a href="BecomeNutritionist.html" class="nav-link-animated">Become Nutritionist</a></li>
+               
                 <li><a href="#ai-feature" class="nav-link-animated">AI Analyzer</a></li>
                 <li><a href="Blog.html" class="nav-link-animated">Blog</a></li>
                 <li><a href="Chat.html" class="nav-link-animated">Contact</a></li>
@@ -514,7 +602,7 @@
         <section class="how-it-works" id="how-it-works">
             <div class="container-custom">
                 <div class="section-header">
-                    <h2>How <span class="text-gradient">NutriAI</span> Works</h2>
+                    <h2>How <span class="text-gradient">Viora</span> Works</h2>
                     <p>Simple, personalized, and backed by science</p>
                 </div>
                 <div class="steps-container">
@@ -527,7 +615,7 @@
                     <div class="step-arrow"><i class="bi bi-arrow-right"></i></div>
                     <div class="step">
                         <div class="step-number">02</div>
-                        <div class="step-icon"><i class="bi bi-video"></i></div>
+                        <div class="step-icon"><i class="bi bi-camera-video"></i></i></div>
                         <h3>Expert Consultation</h3>
                         <p>Book a video call with a certified nutritionist worldwide.</p>
                     </div>
@@ -608,7 +696,7 @@
             <div class="container-custom">
                 <div class="section-header">
                     <h2>Who Can Benefit?</h2>
-                    <p>NutriAI is designed for diverse health needs</p>
+                    <p>Viora is designed for diverse health needs</p>
                 </div>
                 <div class="users-grid">
                     <div class="user-card"><div class="user-icon"><i class="bi bi-graph-down"></i></div><h3>Weight Loss Resistance</h3><p>Struggling to lose weight despite dieting? We address underlying causes like hormonal imbalances and metabolic issues.</p></div>
@@ -624,284 +712,794 @@
         <!-- ══════════════════════════════════════════ -->
         <!-- SEASONAL PLANS SECTION                    -->
         <!-- ══════════════════════════════════════════ -->
-        <section class="seasonal-plans" id="seasonal-plans">
-            <div class="container-custom">
-                <div class="section-header">
-                    <span class="section-badge">🌙 Limited Time Offers</span>
-                    <h2>Special <span class="text-gradient">Seasonal Plans</span></h2>
-                    <p>Tailored nutrition programs for every season and occasion — at unbeatable prices</p>
+     <section class="seasonal-plans" id="seasonal-plans">
+    <div class="container-custom">
+        <div class="section-header">
+            <span class="section-badge">🌙 Limited Time Offers</span>
+            <h2>Special <span class="text-gradient">Seasonal Plans</span></h2>
+            <p>Tailored nutrition programs for every season and occasion — at unbeatable prices</p>
+        </div>
+
+        <!-- Season Tabs -->
+        <div class="season-tabs">
+            <button class="season-tab active" onclick="switchSeason('ramadan', this)">🌙 Ramadan</button>
+            <button class="season-tab" onclick="switchSeason('summer', this)">☀️ Summer</button>
+            <button class="season-tab" onclick="switchSeason('winter', this)">❄️ Winter</button>
+        </div>
+
+        <!-- ── RAMADAN PANEL ── -->
+        <div class="season-panel active" id="panel-ramadan">
+            <div class="season-banner">
+                <span class="season-banner-icon">🌙</span>
+                <div class="season-banner-text">
+                    <h4>Ramadan Nutrition Program — Limited Offer</h4>
+                    <p>Specially designed Suhoor & Iftar meal plans to keep you energized, hydrated and healthy throughout the holy month.</p>
+                </div>
+                <span class="season-banner-badge">Up to 50% OFF</span>
+            </div>
+            <div class="seasonal-grid">
+
+                <!-- Card 1 -->
+                <div class="seasonal-card">
+                    <span class="season-top-badge badge-ramadan">🌙 Ramadan</span>
+                    <div class="plan-season-icon icon-ramadan">🌙</div>
+                    <h3>Suhoor Starter</h3>
+                    <p class="plan-desc">Perfect for beginners — balanced Suhoor meals to keep you full and focused all day.</p>
+                    <ul class="plan-features-list">
+                        <li><i class="bi bi-check-circle-fill"></i> 7-day Suhoor meal plan</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Hydration & energy tips</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Portion control guide</li>
+                        <li><i class="bi bi-check-circle-fill"></i> PDF download included</li>
+                    </ul>
+                    <div class="plan-pricing">
+                        <div>
+                            <div class="price-original">2,000 DA</div>
+                            <div class="price-current">990 DA</div>
+                            <div class="price-period">one-time</div>
+                        </div>
+                        <div class="price-discount">-50%</div>
+                    </div>
+                    <a href="#" class="plan-btn plan-btn-outline"
+                       onclick="purchasePlan('Suhoor Starter',
+                         '7-day Suhoor meal plan with hydration and energy tips, portion control guide, and PDF download included.',
+                         '🌙 Ramadan', '990 DA'); return false;">
+                        Get Started
+                    </a>
                 </div>
 
-                <!-- Season Tabs -->
-                <div class="season-tabs">
-                    <button class="season-tab active" onclick="switchSeason('ramadan', this)">🌙 Ramadan</button>
-                    <button class="season-tab" onclick="switchSeason('summer', this)">☀️ Summer</button>
-                    <button class="season-tab" onclick="switchSeason('winter', this)">❄️ Winter</button>
+                <!-- Card 2 — Featured -->
+                <div class="seasonal-card featured">
+                    <span class="season-top-badge badge-popular">⭐ Most Popular</span>
+                    <div class="plan-season-icon icon-ramadan">🕌</div>
+                    <h3>Full Ramadan Plan</h3>
+                    <p class="plan-desc">Complete Suhoor + Iftar nutrition program with a certified nutritionist consultation.</p>
+                    <ul class="plan-features-list">
+                        <li><i class="bi bi-check-circle-fill"></i> 30-day complete meal plan</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Suhoor + Iftar + Snacks</li>
+                        <li><i class="bi bi-check-circle-fill"></i> 1 nutritionist consultation</li>
+                        <li><i class="bi bi-check-circle-fill"></i> AI calorie tracking access</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Weight management tips</li>
+                    </ul>
+                    <div class="plan-pricing">
+                        <div>
+                            <div class="price-original">5,000 DA</div>
+                            <div class="price-current">2,500 DA</div>
+                            <div class="price-period">full month</div>
+                        </div>
+                        <div class="price-discount">-50%</div>
+                    </div>
+                    <a href="#" class="plan-btn plan-btn-primary"
+                       onclick="purchasePlan('Full Ramadan Plan',
+                         '30-day complete Suhoor + Iftar + Snacks meal plan, 1 nutritionist consultation, AI calorie tracking access, and weight management tips.',
+                         '🌙 Ramadan', '2,500 DA'); return false;">
+                        Get This Plan
+                    </a>
                 </div>
 
-                <!-- ── RAMADAN PANEL ── -->
-                <div class="season-panel active" id="panel-ramadan">
-                    <div class="season-banner">
-                        <span class="season-banner-icon">🌙</span>
-                        <div class="season-banner-text">
-                            <h4>Ramadan Nutrition Program — Limited Offer</h4>
-                            <p>Specially designed Suhoor & Iftar meal plans to keep you energized, hydrated and healthy throughout the holy month.</p>
+                <!-- Card 3 -->
+                <div class="seasonal-card">
+                    <span class="season-top-badge badge-ramadan">🌙 Ramadan</span>
+                    <div class="plan-season-icon icon-ramadan">🥗</div>
+                    <h3>Iftar Detox</h3>
+                    <p class="plan-desc">Light, nutritious Iftar meals designed to detox your body and avoid post-fast bloating.</p>
+                    <ul class="plan-features-list">
+                        <li><i class="bi bi-check-circle-fill"></i> 30-day Iftar meal plan</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Anti-bloating recipes</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Digestive health guide</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Shopping list included</li>
+                    </ul>
+                    <div class="plan-pricing">
+                        <div>
+                            <div class="price-original">3,000 DA</div>
+                            <div class="price-current">1,490 DA</div>
+                            <div class="price-period">full month</div>
                         </div>
-                        <span class="season-banner-badge">Up to 50% OFF</span>
+                        <div class="price-discount">-50%</div>
                     </div>
-                    <div class="seasonal-grid">
-                        <!-- Card 1 -->
-                        <div class="seasonal-card">
-                            <span class="season-top-badge badge-ramadan">🌙 Ramadan</span>
-                            <div class="plan-season-icon icon-ramadan">🌙</div>
-                            <h3>Suhoor Starter</h3>
-                            <p class="plan-desc">Perfect for beginners — balanced Suhoor meals to keep you full and focused all day.</p>
-                            <ul class="plan-features-list">
-                                <li><i class="bi bi-check-circle-fill"></i> 7-day Suhoor meal plan</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Hydration & energy tips</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Portion control guide</li>
-                                <li><i class="bi bi-check-circle-fill"></i> PDF download included</li>
-                            </ul>
-                            <div class="plan-pricing">
-                                <div>
-                                    <div class="price-original">2,000 DA</div>
-                                    <div class="price-current">990 DA</div>
-                                    <div class="price-period">one-time</div>
-                                </div>
-                                <div class="price-discount">-50%</div>
-                            </div>
-                            <a href="signup.html" class="plan-btn plan-btn-outline">Get Started</a>
-                        </div>
-                        <!-- Card 2 — Featured -->
-                        <div class="seasonal-card featured">
-                            <span class="season-top-badge badge-popular">⭐ Most Popular</span>
-                            <div class="plan-season-icon icon-ramadan">🕌</div>
-                            <h3>Full Ramadan Plan</h3>
-                            <p class="plan-desc">Complete Suhoor + Iftar nutrition program with a certified nutritionist consultation.</p>
-                            <ul class="plan-features-list">
-                                <li><i class="bi bi-check-circle-fill"></i> 30-day complete meal plan</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Suhoor + Iftar + Snacks</li>
-                                <li><i class="bi bi-check-circle-fill"></i> 1 nutritionist consultation</li>
-                                <li><i class="bi bi-check-circle-fill"></i> AI calorie tracking access</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Weight management tips</li>
-                            </ul>
-                            <div class="plan-pricing">
-                                <div>
-                                    <div class="price-original">5,000 DA</div>
-                                    <div class="price-current">2,500 DA</div>
-                                    <div class="price-period">full month</div>
-                                </div>
-                                <div class="price-discount">-50%</div>
-                            </div>
-                            <a href="signup.html" class="plan-btn plan-btn-primary">Get This Plan</a>
-                        </div>
-                        <!-- Card 3 -->
-                        <div class="seasonal-card">
-                            <span class="season-top-badge badge-ramadan">🌙 Ramadan</span>
-                            <div class="plan-season-icon icon-ramadan">🥗</div>
-                            <h3>Iftar Detox</h3>
-                            <p class="plan-desc">Light, nutritious Iftar meals designed to detox your body and avoid post-fast bloating.</p>
-                            <ul class="plan-features-list">
-                                <li><i class="bi bi-check-circle-fill"></i> 30-day Iftar meal plan</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Anti-bloating recipes</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Digestive health guide</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Shopping list included</li>
-                            </ul>
-                            <div class="plan-pricing">
-                                <div>
-                                    <div class="price-original">3,000 DA</div>
-                                    <div class="price-current">1,490 DA</div>
-                                    <div class="price-period">full month</div>
-                                </div>
-                                <div class="price-discount">-50%</div>
-                            </div>
-                            <a href="signup.html" class="plan-btn plan-btn-outline">Get Started</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ── SUMMER PANEL ── -->
-                <div class="season-panel" id="panel-summer">
-                    <div class="season-banner">
-                        <span class="season-banner-icon">☀️</span>
-                        <div class="season-banner-text">
-                            <h4>Summer Body Program — Seasonal Offer</h4>
-                            <p>Light, refreshing nutrition plans to keep you hydrated, lean, and energized all summer long.</p>
-                        </div>
-                        <span class="season-banner-badge">Up to 40% OFF</span>
-                    </div>
-                    <div class="seasonal-grid">
-                        <div class="seasonal-card">
-                            <span class="season-top-badge badge-summer">☀️ Summer</span>
-                            <div class="plan-season-icon icon-summer">🥤</div>
-                            <h3>Hydration & Detox</h3>
-                            <p class="plan-desc">Beat the heat with refreshing detox drinks, smoothies, and light meals designed for hot weather.</p>
-                            <ul class="plan-features-list">
-                                <li><i class="bi bi-check-circle-fill"></i> 14-day detox plan</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Infused water & smoothie recipes</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Hydration tracker</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Heat-friendly meal ideas</li>
-                            </ul>
-                            <div class="plan-pricing">
-                                <div>
-                                    <div class="price-original">2,500 DA</div>
-                                    <div class="price-current">1,490 DA</div>
-                                    <div class="price-period">2 weeks</div>
-                                </div>
-                                <div class="price-discount">-40%</div>
-                            </div>
-                            <a href="signup.html" class="plan-btn plan-btn-outline">Get Started</a>
-                        </div>
-                        <div class="seasonal-card featured">
-                            <span class="season-top-badge badge-popular">⭐ Best Value</span>
-                            <div class="plan-season-icon icon-summer">🏖️</div>
-                            <h3>Summer Body Plan</h3>
-                            <p class="plan-desc">Complete 30-day summer nutrition + workout nutrition guide to get lean and feel your best.</p>
-                            <ul class="plan-features-list">
-                                <li><i class="bi bi-check-circle-fill"></i> 30-day complete plan</li>
-                                <li><i class="bi bi-check-circle-fill"></i> 1 nutritionist consultation</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Pre & post-workout meals</li>
-                                <li><i class="bi bi-check-circle-fill"></i> AI meal tracking access</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Progress check-ins</li>
-                            </ul>
-                            <div class="plan-pricing">
-                                <div>
-                                    <div class="price-original">5,500 DA</div>
-                                    <div class="price-current">2,990 DA</div>
-                                    <div class="price-period">full month</div>
-                                </div>
-                                <div class="price-discount">-45%</div>
-                            </div>
-                            <a href="signup.html" class="plan-btn plan-btn-primary">Get This Plan</a>
-                        </div>
-                        <div class="seasonal-card">
-                            <span class="season-top-badge badge-summer">☀️ Summer</span>
-                            <div class="plan-season-icon icon-summer">🥗</div>
-                            <h3>Light & Fresh</h3>
-                            <p class="plan-desc">Salads, cold dishes, and refreshing recipes keeping you full without feeling heavy in the heat.</p>
-                            <ul class="plan-features-list">
-                                <li><i class="bi bi-check-circle-fill"></i> 30 quick fresh recipes</li>
-                                <li><i class="bi bi-check-circle-fill"></i> No-cook meal options</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Calorie-counted portions</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Weekly grocery list</li>
-                            </ul>
-                            <div class="plan-pricing">
-                                <div>
-                                    <div class="price-original">2,000 DA</div>
-                                    <div class="price-current">1,190 DA</div>
-                                    <div class="price-period">one-time</div>
-                                </div>
-                                <div class="price-discount">-40%</div>
-                            </div>
-                            <a href="signup.html" class="plan-btn plan-btn-outline">Get Started</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ── WINTER PANEL ── -->
-                <div class="season-panel" id="panel-winter">
-                    <div class="season-banner">
-                        <span class="season-banner-icon">❄️</span>
-                        <div class="season-banner-text">
-                            <h4>Winter Wellness Program — Cold Season Offer</h4>
-                            <p>Warm, nourishing meal plans to boost your immunity, energy and mood during the cold months.</p>
-                        </div>
-                        <span class="season-banner-badge">Up to 35% OFF</span>
-                    </div>
-                    <div class="seasonal-grid">
-                        <div class="seasonal-card">
-                            <span class="season-top-badge badge-winter">❄️ Winter</span>
-                            <div class="plan-season-icon icon-winter">🍲</div>
-                            <h3>Immunity Boost</h3>
-                            <p class="plan-desc">Soups, stews, and immunity-boosting foods to protect you from cold-season illness.</p>
-                            <ul class="plan-features-list">
-                                <li><i class="bi bi-check-circle-fill"></i> 14-day immunity plan</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Vitamin C & zinc-rich meals</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Warming soup recipes</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Supplement guide</li>
-                            </ul>
-                            <div class="plan-pricing">
-                                <div>
-                                    <div class="price-original">2,200 DA</div>
-                                    <div class="price-current">1,390 DA</div>
-                                    <div class="price-period">2 weeks</div>
-                                </div>
-                                <div class="price-discount">-35%</div>
-                            </div>
-                            <a href="signup.html" class="plan-btn plan-btn-outline">Get Started</a>
-                        </div>
-                        <div class="seasonal-card featured">
-                            <span class="season-top-badge badge-popular">⭐ Most Popular</span>
-                            <div class="plan-season-icon icon-winter">🧣</div>
-                            <h3>Winter Wellness Plan</h3>
-                            <p class="plan-desc">Full month of warm, balanced nutrition to stay healthy, energized and comfortable all winter.</p>
-                            <ul class="plan-features-list">
-                                <li><i class="bi bi-check-circle-fill"></i> 30-day complete plan</li>
-                                <li><i class="bi bi-check-circle-fill"></i> 1 nutritionist consultation</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Comfort food alternatives</li>
-                                <li><i class="bi bi-check-circle-fill"></i> AI meal tracking access</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Mood & energy nutrition tips</li>
-                            </ul>
-                            <div class="plan-pricing">
-                                <div>
-                                    <div class="price-original">5,000 DA</div>
-                                    <div class="price-current">2,990 DA</div>
-                                    <div class="price-period">full month</div>
-                                </div>
-                                <div class="price-discount">-40%</div>
-                            </div>
-                            <a href="signup.html" class="plan-btn plan-btn-primary">Get This Plan</a>
-                        </div>
-                        <div class="seasonal-card">
-                            <span class="season-top-badge badge-winter">❄️ Winter</span>
-                            <div class="plan-season-icon icon-winter">🫖</div>
-                            <h3>Cozy & Balanced</h3>
-                            <p class="plan-desc">Hearty, nutritious winter comfort food that satisfies cravings without the extra calories.</p>
-                            <ul class="plan-features-list">
-                                <li><i class="bi bi-check-circle-fill"></i> 30 cozy healthy recipes</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Slow-cooker meal plans</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Calorie-smart comfort food</li>
-                                <li><i class="bi bi-check-circle-fill"></i> Weekly grocery list</li>
-                            </ul>
-                            <div class="plan-pricing">
-                                <div>
-                                    <div class="price-original">2,000 DA</div>
-                                    <div class="price-current">1,290 DA</div>
-                                    <div class="price-period">one-time</div>
-                                </div>
-                                <div class="price-discount">-35%</div>
-                            </div>
-                            <a href="signup.html" class="plan-btn plan-btn-outline">Get Started</a>
-                        </div>
-                    </div>
+                    <a href="#" class="plan-btn plan-btn-outline"
+                       onclick="purchasePlan('Iftar Detox',
+                         '30-day Iftar meal plan with anti-bloating recipes, digestive health guide, and shopping list included.',
+                         '🌙 Ramadan', '1,490 DA'); return false;">
+                        Get Started
+                    </a>
                 </div>
 
             </div>
-        </section>
-        <!-- END SEASONAL PLANS -->
+        </div>
 
-        <!-- Testimonials -->
-        <section class="testimonials" id="testimonials">
-            <div class="container-custom">
-                <div class="section-header">
-                    <h2>Success Stories</h2>
-                    <p>Real people, real transformations</p>
+        <!-- ── SUMMER PANEL ── -->
+        <div class="season-panel" id="panel-summer">
+            <div class="season-banner">
+                <span class="season-banner-icon">☀️</span>
+                <div class="season-banner-text">
+                    <h4>Summer Body Program — Seasonal Offer</h4>
+                    <p>Light, refreshing nutrition plans to keep you hydrated, lean, and energized all summer long.</p>
                 </div>
-                <div class="testimonial-card">
-                    <p id="testimonialText" class="testimonial-text" contenteditable="true">Click here to edit testimonial...</p>
-                    <div class="testimonial-author"><div class="author-avatar"></div></div>
-                    <button class="btn-modern" style="margin-top:15px;" onclick="publishTestimonial()">Publish</button>
-                    <button class="btn-modern" style="margin-top:15px;" onclick="removeTestimonial()">Remove</button>
-                    <p id="savedMsg" style="color:green;font-size:14px;margin-top:10px;"></p>
-                </div>
+                <span class="season-banner-badge">Up to 40% OFF</span>
             </div>
-        </section>
+            <div class="seasonal-grid">
 
+                <div class="seasonal-card">
+                    <span class="season-top-badge badge-summer">☀️ Summer</span>
+                    <div class="plan-season-icon icon-summer">🥤</div>
+                    <h3>Hydration & Detox</h3>
+                    <p class="plan-desc">Beat the heat with refreshing detox drinks, smoothies, and light meals designed for hot weather.</p>
+                    <ul class="plan-features-list">
+                        <li><i class="bi bi-check-circle-fill"></i> 14-day detox plan</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Infused water & smoothie recipes</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Hydration tracker</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Heat-friendly meal ideas</li>
+                    </ul>
+                    <div class="plan-pricing">
+                        <div>
+                            <div class="price-original">2,500 DA</div>
+                            <div class="price-current">1,490 DA</div>
+                            <div class="price-period">2 weeks</div>
+                        </div>
+                        <div class="price-discount">-40%</div>
+                    </div>
+                    <a href="#" class="plan-btn plan-btn-outline"
+                       onclick="purchasePlan('Hydration & Detox',
+                         '14-day detox plan with infused water and smoothie recipes, hydration tracker, and heat-friendly meal ideas.',
+                         '☀️ Summer', '1,490 DA'); return false;">
+                        Get Started
+                    </a>
+                </div>
+
+                <div class="seasonal-card featured">
+                    <span class="season-top-badge badge-popular">⭐ Best Value</span>
+                    <div class="plan-season-icon icon-summer">🏖️</div>
+                    <h3>Summer Body Plan</h3>
+                    <p class="plan-desc">Complete 30-day summer nutrition + workout nutrition guide to get lean and feel your best.</p>
+                    <ul class="plan-features-list">
+                        <li><i class="bi bi-check-circle-fill"></i> 30-day complete plan</li>
+                        <li><i class="bi bi-check-circle-fill"></i> 1 nutritionist consultation</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Pre & post-workout meals</li>
+                        <li><i class="bi bi-check-circle-fill"></i> AI meal tracking access</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Progress check-ins</li>
+                    </ul>
+                    <div class="plan-pricing">
+                        <div>
+                            <div class="price-original">5,500 DA</div>
+                            <div class="price-current">2,990 DA</div>
+                            <div class="price-period">full month</div>
+                        </div>
+                        <div class="price-discount">-45%</div>
+                    </div>
+                    <a href="#" class="plan-btn plan-btn-primary"
+                       onclick="purchasePlan('Summer Body Plan',
+                         '30-day complete plan with 1 nutritionist consultation, pre and post-workout meals, AI meal tracking access, and progress check-ins.',
+                         '☀️ Summer', '2,990 DA'); return false;">
+                        Get This Plan
+                    </a>
+                </div>
+
+                <div class="seasonal-card">
+                    <span class="season-top-badge badge-summer">☀️ Summer</span>
+                    <div class="plan-season-icon icon-summer">🥗</div>
+                    <h3>Light & Fresh</h3>
+                    <p class="plan-desc">Salads, cold dishes, and refreshing recipes keeping you full without feeling heavy in the heat.</p>
+                    <ul class="plan-features-list">
+                        <li><i class="bi bi-check-circle-fill"></i> 30 quick fresh recipes</li>
+                        <li><i class="bi bi-check-circle-fill"></i> No-cook meal options</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Calorie-counted portions</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Weekly grocery list</li>
+                    </ul>
+                    <div class="plan-pricing">
+                        <div>
+                            <div class="price-original">2,000 DA</div>
+                            <div class="price-current">1,190 DA</div>
+                            <div class="price-period">one-time</div>
+                        </div>
+                        <div class="price-discount">-40%</div>
+                    </div>
+                    <a href="#" class="plan-btn plan-btn-outline"
+                       onclick="purchasePlan('Light & Fresh',
+                         '30 quick fresh recipes with no-cook meal options, calorie-counted portions, and weekly grocery list.',
+                         '☀️ Summer', '1,190 DA'); return false;">
+                        Get Started
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ── WINTER PANEL ── -->
+        <div class="season-panel" id="panel-winter">
+            <div class="season-banner">
+                <span class="season-banner-icon">❄️</span>
+                <div class="season-banner-text">
+                    <h4>Winter Wellness Program — Cold Season Offer</h4>
+                    <p>Warm, nourishing meal plans to boost your immunity, energy and mood during the cold months.</p>
+                </div>
+                <span class="season-banner-badge">Up to 35% OFF</span>
+            </div>
+            <div class="seasonal-grid">
+
+                <div class="seasonal-card">
+                    <span class="season-top-badge badge-winter">❄️ Winter</span>
+                    <div class="plan-season-icon icon-winter">🍲</div>
+                    <h3>Immunity Boost</h3>
+                    <p class="plan-desc">Soups, stews, and immunity-boosting foods to protect you from cold-season illness.</p>
+                    <ul class="plan-features-list">
+                        <li><i class="bi bi-check-circle-fill"></i> 14-day immunity plan</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Vitamin C & zinc-rich meals</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Warming soup recipes</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Supplement guide</li>
+                    </ul>
+                    <div class="plan-pricing">
+                        <div>
+                            <div class="price-original">2,200 DA</div>
+                            <div class="price-current">1,390 DA</div>
+                            <div class="price-period">2 weeks</div>
+                        </div>
+                        <div class="price-discount">-35%</div>
+                    </div>
+                    <a href="#" class="plan-btn plan-btn-outline"
+                       onclick="purchasePlan('Immunity Boost',
+                         '14-day immunity plan with vitamin C and zinc-rich meals, warming soup recipes, and supplement guide.',
+                         '❄️ Winter', '1,390 DA'); return false;">
+                        Get Started
+                    </a>
+                </div>
+
+                <div class="seasonal-card featured">
+                    <span class="season-top-badge badge-popular">⭐ Most Popular</span>
+                    <div class="plan-season-icon icon-winter">🧣</div>
+                    <h3>Winter Wellness Plan</h3>
+                    <p class="plan-desc">Full month of warm, balanced nutrition to stay healthy, energized and comfortable all winter.</p>
+                    <ul class="plan-features-list">
+                        <li><i class="bi bi-check-circle-fill"></i> 30-day complete plan</li>
+                        <li><i class="bi bi-check-circle-fill"></i> 1 nutritionist consultation</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Comfort food alternatives</li>
+                        <li><i class="bi bi-check-circle-fill"></i> AI meal tracking access</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Mood & energy nutrition tips</li>
+                    </ul>
+                    <div class="plan-pricing">
+                        <div>
+                            <div class="price-original">5,000 DA</div>
+                            <div class="price-current">2,990 DA</div>
+                            <div class="price-period">full month</div>
+                        </div>
+                        <div class="price-discount">-40%</div>
+                    </div>
+                    <a href="#" class="plan-btn plan-btn-primary"
+                       onclick="purchasePlan('Winter Wellness Plan',
+                         '30-day complete plan with 1 nutritionist consultation, comfort food alternatives, AI meal tracking access, and mood and energy nutrition tips.',
+                         '❄️ Winter', '2,990 DA'); return false;">
+                        Get This Plan
+                    </a>
+                </div>
+
+                <div class="seasonal-card">
+                    <span class="season-top-badge badge-winter">❄️ Winter</span>
+                    <div class="plan-season-icon icon-winter">🫖</div>
+                    <h3>Cozy & Balanced</h3>
+                    <p class="plan-desc">Hearty, nutritious winter comfort food that satisfies cravings without the extra calories.</p>
+                    <ul class="plan-features-list">
+                        <li><i class="bi bi-check-circle-fill"></i> 30 cozy healthy recipes</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Slow-cooker meal plans</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Calorie-smart comfort food</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Weekly grocery list</li>
+                    </ul>
+                    <div class="plan-pricing">
+                        <div>
+                            <div class="price-original">2,000 DA</div>
+                            <div class="price-current">1,290 DA</div>
+                            <div class="price-period">one-time</div>
+                        </div>
+                        <div class="price-discount">-35%</div>
+                    </div>
+                    <a href="#" class="plan-btn plan-btn-outline"
+                       onclick="purchasePlan('Cozy & Balanced',
+                         '30 cozy healthy recipes with slow-cooker meal plans, calorie-smart comfort food, and weekly grocery list.',
+                         '❄️ Winter', '1,290 DA'); return false;">
+                        Get Started
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- END SEASONAL PLANS -->
+
+<!-- TOAST -->
+<div id="homepageToast" style="
+    display: none;
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #198754;
+    color: white;
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    z-index: 9999;
+    max-width: 320px;
+"></div>
+
+<script>
+async function purchasePlan(planName, planDescription, season, price) {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    // مش مسجل — روح للـ signup
+    if (!user) {
+        alert("Please sign up or log in first to get this plan!");
+        window.location.href = "signup.html";
+        return;
+    }
+
+    // مختص أو admin — ما يقدروش يشتروا
+    if (user.role !== "user") {
+        showHomepageToast("❌ Only users can purchase plans.", "#dc3545");
+        return;
+    }
+
+    // تأكيد
+    const confirmed = confirm(
+        `Get "${planName}" for ${price}?\n\nThis plan will appear in your Dashboard under Diet Plans.`
+    );
+    if (!confirmed) return;
+
+    try {
+        const res = await fetch("http://localhost:5000/api/seasonal-plans/purchase", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userId:          user._id,
+                planName,
+                planDescription,
+                season,
+                price
+            })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+            showHomepageToast(`✅ "${planName}" added to your Diet Plans!`, "#198754");
+        } else {
+            showHomepageToast(data.message || "Something went wrong", "#dc3545");
+        }
+
+    } catch (err) {
+        console.error(err);
+        showHomepageToast("❌ Server error. Please try again.", "#dc3545");
+    }
+}
+
+function showHomepageToast(msg, color) {
+    const toast = document.getElementById("homepageToast");
+    toast.textContent = msg;
+    toast.style.background = color || "#198754";
+    toast.style.display = "block";
+    setTimeout(() => { toast.style.display = "none"; }, 3500);
+}
+</script>
+<!-- TESTIMONIALS SECTION -->
+<section class="testimonials" id="testimonials">
+  <div class="container-custom">
+
+    <div class="section-header">
+      <span class="section-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#3B6D11" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Real Results
+      </span>
+      <h2>Success <span class="text-gradient">Stories</span></h2>
+      <p>Real people, real transformations</p>
+    </div>
+
+    <div class="stories-grid" id="approvedStoriesGrid">
+      <div class="stories-loading">Loading stories...</div>
+    </div>
+
+    <div class="story-submit-card">
+
+      <div class="story-card-header">
+        <div class="story-header-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+        </div>
+        <div>
+          <p class="story-header-title">Share your transformation</p>
+          <p class="story-header-sub">Your story could inspire thousands of others</p>
+        </div>
+      </div>
+
+      <div class="story-form-body" id="storyForm">
+
+        <div class="story-row-two">
+          <div class="story-field-group">
+            <label class="story-label">Your name</label>
+            <div class="story-input-wrap">
+              <div class="story-input-icon">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+              </div>
+              <input type="text" id="storyName" class="story-input" placeholder="e.g. Sara Ahmed" maxlength="50">
+            </div>
+          </div>
+           <div class="story-field-group">
+          <label class="story-label">Your story</label>
+          <textarea id="storyContent" class="story-textarea" rows="5"
+            placeholder="Tell us what changed — how you feel now, what helped you the most, and what you'd tell someone just starting out..."
+            maxlength="600"
+            oninput="document.getElementById('charCount').textContent=this.value.length"></textarea>
+          <div class="story-char-count"><span id="charCount">0</span> / 600</div>
+        </div>
+        </div>
+
+        <div class="story-field-group">
+          <label class="story-label">Your rating</label>
+          <div class="story-rating">
+            <div class="story-star" id="st1" onclick="setRating(1)"></div>
+            <div class="story-star" id="st2" onclick="setRating(2)"></div>
+            <div class="story-star" id="st3" onclick="setRating(3)"></div>
+            <div class="story-star" id="st4" onclick="setRating(4)"></div>
+            <div class="story-star" id="st5" onclick="setRating(5)"></div>
+            <span class="story-rating-lbl" id="ratingLabel">Tap to rate</span>
+          </div>
+        </div>
+
+
+        <div class="story-notice">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B6D11" stroke-width="2" style="flex-shrink:0;margin-top:1px;">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <span>Stories are reviewed by our team before being published. We respect your privacy.</span>
+        </div>
+
+        <button class="story-submit-btn" id="storySubmitBtn" onclick="submitStory()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+          <span id="submitBtnText">Submit my story</span>
+        </button>
+
+      </div>
+
+      <div class="story-success-msg" id="storySuccessMsg" style="display:none;">
+        <div style="width:44px;height:44px;border-radius:50%;background:#4A7337;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+        </div>
+        <div>
+          <p style="margin:0;font-weight:500;color:#27500A;">Thank you for sharing!</p>
+          <p style="margin:4px 0 0;font-size:13px;color:#3B6D11;">Your story has been submitted and will appear here after review.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<style>
+.stories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 36px;
+}
+.stories-loading, .stories-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 32px;
+  color: #bbb;
+  font-size: 14px;
+}
+
+/* STORY CARD */
+.story-card {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s;
+}
+.story-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.07);
+}
+.story-stars {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 12px;
+}
+.story-star-filled {
+  width: 13px;
+  height: 13px;
+  background: #4A7337;
+  clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+}
+.story-quote {
+  font-size: 28px;
+  color: #C0DD97;
+  line-height: 1;
+  margin-bottom: 8px;
+  font-family: Georgia, serif;
+}
+.story-text {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.75;
+  font-style: italic;
+  margin: 0 0 16px;
+  flex: 1;
+}
+.story-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 14px;
+  margin-top: auto;
+}
+.story-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #EAF3DE;
+  color: #27500A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.story-author { font-size: 13px; font-weight: 500; color: #222; }
+.story-result-tag {
+  font-size: 11px;
+  background: #EAF3DE;
+  color: #3B6D11;
+  padding: 2px 9px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-top: 3px;
+}
+
+/* SUBMIT CARD */
+.story-submit-card {
+  background: white;
+  border-radius: 20px;
+  border: 1px solid #e8e8e8;
+  overflow: hidden;
+  max-width: 600px;
+  margin: 0 auto;
+}
+.story-card-header {
+  background: #EAF3DE;
+  padding: 18px 24px;
+  border-bottom: 1px solid #C0DD97;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.story-header-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #4A7337;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.story-header-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #27500A;
+}
+.story-header-sub {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #3B6D11;
+}
+.story-form-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.story-row-two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.story-field-group { display: flex; flex-direction: column; gap: 6px; }
+.story-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.story-input-wrap {
+  display: flex;
+  align-items: center;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fafafa;
+  transition: border-color 0.2s, background 0.2s;
+}
+.story-input-wrap:focus-within {
+  border-color: #4A7337;
+  background: white;
+}
+.story-input-icon {
+  padding: 0 11px;
+  border-right: 1px solid #f0f0f0;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+}
+.story-input {
+  border: none;
+  outline: none;
+  padding: 11px 13px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #333;
+  background: transparent;
+  width: 100%;
+}
+.story-textarea {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 13px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #333;
+  resize: none;
+  outline: none;
+  line-height: 1.7;
+  transition: border-color 0.2s, background 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+  background: #fafafa;
+}
+.story-textarea:focus {
+  border-color: #4A7337;
+  background: white;
+}
+.story-char-count {
+  font-size: 11px;
+  color: #bbb;
+  text-align: right;
+  margin-top: 4px;
+}
+
+/* STAR RATING */
+.story-rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.story-star {
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  opacity: 0.25;
+  background: #4A7337;
+  clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+  transition: opacity 0.15s, transform 0.15s;
+}
+.story-star:hover { transform: scale(1.15); }
+.story-star.on { opacity: 1; }
+.story-rating-lbl {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.story-notice {
+  background: #F8FDF8;
+  border: 1px solid #C0DD97;
+  border-radius: 8px;
+  padding: 10px 13px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 12px;
+  color: #27500A;
+  line-height: 1.6;
+}
+.story-submit-btn {
+  width: 100%;
+  padding: 13px;
+  background: #4A7337;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.2s;
+}
+.story-submit-btn:hover { background: #3a5c2c; }
+.story-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.story-success-msg {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 24px;
+  background: #EAF3DE;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .story-row-two { grid-template-columns: 1fr; }
+}
+</style>
+<script>
+    var storyRating = 0;
+var ratingLabels = ['', 'Poor', 'Fair', 'Good', 'Great', 'Amazing!'];
+
+function setRating(n) {
+  storyRating = n;
+  for (var i = 1; i <= 5; i++) {
+    var star = document.getElementById('st' + i);
+    star.className = 'story-star' + (i <= n ? ' on' : '');
+  }
+  document.getElementById('ratingLabel').textContent = ratingLabels[n];
+  document.getElementById('ratingLabel').style.color = '#4A7337';
+}
+
+function submitStory() {
+  var name = document.getElementById('storyName').value.trim();
+  var content = document.getElementById('storyContent').value.trim();
+  if (!name || !content) return;
+
+  var btn = document.getElementById('storySubmitBtn');
+  btn.disabled = true;
+  document.getElementById('submitBtnText').textContent = 'Sending...';
+
+  setTimeout(function () {
+    document.getElementById('storyForm').style.display = 'none';
+    var msg = document.getElementById('storySuccessMsg');
+    msg.style.display = 'flex';
+  }, 700);
+}
+</script>
 
         <!-- Features Highlight -->
         <section class="features-highlight">
             <div class="container-custom">
-                <div class="section-header"><h2>Why Choose NutriAI?</h2></div>
+                <div class="section-header"><h2>Why Choose Viora?</h2></div>
                 <div class="features-highlight-grid">
                     <div class="feature-highlight-card"><div class="feature-highlight-icon"><i class="bi bi-shield-check"></i></div><h3>Certified Experts</h3><p>All nutritionists are board-certified and experienced in managing complex health conditions.</p></div>
                     <div class="feature-highlight-card"><div class="feature-highlight-icon"><i class="bi bi-globe"></i></div><h3>Global Access</h3><p>Connect with world-class nutritionists worldwide via secure video consultations.</p></div>
@@ -931,7 +1529,7 @@
         <div class="footer-container">
             <div class="footer-grid">
                 <div class="footer-section">
-                    <h3 class="footer-logo"><i class="bi bi-heart-pulse-fill"></i> NutriAI</h3>
+                    <h3 class="footer-logo"><i class="bi bi-heart-pulse-fill"></i> Viora</h3>
                     <p>Transforming lives through personalized nutrition and AI-powered health solutions.</p>
                     <div class="social-links">
                         <a href="#"><i class="bi bi-facebook"></i></a>
@@ -969,16 +1567,17 @@
                 </div>
                 <div class="footer-section">
                     <h4>Contact & Support</h4>
-                    <p><i class="bi bi-envelope"></i> support@nutriai.com</p>
-                    <p><i class="bi bi-telephone"></i> +1 (800) NUTRIAI</p>
+                    <p><i class="bi bi-envelope"></i> support@viora.com</p>
+                    <p><i class="bi bi-telephone"></i> +1 (800) VIORA</p>
                     <p><i class="bi bi-geo-alt"></i> Global Support Center</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 NutriAI. All rights reserved. | Designed for Health & Wellness</p>
+                <p>&copy; 2026 Viora. All rights reserved. | Designed for Health & Wellness</p>
             </div>
         </div>
     </footer>
+
 
     <script>
         // ── Special Plans Tab Switcher ──
@@ -1023,6 +1622,273 @@
             }
             document.getElementById("storyContent").value = "";
         }
+        async function purchasePlan(planName, planDescription, season, price) {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  // إذا مش مسجل — وجهو للـ signup
+  if (!user) {
+    alert("Please sign up or log in first to get this plan!");
+    window.location.href = "signup.html";
+    return;
+  }
+
+  // تأكيد
+  const confirmed = confirm(
+    `Get "${planName}" for ${price}?\n\nThis plan will appear in your Dashboard under Diet Plans.`
+  );
+  if (!confirmed) return;
+
+  try {
+    const res = await fetch("http://localhost:5000/api/seasonal-plans/purchase", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId:          user._id,
+        planName,
+        planDescription,
+        season,
+        price
+      })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      // ✅ toast بدل alert
+      showHomepageToast(`✅ "${planName}" added to your Diet Plans!`);
+    } else {
+      alert(data.message || "Something went wrong");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Server error. Please try again.");
+  }
+}
+
+function showHomepageToast(msg) {
+  // إذا ما عندكش toast في HomePage — نزيدو ديناميكيا
+  let toast = document.getElementById("homepageToast");
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "homepageToast";
+    toast.style.cssText = `
+      position: fixed; bottom: 24px; right: 24px;
+      background: #198754; color: white;
+      padding: 14px 22px; border-radius: 10px;
+      font-size: 15px; font-weight: 500;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      z-index: 9999; display: none; max-width: 320px;
+    `;
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.display = "block";
+  setTimeout(() => { toast.style.display = "none"; }, 3500);
+}
     </script>
+    <!-- PURCHASE MODAL -->
+<div class="purchase-modal-overlay" id="purchaseModal">
+  <div class="purchase-modal-box">
+
+    <div class="plan-modal-header">
+      <div class="plan-modal-icon" id="modalIcon" style="background:#e8f1e4;">🌙</div>
+      <div>
+        <p style="margin:0; font-size:11px; color:#888; text-transform:uppercase; letter-spacing:0.05em;" id="modalSeason">Ramadan Plan</p>
+        <p style="margin:0; font-size:18px; font-weight:700; color:#222;" id="modalTitle">Plan Name</p>
+      </div>
+    </div>
+
+    <div class="plan-modal-features" id="modalFeatures"></div>
+
+    <div class="plan-modal-pricing">
+      <div>
+        <div class="plan-modal-price-old" id="modalOldPrice"></div>
+        <div class="plan-modal-price-new" id="modalNewPrice">990 DA</div>
+      </div>
+      <div class="plan-modal-discount" id="modalDiscount">-50%</div>
+    </div>
+
+    <div class="plan-modal-info">
+      📋 This plan will appear in your <strong>Diet Plans</strong> dashboard immediately.
+    </div>
+
+    <div class="plan-modal-buttons">
+      <button class="plan-modal-btn-cancel" onclick="closePurchaseModal()">Cancel</button>
+      <button class="plan-modal-btn-confirm" id="confirmBtn" onclick="confirmPurchase()">
+        Confirm Purchase
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- SUCCESS TOAST -->
+<div id="purchaseToast" style="
+  display:none; position:fixed; bottom:24px; right:24px;
+  background:#4A7337; color:white; padding:14px 20px;
+  border-radius:12px; font-size:14px; font-weight:500;
+  box-shadow:0 4px 20px rgba(0,0,0,0.2); z-index:99999;
+  max-width:300px;
+"></div>
+<script>
+// بيانات كل plan
+const plansData = {
+  "Suhoor Starter": {
+    icon: "🌙", season: "🌙 Ramadan", iconBg: "#e8f1e4",
+    oldPrice: "2,000 DA", newPrice: "990 DA", discount: "-50%",
+    features: ["7-day Suhoor meal plan","Hydration & energy tips","Portion control guide","PDF download included"],
+    description: "7-day Suhoor meal plan with hydration tips, portion control guide, and PDF download."
+  },
+  "Full Ramadan Plan": {
+    icon: "🕌", season: "🌙 Ramadan", iconBg: "#e8f1e4",
+    oldPrice: "5,000 DA", newPrice: "2,500 DA", discount: "-50%",
+    features: ["30-day complete meal plan","Suhoor + Iftar + Snacks","1 nutritionist consultation","AI calorie tracking","Weight management tips"],
+    description: "30-day complete Suhoor + Iftar + Snacks plan with nutritionist consultation and AI tracking."
+  },
+  "Iftar Detox": {
+    icon: "🥗", season: "🌙 Ramadan", iconBg: "#e8f1e4",
+    oldPrice: "3,000 DA", newPrice: "1,490 DA", discount: "-50%",
+    features: ["30-day Iftar meal plan","Anti-bloating recipes","Digestive health guide","Shopping list included"],
+    description: "30-day Iftar meal plan with anti-bloating recipes and digestive health guide."
+  },
+  "Hydration & Detox": {
+    icon: "🥤", season: "☀️ Summer", iconBg: "#fff8e1",
+    oldPrice: "2,500 DA", newPrice: "1,490 DA", discount: "-40%",
+    features: ["14-day detox plan","Infused water & smoothie recipes","Hydration tracker","Heat-friendly meal ideas"],
+    description: "14-day detox plan with smoothie recipes and hydration tracker."
+  },
+  "Summer Body Plan": {
+    icon: "🏖️", season: "☀️ Summer", iconBg: "#fff8e1",
+    oldPrice: "5,500 DA", newPrice: "2,990 DA", discount: "-45%",
+    features: ["30-day complete plan","1 nutritionist consultation","Pre & post-workout meals","AI meal tracking","Progress check-ins"],
+    description: "30-day summer plan with nutritionist consultation and workout nutrition guide."
+  },
+  "Light & Fresh": {
+    icon: "🥗", season: "☀️ Summer", iconBg: "#fff8e1",
+    oldPrice: "2,000 DA", newPrice: "1,190 DA", discount: "-40%",
+    features: ["30 quick fresh recipes","No-cook meal options","Calorie-counted portions","Weekly grocery list"],
+    description: "30 quick fresh recipes with no-cook options and calorie-counted portions."
+  },
+  "Immunity Boost": {
+    icon: "🍲", season: "❄️ Winter", iconBg: "#e3f2fd",
+    oldPrice: "2,200 DA", newPrice: "1,390 DA", discount: "-35%",
+    features: ["14-day immunity plan","Vitamin C & zinc-rich meals","Warming soup recipes","Supplement guide"],
+    description: "14-day immunity plan with vitamin C meals and warming soup recipes."
+  },
+  "Winter Wellness Plan": {
+    icon: "🧣", season: "❄️ Winter", iconBg: "#e3f2fd",
+    oldPrice: "5,000 DA", newPrice: "2,990 DA", discount: "-40%",
+    features: ["30-day complete plan","1 nutritionist consultation","Comfort food alternatives","AI meal tracking","Mood & energy tips"],
+    description: "30-day winter plan with nutritionist consultation and comfort food alternatives."
+  },
+  "Cozy & Balanced": {
+    icon: "🫖", season: "❄️ Winter", iconBg: "#e3f2fd",
+    oldPrice: "2,000 DA", newPrice: "1,290 DA", discount: "-35%",
+    features: ["30 cozy healthy recipes","Slow-cooker meal plans","Calorie-smart comfort food","Weekly grocery list"],
+    description: "30 cozy healthy recipes with slow-cooker plans and calorie-smart comfort food."
+  }
+};
+
+let currentPlan = null;
+
+function purchasePlan(planName) {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (!user) {
+    window.location.href = "signup.html";
+    return;
+  }
+  if (user.role !== "user") {
+    showPurchaseToast("Only users can purchase plans.", "#dc3545");
+    return;
+  }
+
+  const plan = plansData[planName];
+  if (!plan) return;
+
+  currentPlan = { planName, ...plan, userId: user._id };
+
+  // ملأ الـ modal
+  document.getElementById("modalIcon").textContent    = plan.icon;
+  document.getElementById("modalIcon").style.background = plan.iconBg;
+  document.getElementById("modalSeason").textContent  = plan.season;
+  document.getElementById("modalTitle").textContent   = planName;
+  document.getElementById("modalOldPrice").textContent = plan.oldPrice;
+  document.getElementById("modalNewPrice").textContent = plan.newPrice;
+  document.getElementById("modalDiscount").textContent = plan.discount;
+  document.getElementById("confirmBtn").textContent   = `Confirm — ${plan.newPrice}`;
+
+  const featuresHtml = plan.features.map(f =>
+    `<div class="plan-modal-feature-item">
+      <span class="check">✓</span> ${f}
+    </div>`
+  ).join("");
+  document.getElementById("modalFeatures").innerHTML = featuresHtml;
+
+  document.getElementById("purchaseModal").classList.add("active");
+}
+
+function closePurchaseModal() {
+  document.getElementById("purchaseModal").classList.remove("active");
+  currentPlan = null;
+}
+
+async function confirmPurchase() {
+  if (!currentPlan) return;
+
+  const btn = document.getElementById("confirmBtn");
+  btn.disabled = true;
+  btn.textContent = "Processing...";
+
+  try {
+    const res = await fetch("http://localhost:5000/api/seasonal-plans/purchase", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId:          currentPlan.userId,
+        planName:        currentPlan.planName,
+        planDescription: currentPlan.description,
+        season:          currentPlan.season,
+        price:           currentPlan.newPrice
+      })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      closePurchaseModal();
+       showPurchaseToast(
+    `✅ "${purchasedPlanName}" added to your Diet Plans!`,
+    "#4A7337"
+  );
+      setTimeout(() => {
+        window.location.href = "UserDashboard.html";
+      }, 2000);
+    } else {
+      showPurchaseToast(data.message || "Something went wrong", "#dc3545");
+      btn.disabled = false;
+      btn.textContent = `Confirm — ${currentPlan.newPrice}`;
+    }
+
+  } catch (err) {
+    showPurchaseToast("Server error. Please try again.", "#dc3545");
+    btn.disabled = false;
+    btn.textContent = `Confirm — ${currentPlan.newPrice}`;
+  }
+}
+
+// close on overlay click
+document.getElementById("purchaseModal").addEventListener("click", function(e) {
+  if (e.target === this) closePurchaseModal();
+});
+
+function showPurchaseToast(msg, color) {
+  const t = document.getElementById("purchaseToast");
+  t.textContent = msg;
+  t.style.background = color || "#4A7337";
+  t.style.display = "block";
+  setTimeout(() => t.style.display = "none", 3500);
+}
+</script>
 </body>
 </html>

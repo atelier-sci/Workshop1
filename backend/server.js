@@ -544,7 +544,35 @@ app.delete("/api/blogs/:id", async (req, res) => {
   }
 });
 
+app.post("/api/seasonal-plans/purchase", async (req, res) => {
+  try {
+    const { userId, planName, planDescription, season, price } = req.body;
 
+    if (!userId || !planName) {
+      return res.status(400).json({ message: "Missing data" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const plan = new Plan({
+      userId:         userId.toString(),
+      nutritionistId: "seasonal",
+      title:          `${season} — ${planName}`,
+      description:    `${planDescription}\n\nPrice: ${price}`,
+      status:         "active"
+    });
+
+    await plan.save();
+    res.json({ message: "Plan purchased successfully", plan });
+
+  } catch (err) {
+    console.error("PURCHASE ERROR:", err.message);
+    res.status(500).json({ message: err.message });
+  }
+});
 
 
 // ================= START =================

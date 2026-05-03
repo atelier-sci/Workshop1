@@ -308,7 +308,7 @@
   <nav class="navbar-enhanced">
     <div class="nav-container">
       <a href="/" class="logo-modern">
-        <i class="bi bi-heart-pulse-fill"></i> NutriAI
+        <i class="bi bi-heart-pulse-fill"></i> Viora
       </a>
       <ul class="auth-links">
         <li><a href="ChooseNutritionist.html" class="btn-modern">Back</a></li>
@@ -336,7 +336,8 @@
         <div class="step-line" id="line-2"></div>
         <div class="step-circle" id="circle-3">3</div>
       </div>
-
+<!-- زيدي هاذا في Step 1 قبل fields تاع الاسم -->
+<div id="planSummary"></div>
       <!-- Step 1: Payment Form -->
       <div class="step active" id="step-1">
         <div class="row">
@@ -496,38 +497,59 @@ async function completePayment() {
   }
 
   const user = JSON.parse(localStorage.getItem("user"));
+  const selectedPlan = JSON.parse(localStorage.getItem("selectedPlan"));
   const nutritionistId = localStorage.getItem("selectedNutritionist");
 
-  if (!nutritionistId) {
-    alert("Nutritionist not selected ❌");
-    return;
-  }
-
-  // ✅ اقرأهم من الـ inputs الصح
-  const date = document.getElementById("date").value;
-  const time = document.getElementById("time").value;
+  const date = document.getElementById("date")?.value;
+  const time = document.getElementById("time")?.value;
 
   try {
-    const res = await fetch("http://localhost:5000/api/bookings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        userId: user._id,
-        userName: user.fullName,
-        nutritionistId,
-        date,
-        time,
-        status: "pending"
-      })
-    });
+    // ✅ إذا عنده plan موسمي — احفظو
+    if (selectedPlan) {
+      const planRes = await fetch("http://localhost:5000/api/seasonal-plans/purchase", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId:          user._id,
+          planName:        selectedPlan.planName,
+          planDescription: selectedPlan.description,
+          season:          selectedPlan.season,
+          price:           selectedPlan.price
+        })
+      });
 
-    const data = await res.json();
+      const planData = await planRes.json();
+      if (!planRes.ok) {
+        alert(planData.message || "Failed to save plan");
+        return;
+      }
 
-    if (!res.ok) {
-      alert(data.message || "Booking failed");
-      return;
+      // ✅ امسح الـ plan من localStorage بعد ما اتحفظ
+      localStorage.removeItem("selectedPlan");
+
+    // ✅ إذا عنده booking (مختص مختار) — احفظو
+    } else if (nutritionistId && date && time) {
+      const bookRes = await fetch("http://localhost:5000/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId:       user._id,
+          userName:     user.fullName,
+          nutritionistId,
+          date,
+          time,
+          status:       "pending"
+        })
+      });
+
+      const bookData = await bookRes.json();
+      if (!bookRes.ok) {
+        alert(bookData.message || "Booking failed");
+        return;
+      }
     }
 
+    // ✅ روح لـ Step 3 Success
     document.getElementById('step-2').classList.remove('active');
     document.getElementById('step-success').classList.add('active');
     document.getElementById('circle-2').classList.remove('active');
@@ -535,8 +557,8 @@ async function completePayment() {
     document.getElementById('line-2').classList.add('done');
 
   } catch (err) {
-    console.log(err);
-    alert("Server error");
+    console.error(err);
+    alert("Server error. Please try again.");
   }
 }
 
@@ -548,7 +570,36 @@ function makeAnotherPayment() {
 function goDashboard() {
   window.location.href = "UserDashboard.html";
 }
+// ✅ اقرأ الـ plan من localStorage وبينه في Step 1
+const selectedPlan = JSON.parse(localStorage.getItem("selectedPlan"));
 
+if (selectedPlan) {
+  // زيد summary للـ plan في الـ payment page
+  const planInfo = document.getElementById("planSummary");
+  if (planInfo) {
+    planInfo.innerHTML = `
+      <div style="
+        background: #e8f1e4; border-radius: 10px;
+        padding: 14px 18px; margin-bottom: 20px;
+        border-left: 4px solid #4A7337;
+      ">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+          <span style="font-size:22px;">${selectedPlan.icon}</span>
+          <div>
+            <strong style="font-size:15px; color:#2d4a23;">${selectedPlan.planName}</strong><br>
+            <small style="color:#4A7337;">${selectedPlan.season}</small>
+          </div>
+          <span style="margin-left:auto; font-size:18px; font-weight:700; color:#4A7337;">
+            ${selectedPlan.price}
+          </span>
+        </div>
+        <div style="font-size:13px; color:#555;">
+          ${selectedPlan.features.map(f => `✓ ${f}`).join(" &nbsp;·&nbsp; ")}
+        </div>
+      </div>
+    `;
+  }
+}
 </script>
  
 </body>
